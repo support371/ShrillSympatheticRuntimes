@@ -58,3 +58,42 @@ export const insertStrategySchema = createInsertSchema(strategies).omit({
 
 export type InsertStrategy = z.infer<typeof insertStrategySchema>;
 export type Strategy = typeof strategies.$inferSelect;
+
+export const investments = pgTable("investments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  strategyId: varchar("strategy_id").notNull().references(() => strategies.id, { onDelete: "cascade" }),
+  amount: text("amount").notNull(),
+  status: text("status").notNull().default("active"), // active, completed, cancelled
+  purchaseDate: timestamp("purchase_date").defaultNow().notNull(),
+  maturityDate: timestamp("maturity_date"),
+  currentValue: text("current_value"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertInvestmentSchema = createInsertSchema(investments).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertInvestment = z.infer<typeof insertInvestmentSchema>;
+export type Investment = typeof investments.$inferSelect;
+
+export const transactions = pgTable("transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  investmentId: varchar("investment_id").references(() => investments.id, { onDelete: "set null" }),
+  type: text("type").notNull(), // deposit, withdrawal, dividend, fee
+  amount: text("amount").notNull(),
+  status: text("status").notNull().default("pending"), // pending, completed, failed
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertTransactionSchema = createInsertSchema(transactions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
+export type Transaction = typeof transactions.$inferSelect;

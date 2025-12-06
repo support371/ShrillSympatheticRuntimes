@@ -242,6 +242,129 @@ export async function registerRoutes(
     }
   });
 
+  // ===== INVESTMENT ROUTES =====
+
+  app.post("/api/investments", requireAuth, async (req, res) => {
+    try {
+      const { strategyId, amount } = req.body;
+      
+      if (!strategyId || !amount) {
+        return res.status(400).json({ error: "Strategy ID and amount are required" });
+      }
+
+      const strategy = await storage.getStrategyBySlug(strategyId);
+      if (!strategy) {
+        return res.status(404).json({ error: "Strategy not found" });
+      }
+
+      const investment = await storage.createInvestment({
+        userId: req.user!.id,
+        strategyId: strategy.id,
+        amount: amount.toString(),
+        status: "active",
+        currentValue: amount.toString(),
+      });
+
+      // Create a transaction record
+      await storage.createTransaction({
+        userId: req.user!.id,
+        investmentId: investment.id,
+        type: "deposit",
+        amount: amount.toString(),
+        status: "completed",
+        description: `Investment in ${strategy.title}`,
+      });
+
+      res.json({ investment });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to create investment" });
+    }
+  });
+
+  app.get("/api/investments", requireAuth, async (req, res) => {
+    try {
+      const investments = await storage.getUserInvestments(req.user!.id);
+      res.json({ investments });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to fetch investments" });
+    }
+  });
+
+  app.get("/api/investments/:id", requireAuth, async (req, res) => {
+    try {
+      const investment = await storage.getInvestment(req.params.id);
+      if (!investment) {
+        return res.status(404).json({ error: "Investment not found" });
+      }
+      if (investment.userId !== req.user!.id) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+      res.json({ investment });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to fetch investment" });
+    }
+  });
+
+  // ===== TRANSACTION ROUTES =====
+
+  app.get("/api/transactions", requireAuth, async (req, res) => {
+    try {
+      const transactions = await storage.getUserTransactions(req.user!.id);
+      res.json({ transactions });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to fetch transactions" });
+    }
+  });
+
+  app.post("/api/transactions/withdraw", requireAuth, async (req, res) => {
+    try {
+      const { amount, description } = req.body;
+      
+      if (!amount) {
+        return res.status(400).json({ error: "Amount is required" });
+      }
+
+      const transaction = await storage.createTransaction({
+        userId: req.user!.id,
+        type: "withdrawal",
+        amount: amount.toString(),
+        status: "pending",
+        description: description || "Withdrawal request",
+      });
+
+      res.json({ transaction });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to create withdrawal" });
+    }
+  });
+
+  // ===== ADMIN ROUTES =====
+
+  app.get("/api/admin/users", requireAuth, async (req, res) => {
+    // In production, add proper admin role checking
+    try {
+      // This is a placeholder - you'd need to implement getAllUsers in storage
+      res.json({ users: [] });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to fetch users" });
+    }
+  });
+
+  app.patch("/api/admin/transactions/:id", requireAuth, async (req, res) => {
+    try {
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ error: "Status is required" });
+      }
+
+      const transaction = await storage.updateTransactionStatus(req.params.id, status);
+      res.json({ transaction });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to update transaction" });
+    }
+  });
+
   // Seed strategies if none exist
   const existingStrategies = await storage.getAllStrategies();
   if (existingStrategies.length === 0) {
