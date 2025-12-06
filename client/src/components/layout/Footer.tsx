@@ -1,8 +1,36 @@
 import { CONTACT_INFO } from "@/lib/constants";
 import { Link } from "wouter";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { useSubscribeNewsletter } from "@/lib/api";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const subscribeMutation = useSubscribeNewsletter();
+  const { toast } = useToast();
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email) return;
+
+    try {
+      await subscribeMutation.mutateAsync(email);
+      toast({
+        title: "Subscribed!",
+        description: "You'll receive our latest market intelligence updates.",
+      });
+      setEmail("");
+    } catch (error: any) {
+      toast({
+        title: "Subscription failed",
+        description: error.message || "Please try again later.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <footer className="bg-primary text-white pt-16 pb-8 border-t-4 border-secondary">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -31,14 +59,21 @@ export function Footer() {
           <p className="text-sm text-gray-300">
             Subscribe to our newsletter to receive the latest market intelligence and real estate opportunities.
           </p>
-          <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-3" onSubmit={handleSubscribe}>
             <input
               type="email"
               placeholder="Your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white placeholder:text-gray-500 focus:outline-none focus:border-secondary transition-colors rounded-sm"
+              required
             />
-            <button className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-secondary/90 transition-colors rounded-sm">
-              Subscribe
+            <button 
+              type="submit"
+              disabled={subscribeMutation.isPending}
+              className="w-full py-3 bg-secondary text-white font-bold uppercase text-xs tracking-wider hover:bg-secondary/90 transition-colors rounded-sm disabled:opacity-50"
+            >
+              {subscribeMutation.isPending ? "Subscribing..." : "Subscribe"}
             </button>
           </form>
         </div>
