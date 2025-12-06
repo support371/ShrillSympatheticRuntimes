@@ -207,3 +207,125 @@ export function useStrategy(slug: string) {
     enabled: !!slug,
   });
 }
+
+// Investments API
+export interface Investment {
+  id: string;
+  userId: string;
+  strategyId: string;
+  amount: string;
+  status: string;
+  purchaseDate: string;
+  maturityDate: string | null;
+  currentValue: string | null;
+}
+
+export async function createInvestment(strategyId: string, amount: number): Promise<Investment> {
+  const res = await fetch("/api/investments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ strategyId, amount }),
+    credentials: "include",
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Failed to create investment");
+  }
+  
+  const data = await res.json();
+  return data.investment;
+}
+
+export async function getUserInvestments(): Promise<Investment[]> {
+  const res = await fetch("/api/investments", {
+    credentials: "include",
+  });
+  
+  if (!res.ok) {
+    throw new Error("Failed to fetch investments");
+  }
+  
+  const data = await res.json();
+  return data.investments;
+}
+
+// Transactions API
+export interface TransactionType {
+  id: string;
+  userId: string;
+  investmentId: string | null;
+  type: string;
+  amount: string;
+  status: string;
+  description: string | null;
+  createdAt: string;
+}
+
+export async function getUserTransactions(): Promise<TransactionType[]> {
+  const res = await fetch("/api/transactions", {
+    credentials: "include",
+  });
+  
+  if (!res.ok) {
+    throw new Error("Failed to fetch transactions");
+  }
+  
+  const data = await res.json();
+  return data.transactions;
+}
+
+export async function createWithdrawal(amount: number, description?: string): Promise<TransactionType> {
+  const res = await fetch("/api/transactions/withdraw", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount, description }),
+    credentials: "include",
+  });
+  
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Failed to create withdrawal");
+  }
+  
+  const data = await res.json();
+  return data.transaction;
+}
+
+// React Query Hooks
+export function useInvestments() {
+  return useQuery({
+    queryKey: ["investments"],
+    queryFn: getUserInvestments,
+  });
+}
+
+export function useTransactions() {
+  return useQuery({
+    queryKey: ["transactions"],
+    queryFn: getUserTransactions,
+  });
+}
+
+export function useCreateInvestment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ strategyId, amount }: { strategyId: string; amount: number }) =>
+      createInvestment(strategyId, amount),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["investments"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+  });
+}
+
+export function useCreateWithdrawal() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ amount, description }: { amount: number; description?: string }) =>
+      createWithdrawal(amount, description),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+  });
+}
