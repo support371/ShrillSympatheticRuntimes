@@ -1,0 +1,380 @@
+Paste the following as a single master build spec for your Replit agent. It consolidates everything you requested: preserve the current site’s navigation, section sequencing, CTA rhythm, packages/plans density, add a Portfolio standalone capability, add a QFS (Quick Facts Sheet) layer, implement an Investopedia-style $100K demo account, and retain the homepage Economic Calendar by TradingView, the blockchain/crypto market tables/cards “Powered by CoinMarketCap,” plus a TradingView daily trade watch inside the account dashboard. These elements and nav labels are present on the current site.  
+
+⸻
+
+MASTER SPEC FOR REPLIT AGENT
+
+Rebuild alliancetrustrealty.com into an advanced, professional real estate platform while preserving existing structure + market intelligence features
+
+Strategic Objective
+
+Rebuild the site with a more professional, advanced real estate brand while maintaining the structural and content appearance of the current domain:
+	•	Same top navigation labels and order.  
+	•	Same page lineup and CTA placement patterns.  
+	•	Same section order and content density across Home, Affiliate, Investment Plan, Packages, About.  
+	•	Preserve the Market Intelligence zone featuring:
+	•	Economic Calendar by TradingView embed.  
+	•	Blockchain/crypto market cards/tables displaying price/rank/market cap/volume with “Powered by CoinMarketCap.”  
+
+Modernize:
+	•	Visual design system
+	•	Real estate positioning and credibility
+	•	Performance, accessibility, and security
+	•	Add Portfolio + QFS + Demo Account + Daily Trade Watch in account
+
+⸻
+
+1. Required Primary Navigation (Preserve Labels + Order)
+
+Header must include the existing labels in this order:
+	1.	Home
+	2.	Affiliate program
+	3.	Investment plan
+	4.	Packages
+	5.	About Us
+	6.	LOGIN
+	7.	JOIN NOW  
+
+Add new items with minimal disruption:
+	•	Portfolio (insert after Packages, before About Us)
+	•	QFS (optional top-level; if shown, place adjacent to Portfolio)
+
+Header should also continue to display top contact email as currently done.  
+
+⸻
+
+2. Route Map (Public + Auth)
+
+Public core (existing)
+	•	/ Home
+	•	/affiliate
+	•	/investment-plan
+	•	/packages
+	•	/about
+	•	/login
+	•	/register
+
+New public
+	•	/portfolio
+	•	/qfs
+	•	/portfolio/strategies/:slug
+	•	/qfs/:slug
+
+Account
+	•	/dashboard (live)
+	•	/demo/dashboard
+	•	/client/portfolio (alias of dashboard portfolio tab acceptable)
+
+Legacy compatibility (recommended)
+
+Support query aliases to preserve continuity:
+	•	/?a=more → /packages
+	•	/?a=about → /about
+	•	/?a=plan → /investment-plan
+	•	/?a=pricing → /affiliate
+These patterns appear on the current site.  
+
+⸻
+
+3. Global Layout Requirements
+
+Header
+	•	Email line
+	•	Primary nav
+	•	Right-side actions: LOGIN (secondary) + JOIN NOW (primary)  
+
+Footer (Maintain 3-block pattern)
+
+Preserve footer structure:
+	1.	Contact Us
+	2.	Newsletter subscription
+	3.	About Us mini-blurb + Read More  
+
+⸻
+
+4. Homepage Structure (Preserve Sequence, Upgrade Real Estate Meaning)
+
+Maintain the existing structure in this approximate order and density.  
+
+4.1 Hero with Background Media
+	•	Replace any image-tool background mention with video-first real estate positioning.
+	•	12–18s loop, muted, subtle overlay.
+	•	Headline + subheadline + primary CTA.
+
+Recommended overlay micro-pillars:
+	•	Asset Intelligence
+	•	Market-Driven Strategy
+	•	Risk-Aware Allocation
+	•	Transparent Reporting
+	•	Long-Term Value Creation
+
+4.2 Three-Pillar Value Section
+
+The current site uses a triad concept (“Trust / Diversify / Future”).  
+Keep the 3-column layout but rewrite to real estate:
+	•	Governance & Trust
+	•	Diversified Asset Mix
+	•	Long-Term Value Strategy
+
+4.3 “New to investing?” Advisor Prompt
+
+Retain the short guidance hook, reframe to real estate investing.  
+
+4.4 Platform Narrative Block
+
+Preserve the business-description paragraph block; shift to real estate platform language.  
+
+4.5 “Become an Investor” Product/Track Selector
+
+Keep the CTA logic inviting users to choose a product/plan.  
+Rename internally to Strategy Tracks.
+
+4.6 Three Benefit Cards
+
+Maintain 3-card layout; replace guarantee-style wording with compliant real estate outcomes.
+
+4.7 Leadership Highlight
+
+Keep a short CEO/leadership block if currently present.
+
+4.8 “What we do” Capabilities
+
+Keep a short operational scope section.
+
+4.9 Opportunity Thesis / Long-form Persuasion
+
+Maintain the mid-to-late long-form explanation block.
+
+4.10 Metrics Counters
+
+Keep a 3–4 metric row.
+
+4.11 Three-step Onboarding
+
+Maintain the 3-step component.
+
+4.12 Market Intelligence Zone (Must Preserve)
+
+This is non-negotiable continuity:
+	1.	Economic Calendar by TradingView embed.  
+	2.	Blockchain/Crypto market cards/tables showing:
+	•	asset name
+	•	price
+	•	rank
+	•	market cap
+	•	volume
+	•	label consistent with “Powered by CoinMarketCap” if you are using an approved integration.  
+
+Do not scrape third-party sites.
+
+4.13 Partner Logo Strip
+
+Preserve partner/brand montage.
+
+⸻
+
+5. Affiliate Program Page (Preserve Layout)
+
+Keep:
+	•	Title header + descriptive paragraph
+	•	Referral logic
+	•	Profit-source explanation block
+	•	Join CTA
+	•	Standard footer  
+
+Reframe language to “Partner Network” while preserving structure.
+
+⸻
+
+6. Investment Plan Page (Preserve Card Grid)
+
+The current page is plan-card heavy.  
+Keep:
+	•	Intro header
+	•	Multi-card grid (4–7 plans)
+	•	Each card includes:
+	•	Plan name
+	•	Eligibility range
+	•	Bullet benefits
+	•	Outcome/risk/horizon line
+
+Reframe for real estate:
+	•	Income Track
+	•	Balanced Growth Track
+	•	Development Track
+	•	Capital Preservation Track
+	•	Institutional Track
+
+No absolute guarantees.
+
+⸻
+
+7. Packages Page (Preserve Category Blocks)
+
+Current packages include Real Estate, Agriculture, Gold, Trading, Retirement-like content blocks.  
+Maintain the same number of blocks and paragraph lengths.
+Interpret categories as portfolio sleeves for continuity.
+
+⸻
+
+8. About Us Page (Preserve Narrative + Metrics)
+
+Keep:
+	•	Hero
+	•	Multi-paragraph story
+	•	Stats counters
+	•	Vision/Mission
+
+⸻
+
+9. NEW: Portfolio Standalone Page
+
+Purpose
+
+Provide a strategy-aligned real estate portfolio narrative and interactive learning preview.
+
+Required sections
+	1.	Hero
+	2.	“What a Portfolio Means Here”
+	3.	Strategy Track card grid
+	4.	Interactive allocation demo block
+	5.	“How to Read Performance” education
+	6.	3-step build-your-portfolio
+	7.	FAQ
+
+⸻
+
+10. NEW: QFS (Quick Facts Sheet)
+
+/qfs list
+	•	Grid of strategy summaries.
+
+/qfs/:slug
+
+One-page executive summary:
+	•	Who it’s for
+	•	Asset focus
+	•	Risk tier
+	•	Holding horizon
+	•	Example allocation
+	•	Brief disclosures
+	•	CTA: Preview Demo / Activate Track
+
+⸻
+
+11. NEW: Investopedia-Style Demo Account
+
+Core behavior
+
+When a user selects Demo Mode:
+	•	Create a demo profile with $100,000 virtual balance.
+	•	Default to Balanced Growth strategy.
+	•	Store state in localStorage v1.
+	•	Clear “Demo Account — Educational Use Only” badge.
+
+Routes
+	•	/demo/dashboard
+
+Required demo dashboard widgets
+	1.	Account Summary (virtual balances)
+	2.	Selected Strategy card
+	3.	Allocation visualization
+	4.	Learning panel
+	5.	Demo actions:
+	•	Simulate Buy
+	•	Simulate Sell
+	•	Test Rebalance (optional)
+	•	Reset Demo
+
+No real money flows.
+
+⸻
+
+12. Account Dashboard: Daily Trade Watch (TradingView)
+
+You required “the account from trade view for watching a daily trade.”
+Implement a Daily Trade Watch module inside:
+	•	/dashboard
+	•	/demo/dashboard
+
+Widget spec
+	•	TradingView chart embed
+	•	Default interval: 1D
+	•	Default symbol: BTCUSD (configurable list)
+	•	Symbol selector for 3–5 assets
+	•	Educational note
+
+⸻
+
+13. Data & Content Architecture
+
+JSON-first content
+	•	/data/home.json
+	•	/data/affiliate.json
+	•	/data/plans.json
+	•	/data/packages.json
+	•	/data/about.json
+	•	/data/strategies.json (Portfolio + QFS)
+
+Demo store
+	•	demo_account_v1 localStorage key
+
+⸻
+
+14. Tech Stack Recommendations
+	•	Next.js + React
+	•	Tailwind CSS
+	•	Componentized sections that match existing block rhythm
+	•	Official third-party embeds for TradingView and approved market data sources
+
+Do not scrape.
+
+⸻
+
+15. Compliance & Trust Language
+
+The current site language includes confident outcome statements in its investment framing.  
+In the upgraded version, preserve the persuasive cadence while removing absolutes:
+	•	Use “target outcomes,” “risk-aware,” “historical context,” “outcomes vary.”
+	•	Add concise disclaimers near:
+	•	Plans
+	•	Portfolio demos
+	•	Demo dashboard
+	•	Market Intelligence block
+
+⸻
+
+16. Acceptance Criteria
+
+The rebuild is complete when:
+	1.	Structural fidelity
+Users recognize:
+	•	same nav order and labels
+	•	same page set
+	•	same section sequencing
+	•	similar content density and CTA rhythm  
+	2.	Market Intelligence continuity
+Homepage contains:
+	•	Economic Calendar by TradingView  
+	•	Blockchain/crypto market cards/tables with price/rank/market cap/volume layout consistent to current expectations  
+	3.	Portfolio + QFS
+	•	/portfolio and /qfs live
+	•	strategy detail pages live
+	4.	Demo Account parity
+	•	users can start a $100,000 educational demo instantly
+	5.	Daily Trade Watch
+	•	TradingView daily chart embedded in live and demo dashboards
+
+⸻
+
+17. Build Order
+	1.	Scaffold Next.js + Tailwind.
+	2.	Build Header/Footer to match current nav and footer patterns.  
+	3.	Implement existing core pages with preserved section order.  
+	4.	Implement Homepage Market Intelligence zone with TradingView Economic Calendar + crypto market display.  
+	5.	Add Portfolio + strategy pages.
+	6.	Add QFS list + detail pages.
+	7.	Add Demo Mode engine + /demo/dashboard.
+	8.	Add Daily Trade Watch module to live + demo dashboards.
+	9.	Add disclaimers, polish UI, optimize performance.
+
