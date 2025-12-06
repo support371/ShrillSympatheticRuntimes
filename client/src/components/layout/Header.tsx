@@ -56,17 +56,11 @@ export function Header() {
         {/* Logo */}
         <Link href="/">
           <a className="flex items-center gap-2">
-            <div className="h-10 w-10 bg-primary text-white flex items-center justify-center font-serif text-2xl font-bold rounded-sm">
-              A
-            </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-xl font-bold leading-none text-primary tracking-tight">
-                Alliance Trust
-              </span>
-              <span className="text-xs text-secondary font-semibold tracking-widest uppercase">
-                Realty
-              </span>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="Alliance Trust Realty" 
+              className="h-12 w-auto"
+            />
           </a>
         </Link>
 
