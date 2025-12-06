@@ -1,14 +1,36 @@
 import { Link, useLocation } from "wouter";
 import { NAV_ITEMS, CONTACT_INFO } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { Mail, Menu, X } from "lucide-react";
+import { Mail, Menu, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useCurrentUser, useLogout } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 export function Header() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { data: currentUser } = useCurrentUser();
+  const logoutMutation = useLogout();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      toast({
+        title: "Logged out",
+        description: "You've been successfully logged out.",
+      });
+      setLocation("/");
+    } catch (error) {
+      toast({
+        title: "Logout failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <header className="w-full bg-white border-b border-border sticky top-0 z-50">
@@ -20,7 +42,11 @@ export function Header() {
             <span>{CONTACT_INFO.email}</span>
           </div>
           <div className="hidden md:flex gap-4 opacity-80 text-xs uppercase tracking-wider">
-            <span>Professional Real Estate Investment</span>
+            {currentUser ? (
+              <span>Welcome, {currentUser.fullName || currentUser.email}</span>
+            ) : (
+              <span>Professional Real Estate Investment</span>
+            )}
           </div>
         </div>
       </div>
@@ -64,16 +90,37 @@ export function Header() {
 
         {/* Actions */}
         <div className="hidden lg:flex items-center gap-4">
-          <Link href="/login">
-            <Button variant="ghost" className="font-semibold uppercase tracking-wide text-xs">
-              Login
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button className="bg-secondary hover:bg-secondary/90 text-white font-bold uppercase tracking-wide text-xs px-6">
-              Join Now
-            </Button>
-          </Link>
+          {currentUser ? (
+            <>
+              <Link href={currentUser.isDemo ? "/demo/dashboard" : "/dashboard"}>
+                <Button variant="ghost" className="font-semibold uppercase tracking-wide text-xs">
+                  Dashboard
+                </Button>
+              </Link>
+              <Button 
+                variant="outline"
+                onClick={handleLogout}
+                className="font-semibold uppercase tracking-wide text-xs"
+                disabled={logoutMutation.isPending}
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost" className="font-semibold uppercase tracking-wide text-xs">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button className="bg-secondary hover:bg-secondary/90 text-white font-bold uppercase tracking-wide text-xs px-6">
+                  Join Now
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -99,12 +146,29 @@ export function Header() {
                 </Link>
               ))}
               <div className="flex flex-col gap-2 mt-4">
-                <Link href="/login" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full uppercase">Login</Button>
-                </Link>
-                <Link href="/register" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full bg-secondary hover:bg-secondary/90 uppercase">Join Now</Button>
-                </Link>
+                {currentUser ? (
+                  <>
+                    <Link href={currentUser.isDemo ? "/demo/dashboard" : "/dashboard"} onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full uppercase">Dashboard</Button>
+                    </Link>
+                    <Button 
+                      variant="outline" 
+                      className="w-full uppercase" 
+                      onClick={() => { handleLogout(); setIsOpen(false); }}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setIsOpen(false)}>
+                      <Button variant="outline" className="w-full uppercase">Login</Button>
+                    </Link>
+                    <Link href="/register" onClick={() => setIsOpen(false)}>
+                      <Button className="w-full bg-secondary hover:bg-secondary/90 uppercase">Join Now</Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </SheetContent>
