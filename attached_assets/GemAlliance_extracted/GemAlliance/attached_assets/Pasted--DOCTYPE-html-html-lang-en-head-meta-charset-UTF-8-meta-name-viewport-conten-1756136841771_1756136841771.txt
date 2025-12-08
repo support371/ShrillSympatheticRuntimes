@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Alliance Enterprise - Secure. Compliant. Profitable.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    :root {
+        --primary-blue: #1e3a8a;
+        --secondary-blue: #3b82f6;
+        --accent-gold: #f59e0b;
+        --dark-navy: #0f172a;
+        --light-gray: #f8fafc;
+        --medium-gray: #64748b;
+        --white: #ffffff;
+        --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        --gradient-secondary: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.6;
+        color: var(--dark-navy);
+        overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .hero-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+        /* Placeholder for city skyline video similar to Image 3 */
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.6);
+        z-index: -1;
+    }
+
+    .hero-content {
+        max-width: 1200px;
+        padding: 0 2rem;
+        z-index: 1;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-weight: 800;
+        color: var(--white);
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+    }
+
+    .hero-subline {
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+        color: var(--light-gray);
+        margin-bottom: 3rem;
+        font-weight: 300;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-cta {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary {
+        background: var(--gradient-primary);
+        color: var(--white);
+        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: var(--white);
+        border: 2px solid var(--accent-gold);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .video-controls {
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 2;
+    }
+
+    .pause-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: var(--white);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Section Base Styles */
+    .section {
+        padding: 5rem 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        font-weight: 700;
+        color: var(--dark-navy);
+        margin-bottom: 1rem;
+    }
+
+    .section-header p {
+        font-size: 1.2rem;
+        color: var(--medium-gray);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Intro Video Section */
+    .intro-video {
+        background: var(--light-gray);
+    }
+
+    .video-wrapper {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .intro-video-element {
+        width: 100%;
+        height: 500px;
+        background: var(--dark-navy);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 1.2rem;
+    }
+
+    .video-script {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-script h3 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    /* About Section */
+    .about {
+        background: var(--white);
+    }
+
+    .mission-statement {
+        background: var(--gradient-primary);
+        color: var(--white);
+        padding: 3rem;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .mission-statement h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .pillars {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .pillar {
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        border-top: 4px solid var(--accent-gold);
+        transition: transform 0.3s ease;
+    }
+
+    .pillar:hover {
+        transform: translateY(-5px);
+    }
+
+    .pillar h4 {
+        font-size: 1.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    .pillar-icon {
+        width: 60px;
+        height: 60px;
+        background: var(--gradient-secondary);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    /* Proof of Concept Section */
+    .proof-concept {
+        background: var(--light-gray);
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .project-card {
+        background: var(--white);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .project-image {
+        height: 200px;
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 1.1rem;
+    }
+
+    .project-content {
+        padding: 2rem;
+    }
+
+    .project-content h4 {
+        font-size: 1.3rem;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+    }
+
+    /* Newsletter Section */
+    .newsletter {
+        background: var(--white);
+    }
+
+    .newsletter-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .newsletter-form {
+        background: var(--light-gray);
+        padding: 2.5rem;
+        border-radius: 12px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+    }
+
+    .podcast-preview {
+        text-align: center;
+    }
+
+    .podcast-player {
+        background: var(--gradient-primary);
+        color: var(--white);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Partners Section */
+    .partners {
+        background: var(--light-gray);
+    }
+
+    .partners-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .partner-logo {
+        background: var(--white);
+        height: 100px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--medium-gray);
+        font-weight: 600;
+        transition: transform 0.3s ease;
+    }
+
+    .partner-logo:hover {
+        transform: scale(1.05);
+    }
+
+    /* Footer CTA */
+    .footer-cta {
+        background: var(--gradient-primary);
+        color: var(--white);
+        text-align: center;
+        padding: 4rem 0;
+    }
+
+    .footer-cta h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .footer-cta p {
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+    }
+
+    .footer-cta-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--white);
+        border: 2px solid var(--white);
+    }
+
+    .btn-white {
+        background: var(--white);
+        color: var(--primary-blue);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .newsletter-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .hero-cta {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline id="heroVideo">
+            <!-- Video source would be added here -->
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Secure. Compliant. Profitable.</h1>
+            <p class="hero-subline">Integrating cybersecurity excellence, regulatory compliance, and strategic real estate management for enterprise-level success</p>
+            <div class="hero-cta">
+                <a href="#vision" class="btn btn-primary">Explore the Vision</a>
+                <a href="#community" class="btn btn-secondary">Join the Movement</a>
+            </div>
+        </div>
+        <div class="video-controls">
+            <button class="pause-btn" onclick="toggleVideo()">Pause</button>
+        </div>
+    </section>
+
+```
+<!-- Intro Video Section -->
+<section class="intro-video section" id="vision">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Integrated Vision</h2>
+            <p>Discover how we're revolutionizing business security, compliance, and real estate management through strategic integration</p>
+        </div>
+        <div class="video-wrapper">
+            <div class="intro-video-element">
+                🎥 Professional Enterprise Presentation
+                <br><small>Featuring executive team discussing integrated solutions</small>
+                <br><small style="opacity: 0.7;">Similar to professional presentation style shown in your images</small>
+            </div>
+        </div>
+        
+        <div class="video-script">
+            <h3>Video Script (60-90 seconds):</h3>
+            <div style="line-height: 2; color: var(--medium-gray);">
+                <strong>[0-15s] Opening Hook - Executive Overview:</strong><br>
+                "In today's interconnected business landscape, security isn't optional—it's essential. At The Alliance Enterprise, we integrate three mission-critical services that modern businesses require to thrive."
+                
+                <br><br><strong>[15-35s] Three-Division Integration:</strong><br>
+                "GEM Cybersecurity & Monitoring provides advanced threat detection and 24/7 security operations. Our Core Compliance Division ensures regulatory excellence across all industries. Alliance Trust Realty maximizes real estate investments through strategic portfolio management."
+                
+                <br><br><strong>[35-55s] Partnership & Membership Model:</strong><br>
+                "What sets us apart is our collaborative approach. We don't just provide services—we build partnerships. Our professional network connects cybersecurity experts, compliance specialists, and real estate professionals in a community of shared success."
+                
+                <br><br><strong>[55-75s] Results & Call to Action:</strong><br>
+                "From Fortune 500 cybersecurity implementations to multi-million dollar real estate portfolios, our integrated approach delivers measurable results. Ready to secure your competitive advantage?"
+                
+                <br><br><strong>[75-90s] Professional Closing:</strong><br>
+                "The Alliance Enterprise. Where Security, Compliance, and Prosperity Converge."
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about section">
+    <div class="container">
+        <div class="section-header">
+            <h2>The Alliance Enterprise</h2>
+            <p>Three integrated divisions delivering comprehensive business solutions through strategic partnerships</p>
+        </div>
+        
+        <div class="mission-statement">
+            <h3>Our Mission</h3>
+            <p>To provide integrated cybersecurity, compliance, and real estate management solutions through a collaborative partnership model that empowers business professionals to achieve exceptional results while maintaining the highest standards of security and regulatory excellence.</p>
+        </div>
+
+        <div class="pillars">
+            <div class="pillar">
+                <div class="pillar-icon">🔒</div>
+                <h4>GEM Cybersecurity & Monitoring</h4>
+                <p>Advanced threat detection, 24/7 monitoring, and comprehensive security solutions. We protect your digital assets with cutting-edge technology and proactive threat intelligence, ensuring business continuity and data integrity across all operations.</p>
+            </div>
+            
+            <div class="pillar">
+                <div class="pillar-icon">📋</div>
+                <h4>Core Compliance Division</h4>
+                <p>Expert regulatory guidance and compliance management across multiple industries. Our team ensures adherence to federal, state, and industry-specific requirements, reducing risk while streamlining operations and maintaining competitive advantage.</p>
+            </div>
+            
+            <div class="pillar">
+                <div class="pillar-icon">🏢</div>
+                <h4>Alliance Trust Realty</h4>
+                <p>Strategic real estate management and investment services. From property acquisition to portfolio optimization, we maximize returns while minimizing risk through data-driven market analysis and professional asset management.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Proof of Concept Section -->
+<section class="proof-concept section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Proven Excellence Across Industries</h2>
+            <p>Our integrated approach delivers measurable results in cybersecurity, compliance, and real estate management</p>
+        </div>
+        
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-image">
+                    🏢 Alliance Trust Luxury Development<br>
+                    <small>Modern Mixed-Use Complex - Active</small>
+                </div>
+                <div class="project-content">
+                    <h4>Premium Residential & Commercial Development</h4>
+                    <p>Luxury mixed-use development featuring modern architecture, integrated smart building systems, and comprehensive property management services. Professional presentation facilities showcase investment opportunities to high-net-worth clients and institutional partners.</p>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-image">
+                    🔐 GEM Cybersecurity Command Center<br>
+                    <small>24/7 Security Operations - Ongoing</small>
+                </div>
+                <div class="project-content">
+                    <h4>Advanced Threat Monitoring & Response</h4>
+                    <p>State-of-the-art cybersecurity operations center providing real-time threat detection and response services. Advanced dashboard systems monitor client networks globally, with executive briefings and compliance reporting delivered to C-suite stakeholders.</p>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-image">
+                    ⚖️ Executive Compliance Leadership<br>
+                    <small>Multi-Industry Expertise - Active</small>
+                </div>
+                <div class="project-content">
+                    <h4>Senior Executive Compliance Management</h4>
+                    <p>Seasoned compliance leadership providing strategic guidance across healthcare, finance, and real estate sectors. Executive-level oversight ensures regulatory adherence while maintaining operational efficiency and competitive positioning.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="#" class="btn btn-primary">View Full Case Studies</a>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter section" id="community">
+    <div class="container">
+        <div class="section-header">
+            <h2>Professional Network & Membership</h2>
+            <p>Connect with industry leaders, access exclusive opportunities, and grow through strategic partnerships</p>
+        </div>
+        
+        <div class="newsletter-content">
+            <div class="newsletter-form">
+                <h3 style="margin-bottom: 1rem; color: var(--primary-blue);">Join The Alliance Network</h3>
+                <p style="margin-bottom: 2rem; color: var(--medium-gray);">Access exclusive industry insights, partnership opportunities, and professional development resources through our member network.</p>
+                
+                <form>
+                    <div class="form-group">
+                        <input type="text" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Company & Title" required>
+                    </div>
+                    <div class="form-group">
+                        <select style="width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem;">
+                            <option>Interest Area</option>
+                            <option>Cybersecurity Services</option>
+                            <option>Compliance Solutions</option>
+                            <option>Real Estate Management</option>
+                            <option>Partnership Opportunities</option>
+                            <option>Membership Benefits</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Apply for Membership</button>
+                </form>
+            </div>
+            
+            <div class="podcast-preview">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary-blue);">Alliance Insights Podcast</h3>
+                <div class="podcast-player">
+                    <h4>🎙️ Latest Episode</h4>
+                    <p>"Integrated Security: The Future of Enterprise Protection"</p>
+                    <small>Featuring cybersecurity experts and compliance professionals discussing emerging threats and solutions</small>
+                    <br><br>
+                    <button class="btn btn-white">▶ Listen Now</button>
+                </div>
+                <p style="color: var(--medium-gray);">Weekly insights from our network of cybersecurity experts, compliance professionals, and real estate strategists sharing knowledge and market intelligence.</p>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: var(--light-gray); border-radius: 8px;">
+                    <h4 style="color: var(--primary-blue); margin-bottom: 1rem;">Member Benefits</h4>
+                    <ul style="text-align: left; color: var(--medium-gray); line-height: 1.8;">
+                        <li>Exclusive networking events</li>
+                        <li>Priority access to partnerships</li>
+                        <li>Professional development resources</li>
+                        <li>Market intelligence reports</li>
+                        <li>Collaborative project opportunities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partners Section -->
+<section class="partners section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Strategic Partnerships</h2>
+            <p>Collaborating with industry leaders to accelerate innovation and maximize impact</p>
+        </div>
+        
+        <div class="partners-grid">
+            <div class="partner-logo">Cybersecurity Leaders</div>
+            <div class="partner-logo">Compliance Experts</div>
+            <div class="partner-logo">Real Estate Professionals</div>
+            <div class="partner-logo">Technology Partners</div>
+            <div class="partner-logo">Financial Institutions</div>
+            <div class="partner-logo">Executive Network</div>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Partnership & Membership Model</h3>
+            <p style="max-width: 800px; margin: 0 auto; color: var(--medium-gray); font-size: 1.1rem; line-height: 1.8;">
+                Our unique partnership approach connects cybersecurity experts, compliance professionals, and real estate specialists in a collaborative network. Members gain access to cross-industry expertise, shared resources, and joint venture opportunities while contributing specialized knowledge to collective success.
+            </p>
+        </div>
+        
+        <div style="text-align: center; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+            <a href="#" class="btn btn-primary">Become a Partner</a>
+            <a href="#" class="btn btn-secondary">Download Partnership Overview</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer CTA -->
+<section class="footer-cta">
+    <div class="container">
+        <h2>Ready to Secure Your Success?</h2>
+        <p>Join The Alliance Enterprise network and access integrated cybersecurity, compliance, and real estate management solutions</p>
+        <div class="footer-cta-buttons">
+            <a href="#" class="btn btn-white">Schedule Consultation</a>
+            <a href="#" class="btn btn-outline">Membership Opportunities</a>
+            <a href="#" class="btn btn-outline">Partnership Inquiry</a>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleVideo() {
+        const video = document.getElementById('heroVideo');
+        const btn = document.querySelector('.pause-btn');
+        
+        if (video.paused) {
+            video.play();
+            btn.textContent = 'Pause';
+        } else {
+            video.pause();
+            btn.textContent = 'Play';
+        }
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Form submission handling
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for subscribing! You will receive our next newsletter within 48 hours.');
+        this.reset();
+    });
+
+    // Add parallax effect to hero section
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero');
+        if (hero && scrolled < window.innerHeight) {
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+    });
+</script>
+```
+
+</body>
+</html>
