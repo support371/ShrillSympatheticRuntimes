@@ -1,18 +1,22 @@
+
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { TradingViewCalendar } from "@/components/widgets/TradingViewCalendar";
 import { CryptoMarketTable } from "@/components/widgets/CryptoMarketTable";
-import { ArrowRight, BarChart3, ShieldCheck, TrendingUp, Users, Building2, Globe2 } from "lucide-react";
+import { ArrowRight, BarChart3, ShieldCheck, TrendingUp, Users, Building2, Globe2, Play } from "lucide-react";
 import heroImage from "@assets/generated_images/modern_luxury_high-rise_building_at_dusk.png";
 import residentialImage from "@assets/generated_images/modern_luxury_apartment_complex.png";
 import commercialImage from "@assets/generated_images/modern_glass_office_building.png";
 import industrialImage from "@assets/generated_images/modern_logistics_center_warehouse.png";
 import { Link } from "wouter";
+import { useState } from "react";
 
 export default function Home() {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+
   return (
     <Layout>
-      {/* 4.1 Hero Section */}
+      {/* Hero Section - Enhanced with GemAlliance styling */}
       <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden flex items-center">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105"
@@ -24,14 +28,14 @@ export default function Home() {
         <div className="relative container mx-auto px-4 text-white z-10">
           <div className="max-w-3xl space-y-6 animate-in slide-in-from-bottom-10 fade-in duration-1000">
             <div className="inline-block px-3 py-1 bg-secondary/90 text-white text-xs font-bold uppercase tracking-widest rounded-sm mb-2">
-              Institutional Grade
+              The Alliance Enterprise
             </div>
             <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight">
-              Build Wealth With <br/>
-              <span className="text-secondary">Real Assets</span>
+              Secure. Compliant. <br/>
+              <span className="text-secondary">Profitable.</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 font-light max-w-2xl leading-relaxed">
-              Access institutional real estate strategies designed for long-term value creation, diversified growth, and consistent income.
+              Integrating cybersecurity excellence, regulatory compliance, and strategic real estate management for enterprise-level success.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Link href="/investment-plan">
@@ -47,16 +51,119 @@ export default function Home() {
             </div>
 
             <div className="flex gap-8 pt-12 text-xs uppercase tracking-widest opacity-80 font-medium">
-              <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-secondary" /> Risk-Aware</span>
-              <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-secondary" /> Market-Driven</span>
-              <span className="flex items-center gap-2"><Globe2 className="h-4 w-4 text-secondary" /> Global Reach</span>
+              <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-secondary" /> Secure</span>
+              <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-secondary" /> Compliant</span>
+              <span className="flex items-center gap-2"><Globe2 className="h-4 w-4 text-secondary" /> Profitable</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4.2 Three Pillar Value Section */}
-      <section className="py-24 bg-white relative z-20 -mt-10 rounded-t-3xl border-t border-gray-100 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
+      {/* Evolution Story / Intro Video Section */}
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            <span className="text-secondary font-bold uppercase tracking-widest text-sm">Our Story</span>
+            <h2 className="text-4xl font-serif font-bold text-primary mt-3 mb-6">The Evolution of Excellence</h2>
+            <p className="text-muted-foreground text-lg leading-relaxed">
+              From pioneering cybersecurity solutions to mastering regulatory compliance and real estate investment, 
+              The Alliance Enterprise represents the convergence of three critical pillars of modern business success.
+            </p>
+          </div>
+          
+          <div className="relative max-w-5xl mx-auto aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black/5">
+            {!isVideoPlaying ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary to-primary/80">
+                <Button 
+                  size="lg"
+                  onClick={() => setIsVideoPlaying(true)}
+                  className="bg-secondary hover:bg-secondary/90 text-white rounded-full w-20 h-20 p-0 shadow-xl"
+                >
+                  <Play className="h-10 w-10 ml-1" />
+                </Button>
+              </div>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-white">
+                <p className="text-sm opacity-70">Video content would load here</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Three Enterprise Divisions */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <span className="text-secondary font-bold uppercase tracking-widest text-sm">Our Divisions</span>
+            <h2 className="text-4xl font-serif font-bold text-primary mt-3">Enterprise Solutions</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* GEM Cybersecurity */}
+            <div className="group bg-gradient-to-br from-blue-50 to-white p-8 rounded-xl border-2 border-blue-100 hover:border-secondary transition-all duration-300 hover:shadow-xl">
+              <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <ShieldCheck className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold mb-4 text-primary">GEM Cybersecurity</h3>
+              <p className="text-muted-foreground mb-6">
+                Advanced monitoring and protection solutions safeguarding your digital infrastructure with military-grade security protocols.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground mb-6">
+                <li>• 24/7 Threat Monitoring</li>
+                <li>• Incident Response</li>
+                <li>• Vulnerability Assessment</li>
+              </ul>
+              <Button variant="outline" className="w-full group-hover:bg-secondary group-hover:text-white group-hover:border-secondary">
+                Learn More
+              </Button>
+            </div>
+
+            {/* Core Compliance */}
+            <div className="group bg-gradient-to-br from-green-50 to-white p-8 rounded-xl border-2 border-green-100 hover:border-secondary transition-all duration-300 hover:shadow-xl">
+              <div className="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <BarChart3 className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold mb-4 text-primary">Core Compliance</h3>
+              <p className="text-muted-foreground mb-6">
+                Comprehensive regulatory compliance management ensuring your business meets all industry standards and legal requirements.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground mb-6">
+                <li>• Regulatory Audits</li>
+                <li>• Policy Development</li>
+                <li>• Risk Management</li>
+              </ul>
+              <Button variant="outline" className="w-full group-hover:bg-secondary group-hover:text-white group-hover:border-secondary">
+                Learn More
+              </Button>
+            </div>
+
+            {/* Alliance Trust Realty */}
+            <div className="group bg-gradient-to-br from-secondary/10 to-white p-8 rounded-xl border-2 border-secondary/20 hover:border-secondary transition-all duration-300 hover:shadow-xl">
+              <div className="w-16 h-16 bg-secondary rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Building2 className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-serif font-bold mb-4 text-primary">Alliance Trust Realty</h3>
+              <p className="text-muted-foreground mb-6">
+                Institutional-grade real estate investment strategies designed for long-term value creation and consistent returns.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground mb-6">
+                <li>• Portfolio Diversification</li>
+                <li>• Asset Management</li>
+                <li>• Strategic Investments</li>
+              </ul>
+              <Link href="/investment-plan">
+                <Button className="w-full bg-secondary hover:bg-secondary/90 text-white">
+                  View Opportunities
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Value Pillars */}
+      <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div className="space-y-6 px-4">
@@ -72,9 +179,9 @@ export default function Home() {
               <div className="w-16 h-16 mx-auto bg-primary/5 rounded-full flex items-center justify-center text-primary mb-6">
                 <Building2 className="h-8 w-8" />
               </div>
-              <h3 className="text-2xl font-serif font-bold text-primary">Diversified Asset Mix</h3>
+              <h3 className="text-2xl font-serif font-bold text-primary">Integrated Solutions</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Strategic allocation across residential, commercial, and industrial sectors to mitigate risk and capture growth opportunities.
+                Seamless integration across security, compliance, and investment operations provides comprehensive enterprise protection.
               </p>
             </div>
             <div className="space-y-6 px-4">
@@ -83,33 +190,18 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-serif font-bold text-primary">Long-Term Value</h3>
               <p className="text-muted-foreground leading-relaxed">
-                A disciplined approach to value creation, focusing on sustainable appreciation and consistent yield generation over time.
+                A disciplined approach to value creation, focusing on sustainable growth and consistent performance across all divisions.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4.3 New to Investing Prompt */}
-      <section className="py-12 bg-primary text-white">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-2xl font-serif font-bold mb-2">New to Real Estate Investing?</h3>
-            <p className="text-gray-300">Our advisors can guide you through our institutional approach.</p>
-          </div>
-          <Link href="/contact">
-            <Button variant="outline" className="border-secondary text-secondary hover:bg-secondary hover:text-white font-bold uppercase tracking-wide">
-              Speak to an Advisor
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* 4.5 Strategy Tracks Selector */}
-      <section className="py-24 bg-gray-50">
+      {/* Investment Strategy Tracks */}
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <span className="text-secondary font-bold uppercase tracking-widest text-sm">Our Approach</span>
+            <span className="text-secondary font-bold uppercase tracking-widest text-sm">Real Estate Focus</span>
             <h2 className="text-4xl font-serif font-bold text-primary mt-3">Investment Strategies</h2>
             <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
               We offer distinct strategy tracks designed to meet different investment objectives, from income generation to capital appreciation.
@@ -145,27 +237,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4.6 Benefit Cards */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="p-8 border border-gray-100 bg-gray-50/50 rounded-lg">
-                <h3 className="text-xl font-bold font-serif mb-4 text-primary">Portfolio Resilience</h3>
-                <p className="text-muted-foreground">Assets selected for their ability to withstand market volatility and provide inflation protection.</p>
-            </div>
-            <div className="p-8 border border-gray-100 bg-gray-50/50 rounded-lg">
-                <h3 className="text-xl font-bold font-serif mb-4 text-primary">Active Management</h3>
-                <p className="text-muted-foreground">Hands-on asset management to optimize operational efficiency and drive net operating income.</p>
-            </div>
-            <div className="p-8 border border-gray-100 bg-gray-50/50 rounded-lg">
-                <h3 className="text-xl font-bold font-serif mb-4 text-primary">Aligned Interests</h3>
-                <p className="text-muted-foreground">We invest alongside our clients, ensuring our goals are perfectly aligned with yours.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4.9 Opportunity Thesis */}
+      {/* Performance Stats */}
       <section className="py-24 bg-primary text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-12 transform origin-top-right" />
         <div className="container mx-auto px-4 relative z-10">
@@ -205,7 +277,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4.12 Market Intelligence Zone (Must Preserve) */}
+      {/* Market Intelligence Zone */}
       <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
@@ -219,7 +291,6 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-[600px]">
-            {/* Economic Calendar */}
             <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden h-full">
               <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
                 <h3 className="font-bold font-serif text-primary">Global Economic Calendar</h3>
@@ -230,7 +301,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Crypto Market Data */}
             <div className="lg:col-span-1 h-full flex flex-col">
               <CryptoMarketTable />
               <div className="mt-6 bg-primary text-white p-6 rounded-lg flex-grow flex flex-col justify-center text-center">
@@ -247,12 +317,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partner Strip */}
-      <section className="py-12 bg-white border-t border-gray-100">
+      {/* Partners Section */}
+      <section className="py-16 bg-white border-t border-gray-100">
         <div className="container mx-auto px-4 text-center">
           <p className="text-xs uppercase tracking-widest text-muted-foreground mb-8">Trusted Partners & Integrations</p>
           <div className="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-             {/* Placeholders for logos */}
              <div className="h-8 w-32 bg-gray-200 rounded"></div>
              <div className="h-8 w-32 bg-gray-200 rounded"></div>
              <div className="h-8 w-32 bg-gray-200 rounded"></div>
