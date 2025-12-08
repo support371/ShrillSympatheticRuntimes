@@ -20,7 +20,7 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         </div>
-        
+
         <div className="relative container mx-auto px-4 text-white z-10">
           <div className="max-w-3xl space-y-6 animate-in slide-in-from-bottom-10 fade-in duration-1000">
             <div className="inline-block px-3 py-1 bg-secondary/90 text-white text-xs font-bold uppercase tracking-widest rounded-sm mb-2">
@@ -45,7 +45,7 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            
+
             <div className="flex gap-8 pt-12 text-xs uppercase tracking-widest opacity-80 font-medium">
               <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-secondary" /> Risk-Aware</span>
               <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-secondary" /> Market-Driven</span>
@@ -229,7 +229,7 @@ export default function Home() {
                 <TradingViewCalendar />
               </div>
             </div>
-            
+
             {/* Crypto Market Data */}
             <div className="lg:col-span-1 h-full flex flex-col">
               <CryptoMarketTable />
