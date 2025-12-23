@@ -10,6 +10,7 @@ import Packages from "@/pages/Packages";
 import About from "@/pages/About";
 import Portfolio from "@/pages/Portfolio";
 import QFS from "@/pages/QFS";
+import Enterprise from "@/pages/Enterprise";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
@@ -24,6 +25,7 @@ function Router() {
       <Route path="/packages" component={Packages} />
       <Route path="/portfolio" component={Portfolio} />
       <Route path="/qfs" component={QFS} />
+      <Route path="/enterprise" component={Enterprise} />
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />

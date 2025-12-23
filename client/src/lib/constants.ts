@@ -5,6 +5,7 @@ export const NAV_ITEMS = [
   { label: "Packages", href: "/packages" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "QFS", href: "/qfs" },
+  { label: "Enterprise", href: "/enterprise" },
   { label: "About Us", href: "/about" },
 ];
 
