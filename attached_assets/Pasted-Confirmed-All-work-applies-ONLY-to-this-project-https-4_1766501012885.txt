@@ -1,0 +1,83 @@
+Confirmed. All work applies ONLY to this project:
+https://432b56a7-6989-4eaa-8228-4d81d64ffe64-00-27ffyl0mnwnjy.spock.replit.dev/
+
+Paste the following to your Replit agent (Fast Mode-safe, single-page, execution-oriented):
+
+⸻
+
+REPLIT AGENT — SINGLE PROJECT ONLY (DO NOT CREATE A NEW REPO)
+
+Target: 432b56a7-6989-4eaa-8228-4d81d64ffe64-00-27ffyl0mnwnjy.spock.replit.dev
+Objective: Turn this into a configurable enterprise SaaS dashboard (no blank states), with graded performance metrics + adaptive flexibility.
+
+1) Recon + Entry Points (must do first)
+
+Run and summarize:
+	•	ls -la
+	•	find . -maxdepth 3 -type f -name "package.json" -o -name "requirements.txt" -o -name "pyproject.toml" -o -name "Dockerfile" -o -name ".replit" -o -name "replit.nix"
+	•	Identify app entrypoints:
+	•	Frontend: src/ client/ app/ pages/
+	•	Backend: server/ api/ main.py app.py
+	•	Identify routing/auth paths and where the dashboard modules are rendered.
+
+2) Fix “Logged In But Nothing Configured” (ship this)
+
+Implement first-run setup so the dashboard is never empty:
+	•	Create Admin > Setup page/wizard:
+	1.	Create Organization (tenant)
+	2.	Create Admin user/role mapping
+	3.	Enable modules toggles: Overview / Briefing / Financials / Evidence / Source
+	4.	Save config to DB (preferred) or local SQLite as interim
+	•	Add demo seed button (admin-only) to populate sample data.
+
+Acceptance: after login, user sees either setup wizard or usable demo data—never a blank screen.
+
+3) Add Enterprise Health + Diagnostics (backend required)
+
+Implement:
+	•	GET /health → {status, version, env, uptime, db:ok/fail, cache:ok/fail}
+	•	GET /ready → fails if DB migrations not applied / critical deps missing
+	•	GET /metrics-lite (no heavy deps) → p50/p95 latency + error rate counters in memory
+
+Expose a small Admin > Diagnostics panel that calls these endpoints and displays results.
+
+4) Graded Performance Metrics (graded, not pass/fail)
+
+Create a performance_budget.json (or TS config) with thresholds:
+	•	API p95 target: 200ms (A), 500ms (B), >500ms (C)
+	•	Frontend TTI target: 2s (A), 4s (B), >4s (C)
+	•	Bundle size budget per route (not whole app)
+
+Display a simple “Grade” badge (A/B/C) on Admin Diagnostics, computed from metrics.
+
+5) Adaptive Flexibility Framework (tiered interventions)
+
+Replace hard failures with tiered behavior:
+	•	Tier 1: Empty states + inline “Configure this module” CTA
+	•	Tier 2: Auto-suggest fixes (retry fetch, reduce payload, enable caching)
+	•	Tier 3: Safe Mode toggle (admin-only) that disables heavy modules but keeps nav/auth stable
+
+6) Minimum Performance Wins (quick, high ROI)
+
+Frontend:
+	•	Code-split by route (each page loads only its code)
+	•	Lazy-load heavy evidence/media components
+	•	Add static caching headers + hashed assets
+
+Backend:
+	•	Add indexes for common queries
+	•	Select only needed columns, paginate lists
+	•	Add caching for stable reads (Redis if available; fallback TTL cache)
+
+7) Ship Criteria (non-negotiable)
+	•	No blank dashboard after login
+	•	Setup wizard or seeded demo data exists
+	•	/health + /ready working
+	•	Admin Diagnostics shows Grade A/B/C
+	•	Safe Mode exists and prevents “white screen” scenarios
+
+Constraint
+
+Work only inside this repo powering the target URL. No new projects.
+
+⸻
