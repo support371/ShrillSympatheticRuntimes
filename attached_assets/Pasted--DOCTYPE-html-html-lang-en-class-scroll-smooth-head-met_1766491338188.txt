@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Alliance Enterprise | Integrated Solutions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    sans: ['Inter', 'sans-serif'],
+                },
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151e32',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        emerald: {
+                            450: '#10b981', 
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: '0', transform: 'translateX(20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 1px solid #1e293b; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        body { background-color: #020617; color: #e2e8f0; }
+        
+        .text-gradient-emerald {
+            background: linear-gradient(to right, #34d399, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        /* --- ICONS --- */
+        const IconMenu = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>;
+        const IconX = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
+        const IconShield = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>;
+        const IconGlobe = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>;
+        const IconBuilding = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>;
+        const IconCheckCircle = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m22 4-12 12-5.79-5.79"/></svg>;
+        const IconChevronDown = ({ size = 16, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m6 9 6 6 6-6"/></svg>;
+        const IconLineChart = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>;
+        const IconPieChart = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>;
+        const IconTrophy = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
+        const IconLock = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+        const IconBriefcase = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
+        const IconTrendingUp = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
+        const IconArrowLeft = ({ size = 20, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>;
+        const IconRefresh = ({ size = 20, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>;
+        const IconUsers = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const IconCpu = ({ size = 24, className }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>;
+
+        /* --- SHARED COMPONENTS --- */
+        const Container = ({ children, className = "" }) => (
+            <div className={`max-w-7xl mx-auto px-6 ${className}`}>
+                {children}
+            </div>
+        );
+
+        const Section = ({ id, className = "", children }) => (
+            <section id={id} className={`py-20 md:py-28 ${className}`}>
+                {children}
+            </section>
+        );
+
+        const SectionHeader = ({ title, subtitle }) => (
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+                <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">{title}</h2>
+                <p className="text-slate-400 text-lg md:text-xl leading-relaxed">{subtitle}</p>
+            </div>
+        );
+
+        const Button = ({ children, variant = 'primary', href, onClick, className = "" }) => {
+            const baseStyle = "inline-flex items-center justify-center px-6 py-3 font-bold text-sm md:text-base rounded-xl transition-all duration-200 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-950 cursor-pointer";
+            
+            const variants = {
+                primary: "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:shadow-lg hover:shadow-blue-600/30 border border-blue-500/30 hover:border-blue-400",
+                accent: "bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 hover:shadow-lg hover:shadow-amber-500/30 border border-amber-500/30 hover:border-amber-400",
+                outline: "bg-transparent text-amber-500 border border-amber-500/30 hover:bg-amber-500/10 hover:border-amber-500",
+                'emerald-primary': "bg-gradient-to-r from-emerald-600 to-emerald-500 text-white hover:shadow-lg hover:shadow-emerald-500/20 border border-emerald-500/30",
+                'emerald-outline': "bg-transparent text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/10 hover:border-emerald-400",
+                ghost: "bg-transparent text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
+            };
+            const Component = href ? 'a' : 'button';
+            return (
+                <Component href={href} onClick={onClick} className={`${baseStyle} ${variants[variant] || variants.primary} ${className}`}>
+                    {children}
+                </Component>
+            );
+        };
+
+        const Card = ({ title, description, icon: Icon, onClick, className="" }) => (
+            <div onClick={onClick} className={`group relative bg-slate-900/50 border border-white/10 rounded-2xl p-8 hover:bg-slate-800/50 hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-blue-900/10 overflow-hidden ${onClick ? 'cursor-pointer' : ''} ${className}`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative z-10">
+                    {Icon && (
+                        <div className="mb-6 inline-flex items-center justify-center w-14 h-14 rounded-xl bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-inner border border-blue-500/20">
+                            <Icon size={28} />
+                        </div>
+                    )}
+                    <h4 className="text-xl font-bold text-white mb-4 tracking-tight">{title}</h4>
+                    <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">{description}</p>
+                </div>
+            </div>
+        );
+
+        /* --- HOME VIEW --- */
+        function HomeView({ onNavigate }) {
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setIsScrolled(window.scrollY > 20);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollTo = (id) => (e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(false);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            const MembershipForm = () => {
+                const [status, setStatus] = useState('idle');
+                const handleSubmit = (e) => {
+                    e.preventDefault();
+                    setStatus('submitting');
+                    setTimeout(() => { setStatus('success'); e.target.reset(); }, 1500);
+                };
+                if (status === 'success') {
+                    return (
+                        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-8 text-center animate-fade-in">
+                            <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30"><IconCheckCircle size={32} /></div>
+                            <h5 className="text-white text-xl font-bold mb-2">Application Received</h5>
+                            <p className="text-green-400 mb-6">We will reach out within 48 hours.</p>
+                            <button onClick={() => setStatus('idle')} className="text-sm font-bold text-white underline decoration-green-500/50 hover:decoration-green-500 underline-offset-4">Submit another application</button>
+                        </div>
+                    );
+                }
+                return (
+                    <form onSubmit={handleSubmit} className="space-y-5 animate-slide-up">
+                        <input type="text" placeholder="Full Name" required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all hover:border-slate-600" />
+                        <input type="email" placeholder="Email Address" required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all hover:border-slate-600" />
+                        <div className="relative">
+                            <select required className="w-full bg-slate-950/50 border border-slate-700/50 rounded-xl px-5 py-4 text-white appearance-none focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all hover:border-slate-600 cursor-pointer">
+                                <option value="" disabled selected>Select Interest Area</option>
+                                <option>Cybersecurity Services</option>
+                                <option>Compliance Solutions</option>
+                                <option>Real Estate Management</option>
+                            </select>
+                            <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500"><IconChevronDown /></div>
+                        </div>
+                        <button type="submit" disabled={status === 'submitting'} className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-bold py-4 rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-2 transform active:scale-[0.99]">
+                            {status === 'submitting' ? 'Processing...' : 'Apply Now'}
+                        </button>
+                    </form>
+                );
+            };
+
+            const projects = [
+                { title: "401(k) Premier Solutions", desc: "Tax-advantaged retirement planning.", icon: IconBriefcase, action: 'services' },
+                { title: "QFS Quantum Systems", desc: "Next-gen asset protection.", icon: IconCpu, action: 'services' },
+                { title: "The M.O.S.T. Kids Trust", desc: "Managed Opportunity Savings.", icon: IconUsers, action: 'services' },
+                { title: "Metropolitan Heights", desc: "Luxury residential complex.", icon: IconBuilding, action: 'simulator' },
+                { title: "Harbor Logistics Center", desc: "Industrial shipping hub.", icon: IconGlobe, action: 'simulator' },
+                { title: "Greenfield Tech Park", desc: "Commercial innovation zone.", icon: IconLineChart, action: 'simulator' }
+            ];
+
+            return (
+                <div className="animate-fade-in">
+                    <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-slate-950/90 backdrop-blur-xl border-b border-white/5 py-4 shadow-2xl' : 'bg-transparent py-6'}`}>
+                        <Container>
+                            <div className="flex items-center justify-between">
+                                <a href="#" onClick={scrollTo('top')} className="flex items-center gap-3 group z-50 relative">
+                                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300 ring-1 ring-white/10" />
+                                    <span className="font-extrabold text-xl tracking-tight text-white group-hover:text-blue-400 transition-colors">The Alliance</span>
+                                </a>
+                                <div className="hidden md:flex items-center bg-slate-900/50 backdrop-blur-md rounded-full px-2 py-1.5 border border-white/5 shadow-xl">
+                                    {['Vision', 'About', 'Projects', 'Community', 'Partners'].map((item) => (
+                                        <a key={item} href={`#${item.toLowerCase()}`} onClick={scrollTo(item.toLowerCase())} className="px-5 py-2 text-sm font-semibold text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200">{item}</a>
+                                    ))}
+                                    <button onClick={() => onNavigate('simulator')} className="px-5 py-2 text-sm font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 rounded-full transition-all duration-200 flex items-center gap-2">
+                                        Simulator <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    </button>
+                                </div>
+                                <button className="md:hidden text-white p-2 z-50 relative" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                                    {isMobileMenuOpen ? <IconX /> : <IconMenu />}
+                                </button>
+                            </div>
+                        </Container>
+                        {isMobileMenuOpen && (
+                            <div className="md:hidden fixed inset-0 bg-slate-950/98 backdrop-blur-3xl z-40 flex flex-col items-center justify-center gap-8">
+                                {['Vision', 'About', 'Projects', 'Community', 'Partners'].map((item) => (
+                                    <a key={item} href={`#${item.toLowerCase()}`} onClick={scrollTo(item.toLowerCase())} className="text-2xl font-bold text-slate-300">{item}</a>
+                                ))}
+                                <button onClick={() => onNavigate('simulator')} className="text-2xl font-bold text-emerald-400">Simulator</button>
+                            </div>
+                        )}
+                    </nav>
+
+                    <section id="top" className="relative h-screen flex items-center overflow-hidden">
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/40 to-slate-950 z-10" />
+                            <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-50 scale-105 animate-fade-in">
+                                <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
+                            </video>
+                        </div>
+                        <Container className="relative z-20 text-center mt-10">
+                            <div className="inline-block mb-6 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-bold tracking-wider uppercase backdrop-blur-md animate-slide-up">Integrated Enterprise Solutions</div>
+                            <h1 className="text-5xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-[1.1] drop-shadow-2xl animate-slide-up" style={{animationDelay: '0.1s'}}>
+                                Secure. Compliant. <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600">Profitable.</span>
+                            </h1>
+                            <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto font-light leading-relaxed animate-slide-up" style={{animationDelay: '0.2s'}}>
+                                Empowering enterprise growth by integrating cybersecurity, compliance, and real estate management into one trust‑forward platform.
+                            </p>
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-slide-up" style={{animationDelay: '0.3s'}}>
+                                <Button href="#vision" onClick={scrollTo('vision')}>Explore the Vision</Button>
+                                <Button variant="outline" href="#community" onClick={scrollTo('community')}>Join the Movement</Button>
+                            </div>
+                        </Container>
+                    </section>
+
+                    <Section id="vision">
+                        <Container>
+                            <SectionHeader title="Our Integrated Vision" subtitle="Discover how we revolutionize business by unifying security, compliance, and real estate strategy." />
+                            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-black/50 bg-black group">
+                                <video autoPlay muted loop playsInline controls className="w-full aspect-video object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                                    <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4" />
+                                </video>
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 md:p-8 flex items-end justify-between pointer-events-none">
+                                    <div>
+                                        <strong className="block text-white text-lg mb-1">Executive Vision Reel</strong>
+                                        <span className="text-slate-400 text-sm font-medium">60‑90 seconds • Enterprise storytelling • 2025</span>
+                                    </div>
+                                    <div className="hidden md:flex gap-3 text-xs font-bold tracking-widest uppercase text-slate-500">
+                                        <span>Security</span> • <span>Compliance</span> • <span>Realty</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <Section id="about" className="bg-slate-900/30 border-y border-white/5">
+                        <Container>
+                            <SectionHeader title="The Alliance Enterprise" subtitle="Three divisions, one mission: secure growth through strategic partnerships and disciplined execution." />
+                            <div className="grid md:grid-cols-3 gap-8">
+                                <Card icon={IconShield} title="GEM Cybersecurity" description="Advanced threat detection and 24/7 monitoring to ensure business continuity." />
+                                <Card icon={IconGlobe} title="Core Compliance" description="Expert regulatory guidance across industries, reducing risk while streamlining operations." />
+                                <Card 
+                                    icon={IconBuilding} 
+                                    title="Alliance Trust Realty" 
+                                    description="Strategic acquisition and asset management. Click to try our Asset Simulator."
+                                    onClick={() => onNavigate('simulator')}
+                                    className="ring-1 ring-emerald-500/30 bg-emerald-900/10 hover:bg-emerald-900/20"
+                                />
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <Section id="projects">
+                        <Container>
+                            <SectionHeader title="Our Projects" subtitle="Explore our specialized services and real estate developments." />
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {projects.map((proj, i) => (
+                                    <Card 
+                                        key={i} 
+                                        title={proj.title} 
+                                        description={proj.desc} 
+                                        icon={proj.icon} 
+                                        onClick={() => onNavigate(proj.action)}
+                                        className="cursor-pointer hover:border-blue-500/50"
+                                    />
+                                ))}
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <Section id="community">
+                        <Container>
+                            <div className="grid lg:grid-cols-2 gap-16 items-start">
+                                <div className="space-y-10">
+                                    <h2 className="text-4xl font-extrabold text-white">Join Our Network</h2>
+                                    <p className="text-slate-400 text-xl">Unlock exclusive networking, early access to deals, and market insights designed for high-growth enterprises.</p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        {["Exclusive Networking", "Early Access to Deals", "Professional Development", "Market Insights"].map((benefit) => (
+                                            <div key={benefit} className="flex items-center gap-4 text-slate-300">
+                                                <IconCheckCircle size={22} className="text-green-500 shrink-0" />
+                                                <span className="font-medium">{benefit}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="bg-slate-950 border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
+                                    <h4 className="text-2xl font-bold text-white mb-8">Membership Application</h4>
+                                    <MembershipForm />
+                                </div>
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <footer className="border-t border-white/10 bg-slate-950 py-12 text-center">
+                        <Container>
+                            <div className="flex items-center justify-center gap-3 mb-6 opacity-75">
+                                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700" />
+                                <span className="font-bold text-white text-xl">The Alliance Enterprise</span>
+                            </div>
+                            <p className="text-slate-600 text-sm">© {new Date().getFullYear()} The Alliance Enterprise. All rights reserved.</p>
+                        </Container>
+                    </footer>
+                </div>
+            );
+        }
+
+        /* --- SERVICES VIEW --- */
+        function ServicesView({ onNavigate }) {
+            const plans = [
+                { id: '401k', title: '401(k) Premier', icon: IconBriefcase, desc: 'A comprehensive retirement vehicle designed for high-growth enterprises. Features automated employer matching, tax-advantaged compounding, and diverse fund selection including low-fee index funds and managed target-date options.', features: ['Tax-Advantaged Growth', 'Employer Match Integration', 'Auto-Rebalancing'] },
+                { id: 'qfs', title: 'QFS Quantum', icon: IconCpu, desc: 'The future of asset protection. Our Quantum Financial System strategy utilizes blockchain-verified ledgers and quantum-resistant encryption to secure assets against next-generation cyber threats.', features: ['Quantum Encryption', 'Blockchain Verification', 'Instant Settlement'] },
+                { id: 'kids', title: 'The M.O.S.T. Kids', icon: IconUsers, desc: 'Managed Opportunity Savings Trust. A specialized trust vehicle designed to secure generational wealth for children. Includes education funding, milestone distributions, and tax-efficient inheritance structures.', features: ['Education Funding', 'Milestone Payouts', 'Tax-Efficient Transfer'] }
+            ];
+
+            return (
+                <div className="bg-slate-950 min-h-screen animate-slide-in-right">
+                    <nav className="fixed top-0 inset-x-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-white/10 py-4">
+                        <Container>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center ring-1 ring-white/10"><span className="font-bold text-white text-xs">SV</span></div>
+                                    <span className="font-bold text-lg tracking-tight text-white">Alliance Services</span>
+                                </div>
+                                <Button variant="ghost" onClick={() => onNavigate('home')} className="flex items-center gap-2"><IconArrowLeft size={18} /> Back to Home</Button>
+                            </div>
+                        </Container>
+                    </nav>
+
+                    <header className="pt-32 pb-16 text-center">
+                        <Container>
+                            <h1 className="text-4xl md:text-5xl font-black text-white mb-6">Specialized Financial Plans</h1>
+                            <p className="text-slate-400 text-lg max-w-2xl mx-auto">Exclusive investment and protection vehicles designed for Alliance members.</p>
+                        </Container>
+                    </header>
+
+                    <Section className="pt-0">
+                        <Container>
+                            <div className="grid gap-8">
+                                {plans.map((plan) => (
+                                    <div key={plan.id} className="bg-slate-900/50 border border-white/10 rounded-2xl p-8 md:p-10 hover:border-blue-500/30 transition-all shadow-xl">
+                                        <div className="flex flex-col md:flex-row gap-6 items-start">
+                                            <div className="w-16 h-16 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+                                                <plan.icon size={32} />
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-2xl font-bold text-white mb-3">{plan.title}</h3>
+                                                <p className="text-slate-400 leading-relaxed mb-6 text-lg">{plan.desc}</p>
+                                                <div className="flex flex-wrap gap-3">
+                                                    {plan.features.map(f => (
+                                                        <span key={f} className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold">{f}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <Button variant="primary" onClick={() => onNavigate('home')}>Inquire Now</Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <footer className="py-12 border-t border-white/10 bg-slate-950 text-center">
+                        <Container>
+                            <p className="text-slate-600 text-sm">© {new Date().getFullYear()} The Alliance Enterprise.</p>
+                        </Container>
+                    </footer>
+                </div>
+            );
+        }
+
+        /* --- SIMULATOR VIEW (Existing Code) --- */
+        function SimulatorView({ onNavigate }) {
+            const [mode, setMode] = useState('demo');
+
+            const FeatureCard = ({ title, description, icon: Icon, delay }) => (
+                <div className="group relative bg-slate-900/40 border border-white/5 rounded-2xl p-8 hover:bg-slate-800/40 hover:-translate-y-2 transition-all duration-500 animate-slide-up" style={{ animationDelay: delay }}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                    <div className="relative z-10">
+                        <div className="mb-6 inline-flex items-center justify-center w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-inner ring-1 ring-emerald-500/20">
+                            <Icon size={28} />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+                        <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">{description}</p>
+                    </div>
+                </div>
+            );
+
+            const ReportGenerator = () => {
+                const [step, setStep] = useState(0); 
+                const [selectedPlan, setSelectedPlan] = useState(null);
+                const [loading, setLoading] = useState(false);
+
+                const plans = [
+                    { id: '401k', title: '401(k) Premier', icon: IconBriefcase, desc: 'Retirement savings with matching.' },
+                    { id: 'qfs', title: 'QFS Quantum', icon: IconCpu, desc: 'Quantum asset protection.' },
+                    { id: 'kids', title: 'The M.O.S.T. Kids', icon: IconUsers, desc: 'Managed Opportunity Savings Trust.' }
+                ];
+
+                const handleGenerate = (e) => {
+                    e.preventDefault();
+                    setLoading(true);
+                    setTimeout(() => { setLoading(false); setStep(2); }, 2000);
+                };
+
+                if (step === 0) {
+                    return (
+                        <div className="animate-slide-up">
+                             <div className="text-center mb-8">
+                                <h3 className="text-2xl font-bold text-white mb-2">Select Investment Vehicle</h3>
+                                <p className="text-slate-400 text-sm">Choose the specialized plan that fits your strategy.</p>
+                            </div>
+                            <div className="grid gap-4">
+                                {plans.map((plan) => (
+                                    <div key={plan.id} onClick={() => { setSelectedPlan(plan); setStep(1); }} className="bg-slate-900/80 border border-white/10 rounded-xl p-5 hover:bg-emerald-900/20 hover:border-emerald-500/50 cursor-pointer transition-all flex items-center gap-4 group">
+                                        <div className="w-12 h-12 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors"><plan.icon size={24} /></div>
+                                        <div className="text-left"><h4 className="text-white font-bold group-hover:text-emerald-400 transition-colors">{plan.title}</h4><p className="text-slate-500 text-xs leading-relaxed">{plan.desc}</p></div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                }
+
+                if (step === 2) {
+                    return (
+                        <div className="bg-slate-950 border border-white/10 rounded-xl p-8 animate-fade-in shadow-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                            <div className="flex items-center gap-4 mb-8 pb-6 border-b border-white/10">
+                                <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400"><IconCheckCircle size={24} /></div>
+                                <div><p className="text-slate-400 text-xs font-bold uppercase">Strategy Prepared For</p><h3 className="text-xl font-bold text-white">{selectedPlan.title}</h3></div>
+                            </div>
+                            <div className="space-y-4 mb-8">
+                                <div className="flex justify-between items-center py-2 border-b border-white/5"><span className="text-slate-400">Target Allocation</span><span className="text-white font-mono">60% Eq / 40% FI</span></div>
+                                <div className="flex justify-between items-center py-2 border-b border-white/5"><span className="text-slate-400">Proj. Annual Return</span><span className="text-emerald-400 font-bold font-mono">8.5% - 12.2%</span></div>
+                                <div className="flex justify-between items-center py-2 border-b border-white/5"><span className="text-slate-400">Risk Profile</span><span className="text-amber-400 font-bold">Balanced Growth</span></div>
+                            </div>
+                            <div className="bg-emerald-900/20 border border-emerald-500/20 p-4 rounded-lg mb-6"><p className="text-sm text-emerald-200">Based on your inputs, our algorithm suggests a diversified entry into high-yield REITs and Blue Chip equities.</p></div>
+                            <div className="flex gap-3"><button className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition-colors shadow-lg shadow-emerald-900/20">Start Investing</button><button onClick={() => setStep(0)} className="px-4 py-3 rounded-lg border border-white/10 text-slate-400 hover:text-white hover:bg-white/5"><IconRefresh size={20} /></button></div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="bg-slate-950/80 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-2xl relative animate-slide-up">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-amber-500"></div>
+                        <div className="flex items-center justify-between mb-6"><h3 className="text-xl font-bold text-white">Input Parameters</h3><button onClick={() => setStep(0)} className="text-xs text-emerald-400 hover:text-emerald-300 underline">Change Plan</button></div>
+                        <div className="mb-4 p-3 bg-slate-900 rounded-lg border border-white/5 flex items-center gap-3"><selectedPlan.icon size={16} className="text-emerald-500" /><span className="text-sm text-slate-300 font-bold">{selectedPlan.title}</span></div>
+                        <form onSubmit={handleGenerate} className="space-y-5">
+                            <div><label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Initial Capital</label><input type="number" placeholder="$50,000" min="1000" className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-colors font-mono" required /></div>
+                            <div><label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Investment Horizon</label><select className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-colors cursor-pointer"><option>1-3 Years (Short Term)</option><option>3-7 Years (Medium Term)</option><option>10+ Years (Long Term)</option></select></div>
+                            <div>
+                                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Risk Tolerance</label>
+                                <div className="grid grid-cols-3 gap-2">{['Low', 'Medium', 'High'].map(r => (<label key={r} className="cursor-pointer"><input type="radio" name="risk" className="peer sr-only" required /><div className="text-center py-2 rounded-lg border border-slate-700 text-slate-400 peer-checked:bg-emerald-500/20 peer-checked:border-emerald-500 peer-checked:text-emerald-400 hover:bg-slate-800 transition-all text-sm font-medium">{r}</div></label>))}</div>
+                            </div>
+                            <button disabled={loading} className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-4 rounded-lg hover:shadow-lg hover:shadow-emerald-500/20 transition-all mt-2 disabled:opacity-70">{loading ? 'Generating Analysis...' : 'Generate Report'}</button>
+                        </form>
+                    </div>
+                );
+            };
+
+            const DemoDashboard = () => (
+                <div className="relative bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
+                    <div className="col-span-2 h-48 rounded-lg bg-gradient-to-b from-slate-800 to-slate-900 border border-white/5 flex items-end p-4 gap-2">
+                        <div className="w-full bg-emerald-500/20 h-[40%] rounded-sm"></div>
+                        <div className="w-full bg-emerald-500/40 h-[60%] rounded-sm"></div>
+                        <div className="w-full bg-emerald-500 h-[75%] rounded-sm shadow-[0_0_15px_rgba(16,185,129,0.4)]"></div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="h-12 rounded bg-slate-800/50 border border-white/5 animate-pulse"></div>
+                        <div className="h-12 rounded bg-slate-800/50 border border-white/5 animate-pulse" style={{animationDelay: '0.1s'}}></div>
+                        <div className="h-12 rounded bg-slate-800/50 border border-white/5 animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                    </div>
+                    <div className="absolute top-4 right-4 bg-amber-500/20 text-amber-500 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider border border-amber-500/20">Demo Mode</div>
+                </div>
+            );
+
+            return (
+                <div className="animate-slide-in-right bg-slate-950 min-h-screen">
+                    <nav className="fixed top-0 inset-x-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-white/10 py-4">
+                        <Container>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center ring-1 ring-white/10"><span className="font-bold text-white text-xs">TR</span></div>
+                                        <div className="flex flex-col"><span className="font-bold text-lg tracking-tight text-white leading-none">Alliance Trust</span><span className="text-[10px] font-semibold text-emerald-500 uppercase tracking-widest leading-none mt-1">Realty Simulator</span></div>
+                                    </div>
+                                    <div className="hidden md:flex items-center bg-slate-900 rounded-full p-1 border border-white/10 ml-8">
+                                        <button onClick={() => setMode('demo')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${mode === 'demo' ? 'bg-slate-800 text-white shadow' : 'text-slate-500 hover:text-slate-300'}`}>Practice</button>
+                                        <button onClick={() => setMode('live')} className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${mode === 'live' ? 'bg-emerald-600 text-white shadow' : 'text-slate-500 hover:text-slate-300'}`}>Live Investing</button>
+                                    </div>
+                                </div>
+                                <Button variant="ghost" onClick={() => onNavigate('home')} className="flex items-center gap-2"><IconArrowLeft size={18} /> Back to Home</Button>
+                            </div>
+                        </Container>
+                    </nav>
+
+                    <header className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+                         <div className="absolute inset-0 z-0">
+                            <div className={`absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 transition-colors duration-1000 ${mode === 'live' ? 'bg-emerald-600/10' : 'bg-blue-600/10'}`} />
+                            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-600/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
+                        </div>
+                        <Container className="relative z-10">
+                            <div className="grid lg:grid-cols-2 gap-16 items-center">
+                                <div className="text-center lg:text-left">
+                                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-bold uppercase tracking-wider mb-8 transition-colors ${mode === 'live' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-blue-500/10 border-blue-500/20 text-blue-400'}`}>
+                                        <span className={`w-2 h-2 rounded-full animate-pulse ${mode === 'live' ? 'bg-emerald-500' : 'bg-blue-500'}`}></span>
+                                        {mode === 'live' ? 'Real-Time Market Access' : 'Virtual Training Environment'}
+                                    </div>
+                                    <h1 className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+                                        {mode === 'live' ? (<>Grow Your <span className="text-gradient-emerald">Real Wealth</span> with Precision.</>) : (<>Master the Art of <span className="text-blue-400">Asset Management</span>.</>)}
+                                    </h1>
+                                    <p className="text-xl text-slate-400 mb-10 leading-relaxed">
+                                        {mode === 'live' ? "Access institutional-grade assets, generate personalized investment reports, and execute strategies with our fiduciary platform." : "Build confidence and learn investment fundamentals with a secure, risk‑free virtual portfolio platform."}
+                                    </p>
+                                    {mode === 'demo' && (<div className="flex justify-center lg:justify-start gap-4"><Button variant="emerald-primary" className="shadow-lg shadow-emerald-900/20">Start Practicing Free</Button><Button variant="emerald-outline">View Demo</Button></div>)}
+                                     {mode === 'live' && (<div className="flex justify-center lg:justify-start gap-4 text-sm text-slate-500 font-medium"><span className="flex items-center gap-2"><IconCheckCircle size={16} className="text-emerald-500"/> Fiduciary Standard</span><span className="flex items-center gap-2"><IconCheckCircle size={16} className="text-emerald-500"/> SIPC Protected</span></div>)}
+                                </div>
+                                <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+                                    <div className={`absolute -inset-1 rounded-2xl blur opacity-20 transition-colors duration-1000 ${mode === 'live' ? 'bg-gradient-to-r from-emerald-500 to-amber-500' : 'bg-gradient-to-r from-blue-500 to-purple-500'}`}></div>
+                                    {mode === 'live' ? <ReportGenerator /> : <DemoDashboard />}
+                                </div>
+                            </div>
+                        </Container>
+                    </header>
+
+                    <Section className="bg-slate-900/50 border-y border-white/5">
+                        <Container>
+                             <div className="grid md:grid-cols-3 gap-8">
+                                {mode === 'demo' ? (
+                                    <>
+                                        <FeatureCard icon={IconLineChart} title="Virtual Portfolio" description="Invest with virtual funds. Learn market mechanics without risking real capital." delay="0s" />
+                                        <FeatureCard icon={IconPieChart} title="Diverse Assets" description="Trade stocks, bonds, REITs, and ETFs mirroring real strategies." delay="0.1s" />
+                                        <FeatureCard icon={IconTrophy} title="Competitive Modes" description="Join collaborative simulations or practice solo on global leaderboards." delay="0.2s" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <FeatureCard icon={IconTrendingUp} title="Algorithmic Growth" description="Proprietary models that adjust to market volatility in real-time to protect your capital." delay="0s" />
+                                        <FeatureCard icon={IconLock} title="Secure Custody" description="Your assets are held with top-tier custodians, fully segregated and insured." delay="0.1s" />
+                                        <FeatureCard icon={IconBriefcase} title="Fiduciary Advisory" description="We are legally bound to act in your best interest, offering unbiased wealth strategies." delay="0.2s" />
+                                    </>
+                                )}
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <Section>
+                        <Container>
+                            <SectionHeader title="Frequently Asked Questions" subtitle={mode === 'live' ? "About Investing with Alliance Trust" : "About the Simulator"} />
+                             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                                {(mode === 'demo' ? [
+                                    { q: "Can I practice alone?", a: "Yes, use Solo Mode to manage your portfolio privately." },
+                                    { q: "Is there any cost?", a: "No—creating an account and accessing the simulator is free." },
+                                    { q: "What assets are available?", a: "Equities, ETFs, REITs, and other investment vehicles." },
+                                    { q: "Is it mobile friendly?", a: "Yes, the simulator works seamlessly on all devices." }
+                                ] : [
+                                    { q: "What is the minimum investment?", a: "You can start your real-money portfolio with as little as $5,000." },
+                                    { q: "How are fees structured?", a: "We charge a flat 0.75% annual management fee. No hidden commissions." },
+                                    { q: "Can I withdraw anytime?", a: "Yes, liquidity is key. Withdrawals typically process within 2-3 business days." },
+                                    { q: "Do I get a dedicated advisor?", a: "Accounts over $100k receive a dedicated wealth manager." }
+                                ]).map((faq, i) => (
+                                    <div key={i} className="bg-slate-900/30 border border-white/5 rounded-xl p-6 hover:bg-slate-800/40 transition-colors">
+                                        <h3 className="text-lg font-bold text-white mb-2">{faq.q}</h3>
+                                        <p className="text-slate-400">{faq.a}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </Container>
+                    </Section>
+
+                    <footer className="py-12 border-t border-white/10 bg-slate-950 text-center">
+                        <Container>
+                            <p className="text-slate-600 text-sm">© {new Date().getFullYear()} Alliance Trust Realty.</p>
+                        </Container>
+                    </footer>
+                </div>
+            );
+        }
+
+        /* --- MAIN APP CONTROLLER --- */
+        function App() {
+            const [currentView, setCurrentView] = useState('home');
+            useEffect(() => { window.scrollTo(0, 0); }, [currentView]);
+            return (
+                <div className="min-h-screen">
+                    {currentView === 'home' && <HomeView onNavigate={setCurrentView} />}
+                    {currentView === 'simulator' && <SimulatorView onNavigate={setCurrentView} />}
+                    {currentView === 'services' && <ServicesView onNavigate={setCurrentView} />}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
