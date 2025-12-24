@@ -1,0 +1,115 @@
+import { useState } from "react";
+import { Play } from "lucide-react";
+
+interface VideoPreviewProps {
+  title: string;
+  subtitle: string;
+  description: string;
+  division?: string;
+  thumbnail?: string;
+  videoUrl?: string;
+}
+
+export function VideoPreview({
+  title,
+  subtitle,
+  description,
+  division = "OUR STORY",
+  videoUrl
+}: VideoPreviewProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <div className="w-full relative group" data-testid="video-preview-container">
+      {/* Video Container */}
+      <div className="relative w-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 rounded-xl overflow-hidden aspect-video">
+        {/* Background Video or Placeholder */}
+        {videoUrl ? (
+          <video
+            src={videoUrl}
+            className="w-full h-full object-cover"
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%231e293b' width='1920' height='1080'/%3E%3C/svg%3E"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-slate-800 via-slate-900 to-black flex items-center justify-center">
+            {/* Animated Background Orbs */}
+            <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full filter blur-3xl opacity-20 animate-pulse" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/20 rounded-full filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: "0.5s" }} />
+            
+            {/* Geometric Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* Play Button Overlay */}
+        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center cursor-pointer" onClick={() => setIsPlaying(true)} data-testid="video-overlay">
+          <button
+            className="relative w-24 h-24 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 transform group-hover:scale-110 border border-white/30"
+            data-testid="button-play-video"
+          >
+            {/* Pulse Ring */}
+            <div className="absolute inset-0 rounded-full border-2 border-white/50 animate-pulse" />
+            <div className="absolute inset-0 rounded-full border border-white/20" />
+            
+            {/* Play Icon */}
+            <Play className="w-10 h-10 text-white fill-white" />
+          </button>
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="mt-12 text-center max-w-4xl mx-auto">
+        <p className="text-sm font-bold text-secondary uppercase tracking-widest mb-3" data-testid="text-division">
+          {division}
+        </p>
+        <h2 className="text-5xl font-serif font-bold text-white mb-6" data-testid="heading-video-title">
+          {title}
+        </h2>
+        <p className="text-xl text-slate-300 leading-relaxed font-light" data-testid="text-video-description">
+          {description}
+        </p>
+
+        {/* Video Metrics Footer */}
+        <div className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-slate-700">
+          {[
+            { label: "Duration", value: "12:45" },
+            { label: "Divisions Featured", value: "3" },
+            { label: "Key Metrics", value: "15+" }
+          ].map((metric, i) => (
+            <div key={i} data-testid={`metric-footer-${i}`}>
+              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">{metric.label}</p>
+              <p className="text-lg font-bold text-white">{metric.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal Video Player */}
+      {isPlaying && videoUrl && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setIsPlaying(false)}
+          data-testid="video-modal"
+        >
+          <div className="w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <video
+              src={videoUrl}
+              autoPlay
+              controls
+              className="w-full h-full"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

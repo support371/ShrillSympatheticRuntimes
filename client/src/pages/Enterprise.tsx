@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Menu, X } from "lucide-react";
+import { VideoPreview } from "@/components/VideoPreview";
 
 // Icon components
 const IconShield = ({ size = 24 }) => (
@@ -150,61 +151,16 @@ export default function Enterprise() {
           </div>
         </section>
 
-        {/* Vision Section */}
+        {/* Vision Section with Video */}
         <section id="vision" className="py-24 border-b border-white/5">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Evolution of Excellence</h2>
-              <p className="text-slate-400 text-lg">Our integrated platform showcases how security, compliance, and real estate converge to create unprecedented value.</p>
-            </div>
-            
-            <div className="group relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900 hover:border-blue-500/30 transition-all duration-500">
-              {/* Background Gradient Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-slate-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-              
-              {/* Video Container */}
-              <div className="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center relative overflow-hidden">
-                {/* Animated Background Elements */}
-                <div className="absolute inset-0">
-                  <div className="absolute top-10 left-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
-                  <div className="absolute bottom-10 right-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-700" />
-                </div>
-                
-                {/* Play Button */}
-                <div className="relative z-20 flex flex-col items-center gap-6">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition-opacity animate-pulse" />
-                    <button className="relative w-24 h-24 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white flex items-center justify-center hover:scale-110 transition-transform duration-300 border border-blue-400/50 shadow-2xl">
-                      <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M5 3l14 9-14 9V3z" />
-                      </svg>
-                    </button>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-white font-bold text-lg">Watch the Vision</p>
-                    <p className="text-slate-400 text-sm mt-1">Executive Overview • 60-90 seconds</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Video Info Footer */}
-              <div className="bg-slate-900/50 backdrop-blur-sm border-t border-white/5 px-8 py-6">
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div>
-                    <p className="text-blue-400 font-bold text-2xl">3</p>
-                    <p className="text-slate-400 text-sm">Business Divisions</p>
-                  </div>
-                  <div>
-                    <p className="text-emerald-400 font-bold text-2xl">12+</p>
-                    <p className="text-slate-400 text-sm">Active Opportunities</p>
-                  </div>
-                  <div>
-                    <p className="text-amber-400 font-bold text-2xl">$500M+</p>
-                    <p className="text-slate-400 text-sm">Assets Under Management</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <VideoPreview
+              title="The Evolution of Excellence"
+              subtitle="Our Story"
+              description="From pioneering enterprise solutions to mastering regulatory compliance and real estate investment, The Alliance Enterprise represents the convergence of three critical pillars of modern business success."
+              division="OUR STORY"
+              videoUrl="/gemini_generated_video_694FDA93.mp4"
+            />
           </div>
         </section>
 
