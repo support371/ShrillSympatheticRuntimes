@@ -164,6 +164,32 @@ export default function Enterprise() {
           </div>
         </section>
 
+        {/* Video Gallery - Cybersecurity Division */}
+        <section className="py-24 bg-slate-900/30 border-b border-white/5">
+          <div className="container mx-auto px-4">
+            <VideoPreview
+              title="Enterprise-Grade Security Infrastructure"
+              subtitle="Cybersecurity"
+              description="Discover how our advanced security protocols protect institutional assets with end-to-end encryption, blockchain verification, and instant settlement technology that keeps your data secure."
+              division="OUR DIVISIONS"
+              videoUrl="/gemini_generated_video_7EFF7AD9.mp4"
+            />
+          </div>
+        </section>
+
+        {/* Video Gallery - Compliance Division */}
+        <section className="py-24 border-b border-white/5">
+          <div className="container mx-auto px-4">
+            <VideoPreview
+              title="Regulatory Excellence Across Sectors"
+              subtitle="Compliance"
+              description="Explore our comprehensive compliance framework that delivers automated audits, real-time monitoring, and compliance reporting across all regulatory sectors and institutional requirements."
+              division="OUR DIVISIONS"
+              videoUrl="/gemini_generated_video_B1B45AE9.mp4"
+            />
+          </div>
+        </section>
+
         {/* About Section */}
         <section id="about" className="py-24 bg-slate-900/30 border-b border-white/5">
           <div className="container mx-auto px-4">
