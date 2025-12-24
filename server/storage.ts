@@ -5,6 +5,7 @@ import {
   strategies,
   investments,
   transactions,
+  orgConfigs,
   type User, 
   type InsertUser,
   type Newsletter,
@@ -14,7 +15,9 @@ import {
   type Investment,
   type InsertInvestment,
   type Transaction,
-  type InsertTransaction
+  type InsertTransaction,
+  type OrgConfig,
+  type InsertOrgConfig,
 } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
 
@@ -44,6 +47,11 @@ export interface IStorage {
   getUserTransactions(userId: string): Promise<Transaction[]>;
   getTransaction(id: string): Promise<Transaction | undefined>;
   updateTransactionStatus(id: string, status: string): Promise<Transaction>;
+
+  // Org Config
+  getOrgConfig(userId: string): Promise<OrgConfig | undefined>;
+  createOrgConfig(config: InsertOrgConfig): Promise<OrgConfig>;
+  updateOrgConfig(userId: string, config: Partial<OrgConfig>): Promise<OrgConfig>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -63,7 +71,6 @@ export class DatabaseStorage implements IStorage {
   }
 
   async subscribeNewsletter(email: string): Promise<Newsletter> {
-    // Check if already subscribed
     const existing = await this.getNewsletterSubscription(email);
     if (existing) {
       return existing;
@@ -74,39 +81,31 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getNewsletterSubscription(email: string): Promise<Newsletter | undefined> {
-    const [subscription] = await db
-      .select()
-      .from(newsletters)
-      .where(eq(newsletters.email, email))
-      .limit(1);
-    return subscription;
+    const [newsletter] = await db.select().from(newsletters).where(eq(newsletters.email, email)).limit(1);
+    return newsletter;
   }
 
   async getAllStrategies(): Promise<Strategy[]> {
-    return await db.select().from(strategies).where(eq(strategies.isActive, true));
+    return db.select().from(strategies).where(eq(strategies.isActive, true));
   }
 
   async getStrategyBySlug(slug: string): Promise<Strategy | undefined> {
-    const [strategy] = await db
-      .select()
-      .from(strategies)
-      .where(eq(strategies.slug, slug))
-      .limit(1);
+    const [strategy] = await db.select().from(strategies).where(eq(strategies.slug, slug)).limit(1);
     return strategy;
   }
 
-  async createStrategy(insertStrategy: InsertStrategy): Promise<Strategy> {
-    const [strategy] = await db.insert(strategies).values(insertStrategy).returning();
-    return strategy;
+  async createStrategy(strategy: InsertStrategy): Promise<Strategy> {
+    const [newStrategy] = await db.insert(strategies).values(strategy).returning();
+    return newStrategy;
   }
 
-  async createInvestment(insertInvestment: InsertInvestment): Promise<Investment> {
-    const [investment] = await db.insert(investments).values(insertInvestment).returning();
-    return investment;
+  async createInvestment(investment: InsertInvestment): Promise<Investment> {
+    const [newInvestment] = await db.insert(investments).values(investment).returning();
+    return newInvestment;
   }
 
   async getUserInvestments(userId: string): Promise<Investment[]> {
-    return await db.select().from(investments).where(eq(investments.userId, userId)).orderBy(desc(investments.purchaseDate));
+    return db.select().from(investments).where(eq(investments.userId, userId));
   }
 
   async getInvestment(id: string): Promise<Investment | undefined> {
@@ -115,20 +114,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateInvestmentValue(id: string, currentValue: string): Promise<Investment> {
-    const [investment] = await db.update(investments)
-      .set({ currentValue })
-      .where(eq(investments.id, id))
-      .returning();
-    return investment;
+    const [updated] = await db.update(investments).set({ currentValue }).where(eq(investments.id, id)).returning();
+    return updated;
   }
 
-  async createTransaction(insertTransaction: InsertTransaction): Promise<Transaction> {
-    const [transaction] = await db.insert(transactions).values(insertTransaction).returning();
-    return transaction;
+  async createTransaction(transaction: InsertTransaction): Promise<Transaction> {
+    const [newTransaction] = await db.insert(transactions).values(transaction).returning();
+    return newTransaction;
   }
 
   async getUserTransactions(userId: string): Promise<Transaction[]> {
-    return await db.select().from(transactions).where(eq(transactions.userId, userId)).orderBy(desc(transactions.createdAt));
+    return db.select().from(transactions).where(eq(transactions.userId, userId)).orderBy(desc(transactions.createdAt));
   }
 
   async getTransaction(id: string): Promise<Transaction | undefined> {
@@ -137,11 +133,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateTransactionStatus(id: string, status: string): Promise<Transaction> {
-    const [transaction] = await db.update(transactions)
-      .set({ status })
-      .where(eq(transactions.id, id))
-      .returning();
-    return transaction;
+    const [updated] = await db.update(transactions).set({ status }).where(eq(transactions.id, id)).returning();
+    return updated;
+  }
+
+  async getOrgConfig(userId: string): Promise<OrgConfig | undefined> {
+    const [config] = await db.select().from(orgConfigs).where(eq(orgConfigs.userId, userId)).limit(1);
+    return config;
+  }
+
+  async createOrgConfig(config: InsertOrgConfig): Promise<OrgConfig> {
+    const [newConfig] = await db.insert(orgConfigs).values(config).returning();
+    return newConfig;
+  }
+
+  async updateOrgConfig(userId: string, updates: Partial<OrgConfig>): Promise<OrgConfig> {
+    const [updated] = await db.update(orgConfigs).set(updates).where(eq(orgConfigs.userId, userId)).returning();
+    return updated;
   }
 }
 

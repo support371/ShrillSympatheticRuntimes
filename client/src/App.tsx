@@ -15,6 +15,8 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Dashboard from "@/pages/Dashboard";
 import DemoDashboard from "@/pages/DemoDashboard";
+import SetupWizard from "@/pages/SetupWizard";
+import AdminDiagnostics from "@/pages/AdminDiagnostics";
 
 function Router() {
   return (
@@ -29,14 +31,12 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/setup" component={SetupWizard} />
+      <Route path="/admin/diagnostics" component={AdminDiagnostics} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/demo/dashboard" component={DemoDashboard} />
       <Route path="/client/portfolio" component={Dashboard} />
       
-      {/* Legacy Redirects could be handled here with a wrapper if needed, 
-          but wouter doesn't support query param matching in Route easily. 
-          We'll assume direct navigation for now. */}
-          
       <Route component={NotFound} />
     </Switch>
   );

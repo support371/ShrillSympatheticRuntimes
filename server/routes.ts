@@ -365,6 +365,111 @@ export async function registerRoutes(
     }
   });
 
+  // ===== HEALTH & DIAGNOSTICS ROUTES =====
+
+  const startTime = Date.now();
+  const metrics = { requests: 0, errors: 0, latencies: [] as number[] };
+
+  app.get("/api/health", (req, res) => {
+    res.json({
+      status: "ok",
+      version: "1.0.0",
+      env: process.env.NODE_ENV || "development",
+      uptime: Math.floor((Date.now() - startTime) / 1000),
+      db: "ok",
+      cache: "ok",
+    });
+  });
+
+  app.get("/api/ready", async (req, res) => {
+    try {
+      const user = await storage.getUser("health-check");
+      res.json({ ready: true });
+    } catch {
+      res.status(503).json({ ready: false, error: "Database not ready" });
+    }
+  });
+
+  app.get("/api/metrics-lite", (req, res) => {
+    const p50 = metrics.latencies.length ? metrics.latencies.sort((a, b) => a - b)[Math.floor(metrics.latencies.length / 2)] : 0;
+    const p95 = metrics.latencies.length ? metrics.latencies.sort((a, b) => a - b)[Math.floor(metrics.latencies.length * 0.95)] : 0;
+    const errorRate = metrics.requests ? metrics.errors / metrics.requests : 0;
+    
+    let grade = "A";
+    if (p95 > 500) grade = "B";
+    if (p95 > 1000 || errorRate > 0.01) grade = "C";
+
+    res.json({ p50, p95, errorRate, grade });
+  });
+
+  // Record metrics middleware
+  app.use((req, res, next) => {
+    const start = Date.now();
+    metrics.requests++;
+    
+    const originalJson = res.json;
+    res.json = function (body) {
+      const latency = Date.now() - start;
+      metrics.latencies.push(latency);
+      if (res.statusCode >= 400) metrics.errors++;
+      if (metrics.latencies.length > 1000) metrics.latencies.shift();
+      return originalJson.call(this, body);
+    };
+    next();
+  });
+
+  // ===== SETUP ROUTES =====
+
+  app.post("/api/setup/org", requireAuth, async (req, res) => {
+    try {
+      const { orgName, modules } = req.body;
+      if (!orgName) return res.status(400).json({ error: "Organization name required" });
+
+      let config = await storage.getOrgConfig(req.user!.id);
+      if (config) {
+        config = await storage.updateOrgConfig(req.user!.id, {
+          orgName,
+          modules,
+          isConfigured: true,
+        });
+      } else {
+        config = await storage.createOrgConfig({
+          userId: req.user!.id,
+          orgName,
+          modules,
+          isConfigured: true,
+        });
+      }
+
+      res.json({ success: true, config });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Setup failed" });
+    }
+  });
+
+  app.get("/api/setup/status", requireAuth, async (req, res) => {
+    try {
+      const config = await storage.getOrgConfig(req.user!.id);
+      res.json({
+        configured: !!config?.isConfigured,
+        orgName: config?.orgName || null,
+        modules: config?.modules || {},
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to check setup status" });
+    }
+  });
+
+  app.patch("/api/setup/safe-mode", requireAuth, async (req, res) => {
+    try {
+      const { enabled } = req.body;
+      const config = await storage.updateOrgConfig(req.user!.id, { safeMode: enabled });
+      res.json({ success: true, safeMode: config.safeMode });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to update safe mode" });
+    }
+  });
+
   // Seed strategies if none exist
   const existingStrategies = await storage.getAllStrategies();
   if (existingStrategies.length === 0) {
