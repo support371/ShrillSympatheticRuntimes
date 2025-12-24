@@ -470,6 +470,120 @@ export async function registerRoutes(
     }
   });
 
+  // ===== MENU PAGE DATA ROUTES =====
+
+  app.get("/api/partners/program", (req, res) => {
+    res.json({
+      name: "Partner Network",
+      description: "Expand your earning potential by introducing investors to institutional-grade real estate opportunities",
+      commissions: {
+        partner: { min: "$0", max: "$500K", rate: "1.0%" },
+        elite: { min: "$500K", max: "$2M", rate: "1.5%" },
+        premier: { min: "$2M", max: null, rate: "2.0%" }
+      },
+      benefits: [
+        "Competitive Commissions",
+        "Growing Payouts",
+        "Dedicated Support",
+        "Elite Recognition",
+        "Real-time Tracking"
+      ],
+      resources: ["Investor Brochures", "Pitch Decks", "Training Materials"]
+    });
+  });
+
+  app.get("/api/strategies/all", async (req, res) => {
+    try {
+      const strategies = await storage.getAllStrategies();
+      res.json(strategies);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch strategies" });
+    }
+  });
+
+  app.get("/api/strategies/:slug", async (req, res) => {
+    try {
+      const strategy = await storage.getStrategyBySlug(req.params.slug);
+      if (!strategy) return res.status(404).json({ error: "Strategy not found" });
+      res.json(strategy);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch strategy" });
+    }
+  });
+
+  app.get("/api/packages/overview", (req, res) => {
+    res.json({
+      sleeves: [
+        {
+          name: "Multifamily Yield Fund IV",
+          type: "Income",
+          irr: "12-15%",
+          risk: "Low-Moderate",
+          min: "$50,000",
+          term: "5-7 Years"
+        },
+        {
+          name: "Urban Office Redevelopment",
+          type: "Growth",
+          irr: "18-22%",
+          risk: "High",
+          min: "$100,000",
+          term: "7-10 Years"
+        },
+        {
+          name: "Industrial Logistics Trust",
+          type: "Balanced",
+          irr: "14-16%",
+          risk: "Moderate",
+          min: "$25,000",
+          term: "5 Years"
+        }
+      ],
+      documents: ["Quick Facts Sheets", "Offering Memorandums", "Asset Reports"]
+    });
+  });
+
+  app.get("/api/platform/info", (req, res) => {
+    res.json({
+      name: "Alliance Trust Realty",
+      tagline: "Institutional-Grade Real Estate Investing",
+      mission: "Democratize access to wealth-building real estate strategies for individual investors",
+      stats: {
+        yearsExperience: "20+",
+        aum: "$5B+",
+        investors: "10K+",
+        properties: "500+"
+      },
+      features: [
+        "Institutional Quality",
+        "Proven Performance",
+        "Aligned Incentives",
+        "Expert Management",
+        "Market Diversification",
+        "Investor Simplicity"
+      ]
+    });
+  });
+
+  app.get("/api/services/status", async (req, res) => {
+    const checks = {
+      authentication: "operational",
+      database: "operational",
+      cache: "operational",
+      email: "operational",
+      payments: "operational",
+      reporting: "operational"
+    };
+    
+    res.json({
+      platform: "Alliance Trust Realty",
+      status: "operational",
+      services: checks,
+      uptime: Math.floor((Date.now() - startTime) / 1000),
+      version: "1.0.0"
+    });
+  });
+
   // Seed strategies if none exist
   const existingStrategies = await storage.getAllStrategies();
   if (existingStrategies.length === 0) {
