@@ -91,6 +91,11 @@ export function Header() {
                   Dashboard
                 </Button>
               </Link>
+              <Link href="/admin/diagnostics">
+                <Button variant="ghost" className="font-semibold uppercase tracking-wide text-xs">
+                  Diagnostics
+                </Button>
+              </Link>
               <Button 
                 variant="outline"
                 onClick={handleLogout}
