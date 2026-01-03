@@ -1,0 +1,331 @@
+// ============================================================================
+// 1. APP ROUTING & CONFIGURATION (client/src/App.tsx)
+// ============================================================================
+import { Switch, Route } from "wouter";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect } from "react";
+
+// Core Pages
+import Home from "@/pages/home";
+import NotFound from "@/pages/not-found";
+
+// Beginner Hub Pages (New Educational Funnel)
+import BeginnerHub from "@/pages/beginners/hub";
+import StrategyFramework from "@/pages/beginners/strategy";
+import DealScorecard from "@/pages/beginners/scorecard";
+import UnderwritingChecklist from "@/pages/beginners/checklist";
+import ToolkitLanding from "@/pages/beginners/toolkit-landing";
+import ToolkitThankYou from "@/pages/beginners/toolkit-thank-you";
+
+// Utility to ensure pages load at the top
+function ScrollToTop() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+  return null;
+}
+
+function Router() {
+  return (
+    <>
+      <ScrollToTop />
+      <Switch>
+        {/* Main Landing Page */}
+        <Route path="/" component={Home}/>
+        
+        {/* Beginner Investment Strategy Hub */}
+        <Route path="/for-beginners" component={BeginnerHub} />
+        <Route path="/for-beginners/strategy-framework" component={StrategyFramework} />
+        <Route path="/for-beginners/deal-scorecard" component={DealScorecard} />
+        <Route path="/for-beginners/underwriting-checklist" component={UnderwritingChecklist} />
+        
+        {/* Lead Generation Funnel */}
+        <Route path="/beginner-investor-toolkit" component={ToolkitLanding} />
+        <Route path="/thank-you-toolkit" component={ToolkitThankYou} />
+        
+        {/* 404 Fallback */}
+        <Route component={NotFound} />
+      </Switch>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+// ============================================================================
+// 2. GLOBAL NAVIGATION (client/src/components/navigation.tsx)
+// ============================================================================
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "wouter";
+import { Menu, X } from "lucide-react";
+
+export default function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [location, setLocation] = useLocation();
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleNavClick = (sectionId: string) => {
+    if (location === "/") {
+      const element = document.getElementById(sectionId);
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.href = `/#${sectionId}`;
+    }
+    setIsMenuOpen(false);
+  };
+
+  const NavLink = ({ target, children, isPage = false }: { target: string, children: React.ReactNode, isPage?: boolean }) => {
+    if (isPage) {
+      return (
+        <Link href={target}>
+          <a className={`text-sm font-medium transition-colors hover:text-primary-blue ${location === target ? 'text-primary-blue font-bold' : 'text-gray-700'}`}>
+            {children}
+          </a>
+        </Link>
+      );
+    }
+    return (
+      <button onClick={() => handleNavClick(target)} className="text-sm font-medium text-gray-700 hover:text-primary-blue transition-colors">
+        {children}
+      </button>
+    );
+  };
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Brand Logo */}
+          <Link href="/">
+            <div className="flex items-center cursor-pointer group">
+              <span className="text-accent-gold text-3xl mr-2 group-hover:scale-110 transition-transform">✦</span>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-primary-blue leading-none">Alliance</span>
+                <span className="text-xs text-dark-navy tracking-widest uppercase">Trust Realty</span>
+              </div>
+            </div>
+          </Link>
+          
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center space-x-8">
+            <NavLink target="vision">Vision</NavLink>
+            <NavLink target="gallery">Gallery</NavLink>
+            <NavLink target="services">Services</NavLink>
+            <NavLink target="/for-beginners" isPage>Beginners Hub</NavLink>
+            <NavLink target="community">Community</NavLink>
+            <button 
+              onClick={() => handleNavClick('contact')} 
+              className="bg-primary-blue text-white px-5 py-2.5 rounded-lg hover:bg-blue-800 transition-all duration-300 shadow-md font-medium text-sm"
+            >
+              Get Started
+            </button>
+          </div>
+
+          {/* Mobile Toggle */}
+          <div className="md:hidden">
+            <button onClick={toggleMenu} className="text-gray-700 hover:text-primary-blue p-2">
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Mobile Menu (Simplified for brevity) */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200 absolute w-full shadow-lg p-4 space-y-4">
+           {/* Mobile links would go here */}
+        </div>
+      )}
+    </nav>
+  );
+}
+
+// ============================================================================
+// 3. HOME PAGE (client/src/pages/home.tsx)
+// ============================================================================
+import Navigation from "@/components/navigation";
+import HeroSection from "@/components/hero-section"; // Updated with "Trust. Scale. Value."
+import IntroVideo from "@/components/intro-video"; // Updated with "Building Trust at Scale"
+import IndustryGallery from "@/components/industry-gallery";
+import AboutSection from "@/components/about-section";
+import ServicesSection from "@/components/services-section";
+import ProofOfConcept from "@/components/proof-of-concept";
+import NewsletterCommunity from "@/components/newsletter-community";
+import PartnersSection from "@/components/partners-section";
+import FooterCTA from "@/components/footer-cta";
+
+export default function Home() {
+  return (
+    <div className="font-inter text-dark-navy overflow-x-hidden bg-white">
+      <Navigation />
+      
+      {/* 1. Hero: "Trust. Scale. Long-term Value." */}
+      <HeroSection />
+      
+      {/* 2. Vision: Gregor Stewart's Message */}
+      <IntroVideo />
+      
+      {/* 3. Real World Application */}
+      <IndustryGallery />
+      
+      {/* 4. The Alliance Mission */}
+      <AboutSection />
+      
+      {/* 5. Core Divisions: Cyber, Compliance, Realty */}
+      <ServicesSection />
+      
+      {/* 6. Metrics & Success Stories */}
+      <ProofOfConcept />
+      
+      {/* 7. Lead Gen: Newsletter & Podcast */}
+      <NewsletterCommunity />
+      
+      {/* 8. Authority & Trust */}
+      <PartnersSection />
+      
+      {/* 9. Final Call to Action */}
+      <FooterCTA />
+    </div>
+  );
+}
+
+// ============================================================================
+// 4. BEGINNER HUB LANDING (client/src/pages/beginners/hub.tsx)
+// ============================================================================
+import { Link } from "wouter";
+import Navigation from "@/components/navigation";
+import FooterCTA from "@/components/footer-cta";
+import { PageHeader } from "@/components/beginner/page-header";
+import { CtaBanner } from "@/components/beginner/cta-banner";
+import { ContentSection } from "@/components/beginner/content-section";
+import { Target, ShieldCheck, BarChart3, TrendingUp, DollarSign, ArrowRight } from "lucide-react";
+
+export default function BeginnerHub() {
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      {/* Enterprise-Grade Page Header */}
+      <PageHeader 
+        title="Build a Real Estate Strategy That Balances Risk and Long-Term Growth"
+        subtitle="A beginner-friendly framework focused on conservative underwriting, resilient financing, and disciplined portfolio scaling."
+        primaryCtaText="Get the Beginner Investor Toolkit"
+        primaryCtaLink="/beginner-investor-toolkit"
+        secondaryCtaText="View Starter Properties"
+        secondaryCtaLink="#"
+      />
+
+      {/* Strategy Snapshot Cards */}
+      <ContentSection 
+        title="The Beginner Strategy Framework" 
+        subtitle="A simple, repeatable decision system designed to help new investors reduce early risk."
+        className="bg-light-gray"
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          <StrategyCard 
+            icon={Target} 
+            title="Define Your Objective" 
+            text="Choose cash flow, appreciation, or a balanced approach so every deal aligns with your financial plan." 
+          />
+          <StrategyCard 
+            icon={ShieldCheck} 
+            title="Choose Your Risk Tier" 
+            text="Start with lower-complexity strategies before advancing into value-add or higher-management models." 
+          />
+          <StrategyCard 
+            icon={BarChart3} 
+            title="Underwrite Conservatively" 
+            text="Always model vacancy, repairs, capex reserves, insurance, and taxes to validate performance." 
+          />
+        </div>
+      </ContentSection>
+
+      {/* Risk Awareness Block */}
+      <ContentSection>
+        <div className="bg-red-50 border-l-4 border-red-500 p-8 rounded-r-xl max-w-4xl mx-auto shadow-sm">
+          <h3 className="text-xl font-bold text-red-800 mb-4">What This Framework Helps You Avoid</h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <li className="flex items-center text-dark-navy">Overestimating rent growth and future appreciation</li>
+            <li className="flex items-center text-dark-navy">Under-budgeting repairs and capital expenditures</li>
+            <li className="flex items-center text-dark-navy">Buying thin-margin deals with limited protection</li>
+            <li className="flex items-center text-dark-navy">Scaling too fast before validating assumptions</li>
+          </div>
+        </div>
+      </ContentSection>
+
+      {/* Educational Modules Navigation */}
+      <ContentSection title="Start Here" className="bg-white">
+        <div className="grid md:grid-cols-3 gap-8">
+          <NavTile 
+            title="Strategy Framework" 
+            desc="Build your personal investment policy statement." 
+            link="/for-beginners/strategy-framework" 
+          />
+          <NavTile 
+            title="Deal Scorecard" 
+            desc="Evaluate risk quickly with our scoring system." 
+            link="/for-beginners/deal-scorecard" 
+          />
+          <NavTile 
+            title="Underwriting Checklist" 
+            desc="Don't miss a detail during due diligence." 
+            link="/for-beginners/underwriting-checklist" 
+          />
+        </div>
+      </ContentSection>
+
+      {/* Lead Magnet CTA */}
+      <CtaBanner 
+        title="Get the Templates That Simplify Your First Deal"
+        description="Download the Beginner Investor Toolkit with a personal investment policy statement, deal scorecard, and underwriting checklist."
+        buttonText="Get the Beginner Investor Toolkit"
+        buttonLink="/beginner-investor-toolkit"
+      />
+      
+      <FooterCTA />
+    </div>
+  );
+}
+
+// Sub-components for Cleaner Code
+function StrategyCard({ icon: Icon, title, text }: any) {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all hover:-translate-y-1">
+      <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+        <Icon className="h-6 w-6 text-primary-blue" />
+      </div>
+      <h3 className="text-lg font-bold text-dark-navy mb-2">{title}</h3>
+      <p className="text-gray-600 text-sm leading-relaxed">{text}</p>
+    </div>
+  );
+}
+
+function NavTile({ title, desc, link }: any) {
+  return (
+    <Link href={link}>
+      <div className="bg-gray-50 p-8 rounded-xl border border-gray-200 cursor-pointer hover:border-primary-blue hover:shadow-lg transition-all group h-full flex flex-col justify-between">
+        <div>
+          <h3 className="text-2xl font-bold text-primary-blue mb-3 group-hover:text-accent-gold transition-colors">{title}</h3>
+          <p className="text-gray-600">{desc}</p>
+        </div>
+        <div className="mt-6 flex items-center text-dark-navy font-semibold group-hover:translate-x-2 transition-transform">
+          Start Learning <ArrowRight className="ml-2 h-4 w-4" />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
