@@ -17,6 +17,8 @@ import Dashboard from "@/pages/Dashboard";
 import DemoDashboard from "@/pages/DemoDashboard";
 import SetupWizard from "@/pages/SetupWizard";
 import AdminDiagnostics from "@/pages/AdminDiagnostics";
+import BeginnerHub from "@/pages/beginners/hub";
+import StrategyFramework from "@/pages/beginners/strategy";
 
 function Router() {
   return (
@@ -36,6 +38,10 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/demo/dashboard" component={DemoDashboard} />
       <Route path="/client/portfolio" component={Dashboard} />
+      
+      {/* Beginner Funnel */}
+      <Route path="/for-beginners" component={BeginnerHub} />
+      <Route path="/for-beginners/strategy-framework" component={StrategyFramework} />
       
       <Route component={NotFound} />
     </Switch>

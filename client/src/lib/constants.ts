@@ -6,6 +6,7 @@ export const NAV_ITEMS = [
   { label: "Portfolio", href: "/portfolio" },
   { label: "QFS", href: "/qfs" },
   { label: "Enterprise", href: "/enterprise" },
+  { label: "For Beginners", href: "/for-beginners" },
   { label: "About Us", href: "/about" },
 ];
 
