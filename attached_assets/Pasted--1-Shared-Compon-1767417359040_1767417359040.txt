@@ -1,0 +1,833 @@
+// -----------------------------------------------------------------------------
+// 1. Shared Components (New)
+// -----------------------------------------------------------------------------
+
+// client/src/components/beginner/page-header.tsx
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
+
+interface PageHeaderProps {
+  title: string;
+  subtitle: string;
+  primaryCtaText?: string;
+  primaryCtaLink?: string;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+}
+
+export function PageHeader({
+  title,
+  subtitle,
+  primaryCtaText,
+  primaryCtaLink,
+  secondaryCtaText,
+  secondaryCtaLink,
+}: PageHeaderProps) {
+  return (
+    <div className="bg-dark-navy text-white py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
+          {title}
+        </h1>
+        <p className="text-xl text-gray-300 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
+          {subtitle}
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {primaryCtaText && primaryCtaLink && (
+            <Link href={primaryCtaLink}>
+              <button className="bg-accent-gold text-dark-navy px-8 py-3 rounded-lg font-semibold hover:-translate-y-0.5 transition-all duration-300 shadow-lg flex items-center">
+                {primaryCtaText} <ArrowRight className="ml-2 h-4 w-4" />
+              </button>
+            </Link>
+          )}
+          {secondaryCtaText && secondaryCtaLink && (
+            <Link href={secondaryCtaLink}>
+              <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-dark-navy transition-all duration-300">
+                {secondaryCtaText}
+              </button>
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// client/src/components/beginner/cta-banner.tsx
+import { Link } from "wouter";
+
+interface CtaBannerProps {
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+export function CtaBanner({
+  title,
+  description,
+  buttonText,
+  buttonLink,
+}: CtaBannerProps) {
+  return (
+    <div className="bg-primary-blue py-16">
+      <div className="max-w-4xl mx-auto px-4 text-center">
+        <h2 className="text-3xl font-bold text-white mb-4">{title}</h2>
+        <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
+          {description}
+        </p>
+        <Link href={buttonLink}>
+          <button className="bg-white text-primary-blue px-8 py-4 rounded-lg font-bold text-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            {buttonText}
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// client/src/components/beginner/content-section.tsx
+interface ContentSectionProps {
+  title?: string;
+  subtitle?: string;
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+}
+
+export function ContentSection({
+  title,
+  subtitle,
+  children,
+  className = "bg-white",
+  id,
+}: ContentSectionProps) {
+  return (
+    <section id={id} className={`py-16 ${className}`}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {(title || subtitle) && (
+          <div className="text-center mb-12">
+            {title && (
+              <h2 className="text-3xl font-bold text-dark-navy mb-4">
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {subtitle}
+              </p>
+            )}
+          </div>
+        )}
+        {children}
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 2. New Page Components
+// -----------------------------------------------------------------------------
+
+// client/src/pages/beginners/hub.tsx
+import { Link } from "wouter";
+import Navigation from "@/components/navigation";
+import FooterCTA from "@/components/footer-cta";
+import { PageHeader } from "@/components/beginner/page-header";
+import { CtaBanner } from "@/components/beginner/cta-banner";
+import { ContentSection } from "@/components/beginner/content-section";
+import { Target, TrendingUp, ShieldCheck, DollarSign, BarChart3, ArrowRight } from "lucide-react";
+
+export default function BeginnerHub() {
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      <PageHeader 
+        title="Build a Real Estate Strategy That Balances Risk and Long-Term Growth"
+        subtitle="A beginner-friendly framework focused on conservative underwriting, resilient financing, and disciplined portfolio scaling."
+        primaryCtaText="Get the Beginner Investor Toolkit"
+        primaryCtaLink="/beginner-investor-toolkit"
+        secondaryCtaText="View Starter-Friendly Properties" // Tertiary CTA as secondary here per request
+        secondaryCtaLink="#properties" // Placeholder anchor
+      />
+
+      <ContentSection 
+        title="The Beginner Strategy Framework" 
+        subtitle="A simple, repeatable decision system designed to help new investors reduce early risk and build long-term momentum."
+        className="bg-light-gray"
+      >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { icon: Target, title: "Define Your Objective", body: "Choose cash flow, appreciation, or a balanced approach so every deal aligns with your financial plan." },
+            { icon: ShieldCheck, title: "Choose Your Risk Tier", body: "Start with lower-complexity strategies before advancing into value-add or higher-management models." },
+            { icon: BarChart3, title: "Underwrite Conservatively", body: "Always model vacancy, repairs, capex reserves, insurance, taxes, and management to validate real-world performance." },
+            { icon: DollarSign, title: "Use Resilient Financing", body: "Prioritize stable terms and avoid thin margins that cannot absorb surprises." },
+            { icon: TrendingUp, title: "Scale with Discipline", body: "Diversify by asset type and location over time to reduce concentration risk." }
+          ].map((card, idx) => (
+            <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
+              <card.icon className="h-10 w-10 text-primary-blue mb-4" />
+              <h3 className="text-xl font-bold text-dark-navy mb-3">{card.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </ContentSection>
+
+      <ContentSection title="What This Framework Helps You Avoid">
+        <div className="bg-red-50 border-l-4 border-red-500 p-8 rounded-r-xl max-w-3xl mx-auto">
+          <ul className="space-y-4">
+            {[
+              "Overestimating rent growth and future appreciation",
+              "Under-budgeting repairs, capital expenditures, and vacancies",
+              "Buying thin-margin deals with limited downside protection",
+              "Scaling too fast before validating performance assumptions"
+            ].map((item, i) => (
+              <li key={i} className="flex items-start text-dark-navy font-medium">
+                <span className="mr-3 text-red-500 text-xl">•</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </ContentSection>
+
+      <ContentSection title="Start Here" className="bg-light-gray">
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            { title: "Strategy Framework", link: "/for-beginners/strategy-framework", desc: "Build your personal investment policy." },
+            { title: "Deal Scorecard", link: "/for-beginners/deal-scorecard", desc: "Evaluate risk quickly with our scoring system." },
+            { title: "Underwriting Checklist", link: "/for-beginners/underwriting-checklist", desc: "Don't miss a detail during due diligence." }
+          ].map((tile, i) => (
+            <Link key={i} href={tile.link}>
+              <div className="bg-white p-8 rounded-xl shadow-md cursor-pointer hover:-translate-y-1 transition-all group h-full flex flex-col justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-primary-blue mb-2 group-hover:text-accent-gold transition-colors">{tile.title}</h3>
+                  <p className="text-gray-600">{tile.desc}</p>
+                </div>
+                <div className="mt-6 flex items-center text-primary-blue font-semibold">
+                  Read More <ArrowRight className="ml-2 h-4 w-4" />
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </ContentSection>
+
+      <CtaBanner 
+        title="Get the Templates That Simplify Your First Deal"
+        description="Download the Beginner Investor Toolkit with a personal investment policy statement, deal scorecard, and underwriting checklist."
+        buttonText="Get the Beginner Investor Toolkit"
+        buttonLink="/beginner-investor-toolkit"
+      />
+      
+      <div className="py-8 bg-gray-50 text-center text-gray-500 text-sm px-4">
+        This content is for educational purposes and does not constitute financial, legal, or tax advice. Real estate investing involves risk, including potential loss of capital. Consult qualified professionals before making investment decisions.
+      </div>
+      
+      <FooterCTA />
+    </div>
+  );
+}
+
+// client/src/pages/beginners/strategy.tsx
+import Navigation from "@/components/navigation";
+import { PageHeader } from "@/components/beginner/page-header";
+import { ContentSection } from "@/components/beginner/content-section";
+import { CtaBanner } from "@/components/beginner/cta-banner";
+import FooterCTA from "@/components/footer-cta";
+
+export default function StrategyFramework() {
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      <PageHeader 
+        title="Beginner Real Estate Strategy Framework"
+        subtitle="Build a repeatable approach that prioritizes downside control, stable assumptions, and scalable long-term growth."
+        primaryCtaText="Get the Beginner Investor Toolkit"
+        primaryCtaLink="/beginner-investor-toolkit"
+      />
+
+      <ContentSection title="A Decision System, Not a Guessing Game">
+        <p className="text-lg text-gray-700 leading-relaxed text-center max-w-3xl mx-auto">
+          This framework helps you make consistent, risk-aware decisions across market cycles. The goal is to create stable performance through conservative analysis, appropriate liquidity, and a clear plan for how you acquire, operate, and scale.
+        </p>
+      </ContentSection>
+
+      <ContentSection title="Your One-Page Personal Investment Policy" className="bg-light-gray">
+        <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-sm">
+          <p className="mb-6 text-gray-700">A personal investment policy statement turns your goals into clear acquisition rules.</p>
+          <ul className="space-y-4">
+            {[
+              { label: "Primary outcome", text: "Cash flow, appreciation, or a blended goal" },
+              { label: "Time horizon", text: "Typically 5–10+ years for long-term compounding" },
+              { label: "Risk ceiling", text: "Your maximum acceptable monthly out-of-pocket exposure" },
+              { label: "Operating stance", text: "Self-manage vs. professional management" },
+              { label: "Exit triggers", text: "Rules for selling, refinancing, or holding" },
+            ].map((item, i) => (
+              <li key={i} className="flex flex-col sm:flex-row sm:items-center border-b border-gray-100 pb-3 last:border-0">
+                <span className="font-bold text-dark-navy w-48 shrink-0">{item.label}:</span>
+                <span className="text-gray-600">{item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </ContentSection>
+
+      <ContentSection title="Match Strategy to Your Current Experience" subtitle="As risk and operational complexity rise, so should your experience, reserves, and deal volume.">
+        <div className="grid md:grid-cols-3 gap-6 mt-8">
+          <div className="bg-green-50 p-6 rounded-lg border border-green-100">
+            <h3 className="text-xl font-bold text-green-800 mb-3">Tier 1: Lower Complexity</h3>
+            <p className="text-green-900">REITs/ETFs and stable buy-and-hold residential in resilient demand areas.</p>
+          </div>
+          <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
+            <h3 className="text-xl font-bold text-blue-800 mb-3">Tier 2: Moderate Complexity</h3>
+            <p className="text-blue-900">House hacking and small multifamily (2–4 units) to balance learning with income resilience.</p>
+          </div>
+          <div className="bg-orange-50 p-6 rounded-lg border border-orange-100">
+            <h3 className="text-xl font-bold text-orange-800 mb-3">Tier 3: Higher Complexity</h3>
+            <p className="text-orange-900">Value-add renovations and advanced capital recycling strategies once your underwriting and operations are proven.</p>
+          </div>
+        </div>
+      </ContentSection>
+
+      <div className="max-w-4xl mx-auto px-4 mb-16">
+        <div className="bg-dark-navy text-white p-8 rounded-2xl text-center shadow-xl">
+          <h3 className="text-2xl font-bold text-accent-gold mb-3">Beginner Rule of Thumb</h3>
+          <p className="text-xl">A beginner-grade deal should remain viable under conservative assumptions after vacancy, reserves, and management costs.</p>
+        </div>
+      </div>
+
+      <CtaBanner 
+        title="Build Your First Strategy in One Hour"
+        description="Use the toolkit templates to define your goals, score deals, and evaluate risk before you commit capital."
+        buttonText="Get the Beginner Investor Toolkit"
+        buttonLink="/beginner-investor-toolkit"
+      />
+      
+      <FooterCTA />
+    </div>
+  );
+}
+
+// client/src/pages/beginners/scorecard.tsx
+import Navigation from "@/components/navigation";
+import { PageHeader } from "@/components/beginner/page-header";
+import { ContentSection } from "@/components/beginner/content-section";
+import { CtaBanner } from "@/components/beginner/cta-banner";
+import FooterCTA from "@/components/footer-cta";
+import { CheckCircle2 } from "lucide-react";
+
+export default function DealScorecard() {
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      <PageHeader 
+        title="Deal Scorecard for Beginners"
+        subtitle="A simple scoring system to quickly identify whether a property aligns with a conservative, long-term strategy."
+        primaryCtaText="Get the Beginner Investor Toolkit"
+        primaryCtaLink="/beginner-investor-toolkit"
+      />
+
+      <ContentSection title="How to Use This Scorecard">
+        <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto">
+          Rate each category from 1 (weak) to 5 (strong). Focus on resilience and predictability over optimistic assumptions.
+        </p>
+      </ContentSection>
+
+      <ContentSection className="bg-light-gray" title="Score Categories">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            "Cash Flow Resilience",
+            "Neighborhood Demand & Vacancy Risk",
+            "Property Condition / Capex Exposure",
+            "Financing Stability",
+            "Management Complexity",
+            "Exit Flexibility"
+          ].map((cat, i) => (
+            <div key={i} className="bg-white p-6 rounded-lg shadow-sm flex items-center gap-4">
+              <div className="bg-blue-100 text-primary-blue font-bold rounded-full w-8 h-8 flex items-center justify-center shrink-0">
+                {i + 1}
+              </div>
+              <span className="font-semibold text-dark-navy text-lg">{cat}</span>
+            </div>
+          ))}
+        </div>
+      </ContentSection>
+
+      <ContentSection title="Score Interpretation">
+        <div className="max-w-2xl mx-auto space-y-4">
+          <div className="flex items-center p-4 bg-green-50 rounded-lg border border-green-200">
+            <span className="font-bold text-green-700 text-xl w-24">24–30</span>
+            <span className="text-green-800">Strong candidate for deeper diligence</span>
+          </div>
+          <div className="flex items-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <span className="font-bold text-yellow-700 text-xl w-24">18–23</span>
+            <span className="text-yellow-800">Proceed cautiously and tighten assumptions</span>
+          </div>
+          <div className="flex items-center p-4 bg-red-50 rounded-lg border border-red-200">
+            <span className="font-bold text-red-700 text-xl w-24">Below 18</span>
+            <span className="text-red-800">Likely misaligned with beginner risk tolerance</span>
+          </div>
+        </div>
+      </ContentSection>
+
+      <CtaBanner 
+        title="Turn Scoring Into a Repeatable System"
+        description="The toolkit includes printable scorecards and complementary underwriting checklists."
+        buttonText="Get the Beginner Investor Toolkit"
+        buttonLink="/beginner-investor-toolkit"
+      />
+      
+      <FooterCTA />
+    </div>
+  );
+}
+
+// client/src/pages/beginners/checklist.tsx
+import Navigation from "@/components/navigation";
+import { PageHeader } from "@/components/beginner/page-header";
+import { ContentSection } from "@/components/beginner/content-section";
+import { CtaBanner } from "@/components/beginner/cta-banner";
+import FooterCTA from "@/components/footer-cta";
+import { CheckSquare } from "lucide-react";
+
+export default function UnderwritingChecklist() {
+  const sections = [
+    { title: "Income", items: ["Market rent validated with comps", "Conservative rent assumption used", "Other income verified where applicable"] },
+    { title: "Operating Assumptions", items: ["Vacancy rate included", "Repairs and maintenance modeled", "Capex reserves included", "Insurance and taxes verified", "Utilities accounted for", "Property management expense included (even if self-managing)"] },
+    { title: "Property & Condition", items: ["Inspection completed", "Roof, HVAC, plumbing, and electrical reviewed", "Deferred maintenance quantified"] },
+    { title: "Financing", items: ["Rate and terms stress-tested", "Payment fits your risk ceiling", "Stable structures prioritized when available"] },
+    { title: "Risk Controls", items: ["Operating reserves planned", "Vendor and contractor coverage identified", "Tenant screening standards defined"] },
+    { title: "Exit Logic", items: ["Sell scenario modeled", "Refinance scenario modeled", "Hold scenario validated"] },
+  ];
+
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      <PageHeader 
+        title="Beginner Underwriting Checklist"
+        subtitle="A structured due diligence workflow that helps prevent costly assumptions and supports long-term performance."
+        primaryCtaText="Get the Beginner Investor Toolkit"
+        primaryCtaLink="/beginner-investor-toolkit"
+      />
+
+      <ContentSection className="bg-light-gray">
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {sections.map((section, i) => (
+            <div key={i} className="bg-white p-6 rounded-xl shadow-sm">
+              <h3 className="text-xl font-bold text-primary-blue mb-4 border-b pb-2">{section.title}</h3>
+              <ul className="space-y-3">
+                {section.items.map((item, idx) => (
+                  <li key={idx} className="flex items-start">
+                    <CheckSquare className="h-5 w-5 text-accent-gold mr-3 shrink-0 mt-0.5" />
+                    <span className="text-gray-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </ContentSection>
+
+      <CtaBanner 
+        title="Evaluate Your First Deal Like a Pro"
+        description="Download the full toolkit to pair this checklist with scoring templates and a personal strategy worksheet."
+        buttonText="Get the Beginner Investor Toolkit"
+        buttonLink="/beginner-investor-toolkit"
+      />
+      
+      <FooterCTA />
+    </div>
+  );
+}
+
+// client/src/pages/beginners/toolkit-landing.tsx
+import { useState } from "react";
+import { Link, useLocation } from "wouter";
+import Navigation from "@/components/navigation";
+import FooterCTA from "@/components/footer-cta";
+import { CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+export default function ToolkitLanding() {
+  const [formData, setFormData] = useState({ name: "", email: "", goal: "Balanced" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      // In a real app, send data to backend here
+      toast({
+        title: "Success",
+        description: "Your toolkit is being prepared!",
+      });
+      setLocation("/thank-you-toolkit");
+    }, 1000);
+  };
+
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      <div className="bg-dark-navy text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-6">Beginner Investor Toolkit</h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            The templates and checklists designed to help new investors evaluate deals with discipline and reduce early-stage risk.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-dark-navy mb-6">What You’ll Receive</h2>
+            <div className="space-y-6">
+              {[
+                { title: "Personal Investment Policy Statement (IPS)", desc: "A template to define your rules for buying and operating." },
+                { title: "Deal Scorecard", desc: "A printable sheet to rate properties on 6 key risk factors." },
+                { title: "Underwriting Checklist", desc: "Ensure you never miss a critical expense or risk factor." }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="bg-blue-100 p-2 rounded-full h-fit">
+                    <CheckCircle className="h-6 w-6 text-primary-blue" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-dark-navy">{item.title}</h3>
+                    <p className="text-gray-600">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-10 bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <p className="text-gray-700 italic">
+                "We prioritize risk-aware fundamentals, conservative assumptions, and long-term thinking. This toolkit is built to help you create a repeatable framework you can apply to every future deal."
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+            <h3 className="text-2xl font-bold text-center text-dark-navy mb-6">Get Instant Access</h3>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <input 
+                  required
+                  type="text" 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none transition"
+                  value={formData.name}
+                  onChange={e => setFormData({...formData, name: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input 
+                  required
+                  type="email" 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none transition"
+                  value={formData.email}
+                  onChange={e => setFormData({...formData, email: e.target.value})}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Primary Goal</label>
+                <select 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none transition bg-white"
+                  value={formData.goal}
+                  onChange={e => setFormData({...formData, goal: e.target.value})}
+                >
+                  <option>Cash Flow</option>
+                  <option>Appreciation</option>
+                  <option>Balanced</option>
+                  <option>Not Sure Yet</option>
+                </select>
+              </div>
+              
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-accent-gold text-dark-navy font-bold py-4 rounded-lg hover:brightness-110 transition-all shadow-md disabled:opacity-70"
+              >
+                {isSubmitting ? "Processing..." : "Download the Toolkit"}
+              </button>
+              
+              <p className="text-xs text-gray-500 text-center mt-4">
+                By submitting, you agree to receive educational resources and updates. You can unsubscribe at any time.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <FooterCTA />
+    </div>
+  );
+}
+
+// client/src/pages/beginners/toolkit-thank-you.tsx
+import { Link } from "wouter";
+import Navigation from "@/components/navigation";
+import { CheckCircle2, Download, BookOpen } from "lucide-react";
+
+export default function ToolkitThankYou() {
+  return (
+    <div className="font-inter bg-white min-h-screen">
+      <Navigation />
+      
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
+        <div className="mx-auto bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mb-8">
+          <CheckCircle2 className="h-10 w-10 text-green-600" />
+        </div>
+        
+        <h1 className="text-4xl font-bold text-dark-navy mb-6">Your Toolkit Is Ready</h1>
+        <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+          You now have access to the Beginner Investor Toolkit. Use these templates to define your strategy, score deals consistently, and underwrite with conservative assumptions.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <button className="bg-primary-blue text-white px-8 py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-800 transition-colors shadow-lg">
+            <Download className="h-5 w-5" />
+            Download Toolkit (PDF)
+          </button>
+          
+          <Link href="/for-beginners/strategy-framework">
+            <button className="bg-white border-2 border-primary-blue text-primary-blue px-8 py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-blue-50 transition-colors">
+              <BookOpen className="h-5 w-5" />
+              View Strategy Framework
+            </button>
+          </Link>
+        </div>
+        
+        <div className="mt-16 pt-8 border-t border-gray-100">
+          <p className="text-gray-500 mb-4">Want to discuss your first deal with an expert?</p>
+          <a href="#contact" className="text-primary-blue font-semibold hover:underline">Book a Strategy Call &rarr;</a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 3. Updated Main Files
+// -----------------------------------------------------------------------------
+
+// client/src/components/navigation.tsx
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "wouter"; // Updated to use Link and location
+import { Menu, X } from "lucide-react";
+
+export default function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [location, setLocation] = useLocation();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleNavClick = (sectionId: string) => {
+    // If we are on home page, scroll to section
+    if (location === "/") {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      // If not on home page, navigate to home then scroll (simple nav for now just goes to home)
+      setLocation(`/?section=${sectionId}`); 
+      // Note: Full hash navigation implementation would require handling the hash on home page load
+      // For this implementation, we'll simple redirect to home for "anchor" links
+      window.location.href = `/#${sectionId}`;
+    }
+    setIsMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const NavLink = ({ target, children, isPage = false }: { target: string, children: React.ReactNode, isPage?: boolean }) => {
+    if (isPage) {
+      return (
+        <Link href={target}>
+          <a className="text-gray-700 hover:text-primary-blue transition-colors duration-300 font-medium">
+            {children}
+          </a>
+        </Link>
+      );
+    }
+    return (
+      <button 
+        onClick={() => handleNavClick(target)} 
+        className="text-gray-700 hover:text-primary-blue transition-colors duration-300 font-medium"
+      >
+        {children}
+      </button>
+    );
+  };
+
+  const MobileNavLink = ({ target, children, isPage = false }: { target: string, children: React.ReactNode, isPage?: boolean }) => {
+    if (isPage) {
+      return (
+        <Link href={target}>
+          <a className="block w-full text-left text-gray-700 hover:text-primary-blue transition-colors duration-300 py-2">
+            {children}
+          </a>
+        </Link>
+      );
+    }
+    return (
+      <button 
+        onClick={() => handleNavClick(target)} 
+        className="block w-full text-left text-gray-700 hover:text-primary-blue transition-colors duration-300 py-2"
+      >
+        {children}
+      </button>
+    );
+  };
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          <div className="flex items-center">
+            <Link href="/">
+              <div className="text-2xl font-bold text-primary-blue cursor-pointer flex items-center gap-2">
+                <span className="text-accent-gold text-3xl">✦</span> Alliance Enterprise
+              </div>
+            </Link>
+          </div>
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:block">
+            <div className="flex items-center space-x-8">
+              <NavLink target="vision">Vision</NavLink>
+              <NavLink target="gallery">Gallery</NavLink>
+              <NavLink target="services">Services</NavLink>
+              <NavLink target="/for-beginners" isPage>Beginners Hub</NavLink>
+              <NavLink target="community">Community</NavLink>
+              <button 
+                onClick={() => handleNavClick('contact')} 
+                className="bg-primary-blue text-white px-6 py-2.5 rounded-lg hover:-translate-y-0.5 transition-all duration-300 shadow-md hover:shadow-lg font-medium"
+              >
+                Get Started
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button 
+              onClick={toggleMenu}
+              className="text-gray-700 hover:text-primary-blue p-2"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200 absolute w-full shadow-lg">
+          <div className="px-4 py-4 space-y-2">
+            <MobileNavLink target="vision">Vision</MobileNavLink>
+            <MobileNavLink target="gallery">Gallery</MobileNavLink>
+            <MobileNavLink target="services">Services</MobileNavLink>
+            <MobileNavLink target="/for-beginners" isPage>Beginners Hub</MobileNavLink>
+            <MobileNavLink target="community">Community</MobileNavLink>
+            <button 
+              onClick={() => handleNavClick('contact')} 
+              className="block w-full bg-primary-blue text-white px-6 py-3 rounded-lg text-center font-medium mt-4"
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+// client/src/App.tsx
+import { Switch, Route } from "wouter";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect } from "react";
+
+// Existing Pages
+import Home from "@/pages/home";
+import NotFound from "@/pages/not-found";
+
+// Beginner Hub Pages
+import BeginnerHub from "@/pages/beginners/hub";
+import StrategyFramework from "@/pages/beginners/strategy";
+import DealScorecard from "@/pages/beginners/scorecard";
+import UnderwritingChecklist from "@/pages/beginners/checklist";
+import ToolkitLanding from "@/pages/beginners/toolkit-landing";
+import ToolkitThankYou from "@/pages/beginners/toolkit-thank-you";
+
+function ScrollToTop() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+  return null;
+}
+
+function Router() {
+  return (
+    <>
+      <ScrollToTop />
+      <Switch>
+        {/* Core Routes */}
+        <Route path="/" component={Home}/>
+        
+        {/* Beginner Hub Routes */}
+        <Route path="/for-beginners" component={BeginnerHub} />
+        <Route path="/for-beginners/strategy-framework" component={StrategyFramework} />
+        <Route path="/for-beginners/deal-scorecard" component={DealScorecard} />
+        <Route path="/for-beginners/underwriting-checklist" component={UnderwritingChecklist} />
+        
+        {/* Lead Magnet Routes */}
+        <Route path="/beginner-investor-toolkit" component={ToolkitLanding} />
+        <Route path="/thank-you-toolkit" component={ToolkitThankYou} />
+        
+        {/* Fallback */}
+        <Route component={NotFound} />
+      </Switch>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
+
