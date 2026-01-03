@@ -94,13 +94,16 @@ export function VideoPreview({
         {/* Video Metrics Footer */}
         <div className={`mt-16 grid grid-cols-3 gap-8 pt-10 border-t border-slate-800/50 transition-all duration-700 ${isHovered ? 'opacity-100 scale-100' : 'opacity-60 scale-95'}`}>
           {[
-            { label: "Duration", value: "12:45" },
-            { label: "Divisions Featured", value: "3" },
-            { label: "Key Metrics", value: "15+" }
+            { label: "Duration", value: "12:45", icon: "⏱️" },
+            { label: "Institutional Grade", value: "Level 4", icon: "🛡️" },
+            { label: "AUM Impact", value: "$50M+", icon: "📈" }
           ].map((metric, i) => (
-            <div key={i} data-testid={`metric-footer-${i}`}>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">{metric.label}</p>
-              <p className="text-lg font-bold text-white">{metric.value}</p>
+            <div key={i} data-testid={`metric-footer-${i}`} className="group/metric">
+              <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em] mb-2 font-bold group-hover/metric:text-blue-500 transition-colors">{metric.label}</p>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-sm opacity-0 group-hover/metric:opacity-100 transition-opacity">{metric.icon}</span>
+                <p className="text-xl font-black text-white tracking-tight">{metric.value}</p>
+              </div>
             </div>
           ))}
         </div>

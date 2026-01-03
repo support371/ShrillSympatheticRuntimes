@@ -240,21 +240,30 @@ export default function Enterprise() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-24 border-b border-white/5">
+        <section id="projects" className="py-24 border-b border-white/5 bg-slate-950/50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16 max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Active Projects</h2>
-              <p className="text-slate-400 text-lg">Explore investment opportunities across our portfolio.</p>
+              <span className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-4 block">Portfolio Gallery</span>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Active Strategic Projects</h2>
+              <p className="text-slate-400 text-lg">High-yield institutional opportunities currently under management.</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">
               {projects.map((proj, idx) => (
-                <div key={idx} className="group bg-slate-900/50 border border-white/10 rounded-2xl p-8 hover:bg-slate-800/50 hover:-translate-y-2 transition-all">
-                  <div className="mb-6 inline-flex items-center justify-center w-14 h-14 rounded-xl bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                <div key={idx} className="group bg-slate-900/40 border border-white/5 rounded-2xl p-8 hover:bg-slate-800/60 transition-all duration-500 hover:border-blue-500/30 hover:-translate-y-2 shadow-xl">
+                  <div className="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-500">
                     {idx < 3 ? <IconShield size={28} /> : idx < 4 ? <IconBuilding size={28} /> : <IconCpu size={28} />}
                   </div>
-                  <h4 className="text-xl font-bold text-white mb-3">{proj.title}</h4>
-                  <p className="text-slate-400">{proj.desc}</p>
+                  <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">{proj.title}</h3>
+                  <p className="text-slate-400 leading-relaxed">{proj.desc}</p>
+                  <div className="mt-6 pt-6 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-blue-400 text-sm font-bold flex items-center gap-2">
+                      View Project Details
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="translate-y-px">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
