@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { PageHeader } from "@/components/beginner/page-header";
 import { ContentSection } from "@/components/beginner/content-section";
-import FooterCTA from "@/components/FooterCTA";
+import FooterCTA from "@/components/footer-cta";
 
 export default function StrategyFramework() {
   return (
