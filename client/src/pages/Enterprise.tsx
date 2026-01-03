@@ -152,39 +152,59 @@ export default function Enterprise() {
         </section>
 
         {/* Vision Section with Video */}
-        <section id="vision" className="py-24 border-b border-white/5">
-          <div className="container mx-auto px-4">
+        <section id="vision" className="py-24 border-b border-white/5 relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_70%)] pointer-events-none" />
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+              <span className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-4 block">Institutional Excellence</span>
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">The Evolution of Excellence</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-transparent mx-auto rounded-full" />
+            </div>
             <VideoPreview
-              title="The Evolution of Excellence"
+              title="A Legacy of Trust & Innovation"
               subtitle="Our Story"
               description="From pioneering enterprise solutions to mastering regulatory compliance and real estate investment, The Alliance Enterprise represents the convergence of three critical pillars of modern business success."
-              division="OUR STORY"
+              division="EXECUTIVE OVERVIEW"
               videoUrl="/gemini_generated_video_694FDA93.mp4"
             />
           </div>
         </section>
 
         {/* Video Gallery - Cybersecurity Division */}
-        <section className="py-24 bg-slate-900/30 border-b border-white/5">
-          <div className="container mx-auto px-4">
+        <section className="py-24 bg-slate-900/30 border-b border-white/5 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none" />
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
+              <div className="max-w-2xl">
+                <span className="text-emerald-500 font-bold tracking-widest uppercase text-sm mb-4 block">Security Division</span>
+                <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight text-left">Enterprise-Grade Infrastructure</h2>
+                <p className="text-slate-400 text-lg text-left">Advanced security protocols protecting institutional assets through cryptographic verification.</p>
+              </div>
+              <div className="hidden md:block h-px flex-1 bg-gradient-to-r from-emerald-500/50 to-transparent mx-8 mb-6" />
+            </div>
             <VideoPreview
-              title="Enterprise-Grade Security Infrastructure"
+              title="Cryptographic Asset Protection"
               subtitle="Cybersecurity"
               description="Discover how our advanced security protocols protect institutional assets with end-to-end encryption, blockchain verification, and instant settlement technology that keeps your data secure."
-              division="OUR DIVISIONS"
+              division="CYBERSECURITY"
               videoUrl="/gemini_generated_video_7EFF7AD9.mp4"
             />
           </div>
         </section>
 
         {/* Video Gallery - Compliance Division */}
-        <section className="py-24 border-b border-white/5">
-          <div className="container mx-auto px-4">
+        <section className="py-24 border-b border-white/5 relative overflow-hidden">
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-16">
+              <span className="text-amber-500 font-bold tracking-widest uppercase text-sm mb-4 block">Regulatory Division</span>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">Global Compliance Framework</h2>
+              <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto rounded-full" />
+            </div>
             <VideoPreview
-              title="Regulatory Excellence Across Sectors"
+              title="Institutional Regulatory Excellence"
               subtitle="Compliance"
               description="Explore our comprehensive compliance framework that delivers automated audits, real-time monitoring, and compliance reporting across all regulatory sectors and institutional requirements."
-              division="OUR DIVISIONS"
+              division="COMPLIANCE"
               videoUrl="/gemini_generated_video_B1B45AE9.mp4"
             />
           </div>
