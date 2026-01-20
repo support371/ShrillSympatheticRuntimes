@@ -1,13 +1,12 @@
 export const NAV_ITEMS = [
   { label: "Home", href: "/" },
-  { label: "Affiliate program", href: "/affiliate" },
-  { label: "Investment plan", href: "/investment-plan" },
-  { label: "Packages", href: "/packages" },
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "QFS", href: "/qfs" },
-  { label: "Enterprise", href: "/enterprise" },
-  { label: "For Beginners", href: "/for-beginners" },
-  { label: "About Us", href: "/about" },
+  { label: "Buy", href: "/buy" },
+  { label: "Sell", href: "/sell" },
+  { label: "Invest", href: "/invest" },
+  { label: "Property Management", href: "/property-management" },
+  { label: "About", href: "/about" },
+  { label: "Resources", href: "/resources" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const CONTACT_INFO = {

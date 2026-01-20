@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { TradingViewCalendar } from "@/components/widgets/TradingViewCalendar";
 import { CryptoMarketTable } from "@/components/widgets/CryptoMarketTable";
-import { ArrowRight, BarChart3, ShieldCheck, TrendingUp, Users, Building2, Globe2, Play } from "lucide-react";
+import { Search, Home as HomeIcon, DollarSign, TrendingUp, Building2, ShieldCheck, Globe2, Play, ArrowRight, BarChart3 } from "lucide-react";
 import heroImage from "@assets/generated_images/modern_luxury_high-rise_building_at_dusk.png";
 import residentialImage from "@assets/generated_images/modern_luxury_apartment_complex.png";
 import commercialImage from "@assets/generated_images/modern_glass_office_building.png";
@@ -16,48 +16,86 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* Hero Section - Enhanced with GemAlliance styling */}
-      <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden flex items-center">
-        <div 
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-        </div>
+        {/* Hero Section */}
+        <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden flex items-center">
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105"
+            style={{ backgroundImage: `url(${heroImage})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/60 to-slate-950/80 z-10" />
+          </div>
 
-        <div className="relative container mx-auto px-4 text-white z-10">
-          <div className="max-w-3xl space-y-6 animate-in slide-in-from-bottom-10 fade-in duration-1000">
-            <div className="inline-block px-3 py-1 bg-secondary/90 text-white text-xs font-bold uppercase tracking-widest rounded-sm mb-2">
-              The Alliance Enterprise
-            </div>
-            <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight">
-              Secure. Compliant. <br/>
-              <span className="text-secondary">Profitable.</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 font-light max-w-2xl leading-relaxed">
-              Integrating cybersecurity excellence, regulatory compliance, and strategic real estate management for enterprise-level success.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link href="/investment-plan">
-                <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-white font-bold px-8 py-7 uppercase tracking-wide text-sm rounded-sm shadow-lg shadow-secondary/20">
-                  Explore Strategies
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button size="lg" variant="outline" className="text-white border-white bg-transparent hover:bg-white hover:text-primary font-bold px-8 py-7 uppercase tracking-wide text-sm rounded-sm backdrop-blur-sm">
-                  View Portfolio
-                </Button>
-              </Link>
-            </div>
+          <div className="relative container mx-auto px-4 text-white z-20">
+            <div className="max-w-3xl space-y-8 animate-in slide-in-from-bottom-10 fade-in duration-1000">
+              <div className="inline-block px-4 py-1.5 bg-blue-600/20 border border-blue-500/30 text-blue-400 text-xs font-black uppercase tracking-[0.2em] rounded-full mb-4">
+                Full-Service Real Estate & Investment
+              </div>
+              <h1 className="text-5xl md:text-8xl font-black leading-tight tracking-tighter">
+                Trust. Scale. <br/>
+                <span className="text-blue-500 italic">Value.</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-slate-300 font-light max-w-2xl leading-relaxed">
+                Whether you're buying your dream home or building a real estate portfolio, we provide data-driven guidance and end-to-end service.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-6 pt-6">
+                <Link href="/buy">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-black px-12 py-8 text-lg rounded-xl shadow-2xl shadow-blue-600/20 group">
+                    Find Your Home <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link href="/invest">
+                  <Button size="lg" variant="outline" className="text-white border-white/20 hover:bg-white/10 font-black px-12 py-8 text-lg rounded-xl backdrop-blur-md">
+                    Explore Investments
+                  </Button>
+                </Link>
+              </div>
 
-            <div className="flex gap-8 pt-12 text-xs uppercase tracking-widest opacity-80 font-medium">
-              <span className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-secondary" /> Secure</span>
-              <span className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-secondary" /> Compliant</span>
-              <span className="flex items-center gap-2"><Globe2 className="h-4 w-4 text-secondary" /> Profitable</span>
+              {/* Quick Search */}
+              <div className="max-w-xl mt-12 bg-white/5 backdrop-blur-xl border border-white/10 p-2 rounded-2xl flex items-center gap-2 shadow-2xl">
+                <div className="flex-1 flex items-center px-4 gap-3">
+                  <Search className="h-5 w-5 text-slate-400" />
+                  <input placeholder="Search city, neighborhood, or zip..." className="bg-transparent border-none text-white placeholder:text-slate-500 focus:outline-none w-full py-3" />
+                </div>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 px-6 rounded-xl">Search</Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Services Grid Section */}
+        <section className="py-32 bg-slate-950 border-y border-white/5 relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_70%)] pointer-events-none" />
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center mb-20 max-w-3xl mx-auto">
+              <span className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-4 block">Our Expertise</span>
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Full-Service Solutions</h2>
+              <p className="text-slate-400 text-lg font-light leading-relaxed">Data-driven approaches for every real estate objective, from individual home ownership to institutional portfolio scaling.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-4 gap-8">
+              {[
+                { icon: HomeIcon, title: "Buy a Home", desc: "Find your perfect property with expert guidance", link: "/buy", color: "text-blue-500", bg: "bg-blue-500/10" },
+                { icon: DollarSign, title: "Sell Your Property", desc: "Maximize your return with our proven process", link: "/sell", color: "text-emerald-500", bg: "bg-emerald-500/10" },
+                { icon: TrendingUp, title: "Real Estate Investing", desc: "Build wealth through strategic property investments", link: "/invest", color: "text-amber-500", bg: "bg-amber-500/10" },
+                { icon: Building2, title: "Property Management", desc: "Hassle-free management for your rental properties", link: "/property-management", color: "text-purple-500", bg: "bg-purple-500/10" }
+              ].map((service, i) => (
+                <Link key={i} href={service.link}>
+                  <div className="p-10 rounded-3xl bg-slate-900/40 border border-white/5 hover:border-blue-500/30 hover:bg-slate-800/60 transition-all duration-500 group cursor-pointer h-full flex flex-col shadow-xl">
+                    <div className={`w-16 h-16 ${service.bg} ${service.color} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500`}>
+                      <service.icon size={32} />
+                    </div>
+                    <h3 className="text-2xl font-black text-white mb-4 tracking-tight">{service.title}</h3>
+                    <p className="text-slate-400 font-light leading-relaxed mb-8 flex-grow">{service.desc}</p>
+                    <span className={`text-sm font-bold uppercase tracking-widest ${service.color} group-hover:gap-4 transition-all flex items-center gap-2`}>
+                      Learn More <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
 
       {/* Evolution Story / Intro Video Section */}
       <section className="py-24 bg-gradient-to-b from-white to-gray-50">
