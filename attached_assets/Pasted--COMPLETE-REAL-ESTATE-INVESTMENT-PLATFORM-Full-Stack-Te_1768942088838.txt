@@ -1,0 +1,853 @@
+# COMPLETE REAL ESTATE INVESTMENT PLATFORM
+
+## Full-Stack Technical Specification & Architecture
+
+-----
+
+# TABLE OF CONTENTS
+
+1. [System Architecture Overview](#system-architecture)
+1. [Frontend Architecture](#frontend-architecture)
+1. [Backend Architecture](#backend-architecture)
+1. [Database Schema](#database-schema)
+1. [Real-Time Investment Dashboard](#investment-dashboard)
+1. [User Management System](#user-management)
+1. [Property Management System](#property-management)
+1. [Financial Calculations Engine](#financial-engine)
+1. [Analytics & Reporting](#analytics)
+1. [Security & Compliance](#security)
+1. [API Documentation](#api-docs)
+1. [Deployment Architecture](#deployment)
+
+-----
+
+<a id="system-architecture"></a>
+
+# 1. SYSTEM ARCHITECTURE OVERVIEW
+
+## Technology Stack
+
+### Frontend
+
+```
+Framework: Next.js 14+ (React 18+)
+Language: TypeScript 5+
+Styling: Tailwind CSS + shadcn/ui
+State Management: Zustand + React Query
+Real-time: Socket.io Client
+Charts: Recharts + D3.js
+Forms: React Hook Form + Zod
+Authentication: NextAuth.js
+Maps: Mapbox GL JS
+```
+
+### Backend
+
+```
+Framework: Node.js + Express.js / NestJS
+Language: TypeScript
+API Style: RESTful + GraphQL (optional)
+Real-time: Socket.io Server
+Authentication: JWT + OAuth2
+File Storage: AWS S3 / Cloudinary
+Email: SendGrid / AWS SES
+PDF Generation: Puppeteer / PDFKit
+```
+
+### Database
+
+```
+Primary DB: PostgreSQL 15+
+Caching: Redis 7+
+Search: Elasticsearch (optional)
+File Storage: AWS S3
+Time-series: TimescaleDB (for analytics)
+```
+
+### Infrastructure
+
+```
+Hosting: AWS / Vercel + Railway
+CDN: CloudFront / Vercel Edge
+Monitoring: Sentry + DataDog
+CI/CD: GitHub Actions
+Container: Docker + Docker Compose
+```
+
+## High-Level Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        CLIENT LAYER                          │
+├─────────────────────────────────────────────────────────────┤
+│  Next.js Frontend (SSR/SSG)                                 │
+│  ├── Public Website (Marketing)                             │
+│  ├── Client Dashboard (Investors)                           │
+│  ├── Admin Dashboard (Internal)                             │
+│  └── Agent Portal (Real Estate Agents)                      │
+└─────────────────────────────────────────────────────────────┘
+                            ↕ HTTPS/WSS
+┌─────────────────────────────────────────────────────────────┐
+│                      API GATEWAY LAYER                       │
+├─────────────────────────────────────────────────────────────┤
+│  Load Balancer (NGINX/AWS ALB)                              │
+│  ├── Rate Limiting                                          │
+│  ├── SSL Termination                                        │
+│  └── Request Routing                                        │
+└─────────────────────────────────────────────────────────────┘
+                            ↕
+┌─────────────────────────────────────────────────────────────┐
+│                   APPLICATION LAYER                          │
+├─────────────────────────────────────────────────────────────┤
+│  Node.js/NestJS Backend Services                            │
+│  ├── Auth Service                                           │
+│  ├── User Management Service                               │
+│  ├── Property Service                                       │
+│  ├── Investment Service                                     │
+│  ├── Transaction Service                                    │
+│  ├── Analytics Service                                      │
+│  ├── Notification Service                                   │
+│  └── Document Service                                       │
+└─────────────────────────────────────────────────────────────┘
+                            ↕
+┌─────────────────────────────────────────────────────────────┐
+│                      DATA LAYER                              │
+├─────────────────────────────────────────────────────────────┤
+│  PostgreSQL (Primary)  │  Redis (Cache)  │  S3 (Files)      │
+└─────────────────────────────────────────────────────────────┘
+                            ↕
+┌─────────────────────────────────────────────────────────────┐
+│                   EXTERNAL SERVICES                          │
+├─────────────────────────────────────────────────────────────┤
+│  Payment Gateway │ Email Service │ SMS │ Document Sign      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+-----
+
+<a id="frontend-architecture"></a>
+
+# 2. FRONTEND ARCHITECTURE
+
+## Project Structure
+
+```
+/frontend
+├── /app                          # Next.js 14 App Router
+│   ├── (public)                  # Public routes
+│   │   ├── page.tsx              # Homepage
+│   │   ├── properties/
+│   │   ├── invest/
+│   │   └── about/
+│   ├── (auth)                    # Authentication routes
+│   │   ├── login/
+│   │   ├── register/
+│   │   └── forgot-password/
+│   ├── (dashboard)               # Protected dashboard routes
+│   │   ├── investor/             # Investor dashboard
+│   │   │   ├── overview/
+│   │   │   ├── portfolio/
+│   │   │   ├── properties/
+│   │   │   ├── transactions/
+│   │   │   ├── documents/
+│   │   │   └── settings/
+│   │   ├── admin/                # Admin dashboard
+│   │   │   ├── users/
+│   │   │   ├── properties/
+│   │   │   ├── investments/
+│   │   │   ├── analytics/
+│   │   │   └── reports/
+│   │   └── agent/                # Agent portal
+│   ├── api/                      # API routes (if using Next.js API)
+│   └── layout.tsx                # Root layout
+├── /components
+│   ├── /ui                       # shadcn/ui components
+│   ├── /dashboard                # Dashboard-specific components
+│   │   ├── PortfolioOverview.tsx
+│   │   ├── InvestmentCard.tsx
+│   │   ├── TransactionTable.tsx
+│   │   ├── PerformanceChart.tsx
+│   │   └── PropertyAnalytics.tsx
+│   ├── /property                 # Property components
+│   │   ├── PropertyCard.tsx
+│   │   ├── PropertyDetails.tsx
+│   │   ├── PropertyGallery.tsx
+│   │   └── InvestmentMetrics.tsx
+│   ├── /forms                    # Form components
+│   │   ├── InvestmentForm.tsx
+│   │   ├── PropertySearchForm.tsx
+│   │   └── ContactForm.tsx
+│   ├── /calculators              # Financial calculators
+│   │   ├── ROICalculator.tsx
+│   │   ├── MortgageCalculator.tsx
+│   │   └── CashFlowCalculator.tsx
+│   └── /layout                   # Layout components
+│       ├── Header.tsx
+│       ├── Footer.tsx
+│       └── Sidebar.tsx
+├── /lib
+│   ├── /api                      # API client functions
+│   ├── /hooks                    # Custom React hooks
+│   ├── /utils                    # Utility functions
+│   ├── /validations              # Zod schemas
+│   └── /constants                # Constants and configs
+├── /store                        # State management
+│   ├── authStore.ts
+│   ├── portfolioStore.ts
+│   └── propertyStore.ts
+├── /styles
+│   └── globals.css
+├── /types                        # TypeScript types
+│   ├── user.ts
+│   ├── property.ts
+│   ├── investment.ts
+│   └── transaction.ts
+└── /public
+    ├── /images
+    └── /documents
+```
+
+## Key Frontend Components
+
+### 1. Investment Dashboard (Real-Time)
+
+```typescript
+// components/dashboard/InvestorDashboard.tsx
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSocket } from '@/lib/hooks/useSocket';
+import { usePortfolioStore } from '@/store/portfolioStore';
+import { PortfolioOverview } from './PortfolioOverview';
+import { ActiveInvestments } from './ActiveInvestments';
+import { PerformanceChart } from './PerformanceChart';
+import { RecentTransactions } from './RecentTransactions';
+import { PropertyAlerts } from './PropertyAlerts';
+
+interface DashboardProps {
+  userId: string;
+}
+
+export function InvestorDashboard({ userId }: DashboardProps) {
+  const socket = useSocket();
+  const { portfolio, updatePortfolio } = usePortfolioStore();
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    // Connect to WebSocket for real-time updates
+    socket.on('connect', () => {
+      setIsConnected(true);
+      socket.emit('join-portfolio', userId);
+    });
+
+    // Listen for portfolio updates
+    socket.on('portfolio-update', (data) => {
+      updatePortfolio(data);
+    });
+
+    // Listen for property value changes
+    socket.on('property-value-update', (data) => {
+      // Update specific property value
+      updatePropertyValue(data.propertyId, data.newValue);
+    });
+
+    // Listen for transaction updates
+    socket.on('transaction-update', (data) => {
+      // Add new transaction to list
+      addTransaction(data);
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('portfolio-update');
+      socket.off('property-value-update');
+      socket.off('transaction-update');
+    };
+  }, [userId, socket]);
+
+  return (
+    <div className="dashboard-container">
+      {/* Connection Status Indicator */}
+      <ConnectionStatus isConnected={isConnected} />
+
+      {/* Portfolio Overview - Summary Cards */}
+      <PortfolioOverview 
+        totalValue={portfolio.totalValue}
+        totalROI={portfolio.totalROI}
+        monthlyIncome={portfolio.monthlyIncome}
+        activeProperties={portfolio.activeProperties}
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        {/* Active Investments - 2 columns */}
+        <div className="lg:col-span-2">
+          <ActiveInvestments 
+            investments={portfolio.investments}
+            onViewDetails={(id) => router.push(`/dashboard/investor/properties/${id}`)}
+          />
+        </div>
+
+        {/* Property Alerts - 1 column */}
+        <div className="lg:col-span-1">
+          <PropertyAlerts alerts={portfolio.alerts} />
+        </div>
+      </div>
+
+      {/* Performance Chart - Full width */}
+      <div className="mt-6">
+        <PerformanceChart 
+          data={portfolio.performanceHistory}
+          timeRange="12M"
+        />
+      </div>
+
+      {/* Recent Transactions */}
+      <div className="mt-6">
+        <RecentTransactions 
+          transactions={portfolio.recentTransactions}
+          limit={10}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+### 2. Portfolio Overview Component
+
+```typescript
+// components/dashboard/PortfolioOverview.tsx
+import { DollarSign, TrendingUp, Home, Percent } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatCurrency, formatPercentage } from '@/lib/utils';
+
+interface PortfolioOverviewProps {
+  totalValue: number;
+  totalROI: number;
+  monthlyIncome: number;
+  activeProperties: number;
+}
+
+export function PortfolioOverview({
+  totalValue,
+  totalROI,
+  monthlyIncome,
+  activeProperties
+}: PortfolioOverviewProps) {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium">Total Portfolio Value</CardTitle>
+          <DollarSign className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{formatCurrency(totalValue)}</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Across all investments
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium">Total ROI</CardTitle>
+          <TrendingUp className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className={`text-2xl font-bold ${totalROI >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {formatPercentage(totalROI)}
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Since inception
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium">Monthly Income</CardTitle>
+          <Percent className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{formatCurrency(monthlyIncome)}</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Average rental income
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium">Active Properties</CardTitle>
+          <Home className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{activeProperties}</div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Currently owned
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+### 3. Real-Time Performance Chart
+
+```typescript
+// components/dashboard/PerformanceChart.tsx
+'use client';
+
+import { useState } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+interface PerformanceData {
+  date: string;
+  portfolioValue: number;
+  cashFlow: number;
+  appreciation: number;
+}
+
+interface PerformanceChartProps {
+  data: PerformanceData[];
+  timeRange: '1M' | '3M' | '6M' | '12M' | 'ALL';
+}
+
+export function PerformanceChart({ data, timeRange: initialRange }: PerformanceChartProps) {
+  const [timeRange, setTimeRange] = useState(initialRange);
+  
+  // Filter data based on time range
+  const filteredData = filterDataByTimeRange(data, timeRange);
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Portfolio Performance</CardTitle>
+        <Select value={timeRange} onValueChange={setTimeRange}>
+          <SelectTrigger className="w-[120px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1M">1 Month</SelectItem>
+            <SelectItem value="3M">3 Months</SelectItem>
+            <SelectItem value="6M">6 Months</SelectItem>
+            <SelectItem value="12M">12 Months</SelectItem>
+            <SelectItem value="ALL">All Time</SelectItem>
+          </SelectContent>
+        </Select>
+      </CardHeader>
+      <CardContent>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart data={filteredData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="date" 
+              tickFormatter={(date) => new Date(date).toLocaleDateString()}
+            />
+            <YAxis 
+              tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+            />
+            <Tooltip 
+              formatter={(value: number) => `$${value.toLocaleString()}`}
+              labelFormatter={(label) => new Date(label).toLocaleDateString()}
+            />
+            <Legend />
+            <Line 
+              type="monotone" 
+              dataKey="portfolioValue" 
+              stroke="#2563eb" 
+              strokeWidth={2}
+              name="Portfolio Value"
+            />
+            <Line 
+              type="monotone" 
+              dataKey="cashFlow" 
+              stroke="#16a34a" 
+              strokeWidth={2}
+              name="Cumulative Cash Flow"
+            />
+            <Line 
+              type="monotone" 
+              dataKey="appreciation" 
+              stroke="#dc2626" 
+              strokeWidth={2}
+              name="Property Appreciation"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### 4. Property Investment Card
+
+```typescript
+// components/property/InvestmentPropertyCard.tsx
+import Image from 'next/image';
+import { MapPin, TrendingUp, DollarSign, Home } from 'lucide-react';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { formatCurrency, formatPercentage } from '@/lib/utils';
+
+interface PropertyInvestment {
+  id: string;
+  address: string;
+  city: string;
+  state: string;
+  images: string[];
+  purchasePrice: number;
+  currentValue: number;
+  investmentDate: string;
+  monthlyRent: number;
+  monthlyExpenses: number;
+  capRate: number;
+  cashOnCashReturn: number;
+  appreciation: number;
+  occupancyStatus: 'occupied' | 'vacant' | 'maintenance';
+}
+
+export function InvestmentPropertyCard({ property }: { property: PropertyInvestment }) {
+  const monthlyCashFlow = property.monthlyRent - property.monthlyExpenses;
+  const totalReturn = ((property.currentValue - property.purchasePrice) / property.purchasePrice) * 100;
+
+  return (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="relative h-48">
+        <Image
+          src={property.images[0]}
+          alt={property.address}
+          fill
+          className="object-cover"
+        />
+        <Badge 
+          className="absolute top-2 right-2"
+          variant={
+            property.occupancyStatus === 'occupied' ? 'default' : 
+            property.occupancyStatus === 'vacant' ? 'destructive' : 
+            'secondary'
+          }
+        >
+          {property.occupancyStatus}
+        </Badge>
+      </div>
+
+      <CardContent className="pt-4">
+        <h3 className="font-semibold text-lg mb-1">{property.address}</h3>
+        <p className="text-sm text-muted-foreground flex items-center mb-4">
+          <MapPin className="h-3 w-3 mr-1" />
+          {property.city}, {property.state}
+        </p>
+
+        {/* Investment Metrics */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-xs text-muted-foreground">Current Value</p>
+            <p className="font-semibold">{formatCurrency(property.currentValue)}</p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Total Return</p>
+            <p className={`font-semibold ${totalReturn >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatPercentage(totalReturn)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Monthly Cash Flow</p>
+            <p className={`font-semibold ${monthlyCashFlow >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatCurrency(monthlyCashFlow)}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Cap Rate</p>
+            <p className="font-semibold">{formatPercentage(property.capRate)}</p>
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="gap-2">
+        <Button variant="outline" className="flex-1">View Details</Button>
+        <Button className="flex-1">Manage</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+-----
+
+<a id="backend-architecture"></a>
+
+# 3. BACKEND ARCHITECTURE
+
+## Project Structure
+
+```
+/backend
+├── /src
+│   ├── /config                   # Configuration files
+│   │   ├── database.ts
+│   │   ├── redis.ts
+│   │   ├── aws.ts
+│   │   └── environment.ts
+│   ├── /modules
+│   │   ├── /auth                 # Authentication module
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── auth.middleware.ts
+│   │   │   └── auth.dto.ts
+│   │   ├── /users                # User management
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts
+│   │   │   ├── users.repository.ts
+│   │   │   └── user.entity.ts
+│   │   ├── /properties           # Property management
+│   │   │   ├── properties.controller.ts
+│   │   │   ├── properties.service.ts
+│   │   │   ├── properties.repository.ts
+│   │   │   └── property.entity.ts
+│   │   ├── /investments          # Investment management
+│   │   │   ├── investments.controller.ts
+│   │   │   ├── investments.service.ts
+│   │   │   ├── investments.repository.ts
+│   │   │   ├── investment.entity.ts
+│   │   │   └── portfolio.service.ts
+│   │   ├── /transactions         # Transaction management
+│   │   │   ├── transactions.controller.ts
+│   │   │   ├── transactions.service.ts
+│   │   │   ├── transactions.repository.ts
+│   │   │   └── transaction.entity.ts
+│   │   ├── /analytics            # Analytics & reporting
+│   │   │   ├── analytics.controller.ts
+│   │   │   ├── analytics.service.ts
+│   │   │   └── reports.service.ts
+│   │   ├── /notifications        # Notification system
+│   │   │   ├── notifications.service.ts
+│   │   │   ├── email.service.ts
+│   │   │   └── sms.service.ts
+│   │   └── /documents            # Document management
+│   │       ├── documents.controller.ts
+│   │       ├── documents.service.ts
+│   │       └── storage.service.ts
+│   ├── /common
+│   │   ├── /decorators
+│   │   ├── /filters
+│   │   ├── /guards
+│   │   ├── /interceptors
+│   │   ├── /pipes
+│   │   └── /utils
+│   ├── /database
+│   │   ├── /migrations
+│   │   ├── /seeds
+│   │   └── /entities
+│   ├── /websocket                # Real-time WebSocket handlers
+│   │   ├── socket.gateway.ts
+│   │   ├── portfolio.gateway.ts
+│   │   └── notifications.gateway.ts
+│   └── main.ts                   # Application entry point
+├── /tests
+│   ├── /unit
+│   └── /integration
+├── .env
+├── .env.example
+├── package.json
+├── tsconfig.json
+└── docker-compose.yml
+```
+
+## Core Backend Services
+
+### 1. Authentication Service
+
+```typescript
+// src/modules/auth/auth.service.ts
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcrypt';
+
+@Injectable()
+export class AuthService {
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
+
+  async register(registerDto: RegisterDto) {
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
+    
+    const user = await this.usersService.create({
+      ...registerDto,
+      password: hashedPassword,
+    });
+
+    const tokens = await this.generateTokens(user);
+    
+    // Send welcome email
+    await this.sendWelcomeEmail(user.email);
+    
+    return {
+      user: this.sanitizeUser(user),
+      ...tokens,
+    };
+  }
+
+  async login(loginDto: LoginDto) {
+    const user = await this.usersService.findByEmail(loginDto.email);
+    
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const tokens = await this.generateTokens(user);
+
+    // Update last login
+    await this.usersService.updateLastLogin(user.id);
+
+    return {
+      user: this.sanitizeUser(user),
+      ...tokens,
+    };
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify(refreshToken);
+      const user = await this.usersService.findById(payload.sub);
+      
+      return this.generateTokens(user);
+    } catch {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  private async generateTokens(user: User) {
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    return {
+      accessToken: this.jwtService.sign(payload, { expiresIn: '15m' }),
+      refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+    };
+  }
+
+  private sanitizeUser(user: User) {
+    const { password, ...sanitized } = user;
+    return sanitized;
+  }
+}
+```
+
+### 2. Investment Service (Core Business Logic)
+
+```typescript
+// src/modules/investments/investments.service.ts
+import { Injectable } from '@nestjs/common';
+import { InvestmentsRepository } from './investments.repository';
+import { PropertiesService } from '../properties/properties.service';
+import { TransactionsService } from '../transactions/transactions.service';
+import { AnalyticsService } from '../analytics/analytics.service';
+import { SocketGateway } from '@/websocket/socket.gateway';
+
+@Injectable()
+export class InvestmentsService {
+  constructor(
+    private investmentsRepository: InvestmentsRepository,
+    private propertiesService: PropertiesService,
+    private transactionsService: TransactionsService,
+    private analyticsService: AnalyticsService,
+    private socketGateway: SocketGateway,
+  ) {}
+
+  async createInvestment(userId: string, createDto: CreateInvestmentDto) {
+    // Validate property exists and is available
+    const property = await this.propertiesService.findById(createDto.propertyId);
+    
+    if (!property.isAvailableForInvestment) {
+      throw new BadRequestException('Property not available for investment');
+    }
+
+    // Create investment record
+    const investment = await this.investmentsRepository.create({
+      userId,
+      propertyId: createDto.propertyId,
+      investmentAmount: createDto.investmentAmount,
+      investmentType: createDto.investmentType,
+      ownershipPercentage: this.calculateOwnership(
+        createDto.investmentAmount,
+        property.totalValue
+      ),
+      startDate: new Date(),
+      status: 'active',
+    });
+
+    // Create initial transaction
+    await this.transactionsService.create({
+      userId,
+      investmentId: investment.id,
+      type: 'investment',
+      amount: createDto.investmentAmount,
+      description: `Initial investment in ${property.address}`,
+      status: 'completed',
+    });
+
+    // Update property
+    await this.propertiesService.updateInvestmentStatus(
+      createDto.propertyId,
+      investment.id
+    );
+
+    // Emit real-time update to user's dashboard
+    this.socketGateway.emitToUser(userId, 'investment-created', investment);
+
+    return investment;
+  }
+
+  async getPortfolio(userId: string) {
+    const investments = await this.investmentsRepository.findByUserId(userId);
+    
+    const portfolioData = await Promise.all(
+      investments.map(async (investment) => {
+        const property = await this.propertiesService.findById(investment.propertyId);
+        const transactions = await this.transactionsService.findByInvestmentId(investment.id);
+        const analytics = await this.analyticsService.calculateInvestmentMetrics(investment.id);
+
+        return {
+          ...investment,
+          property,
+          transactions,
+          metrics: {
+            currentValue: analytics.currentValue,
+            totalReturn: analytics.totalReturn,
+            roi: analytics.roi,
+            monthlyCashFlow: analytics.monthlyCashFlow,
+            capRate: analytics.capRate,
+            appreciation: analytics.appreciation,
+          },
+        };
+      })
+    );
+
+    // Calculate portfolio totals
+    const totals = {
+      totalValue: portfolioData.reduce((sum, inv) => sum + inv.metrics.currentValue, 0),
+      totalInvested: portfolioData.reduce((sum, inv) => sum + inv.investmentAmount, 0),
+      totalReturn: 0, // Calculate total portfolio
+```
