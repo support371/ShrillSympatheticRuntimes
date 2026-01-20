@@ -19,11 +19,19 @@ import SetupWizard from "@/pages/SetupWizard";
 import AdminDiagnostics from "@/pages/AdminDiagnostics";
 import BeginnerHub from "@/pages/beginners/hub";
 import StrategyFramework from "@/pages/beginners/strategy";
+import BuyPage from "@/pages/buy";
+import SellPage from "@/pages/sell";
+import PropertyManagementPage from "@/pages/property-management";
+import InvestPage from "@/pages/Invest";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/buy" component={BuyPage} />
+      <Route path="/sell" component={SellPage} />
+      <Route path="/invest" component={InvestPage} />
+      <Route path="/property-management" component={PropertyManagementPage} />
       <Route path="/affiliate" component={Affiliate} />
       <Route path="/investment-plan" component={InvestmentPlan} />
       <Route path="/packages" component={Packages} />
