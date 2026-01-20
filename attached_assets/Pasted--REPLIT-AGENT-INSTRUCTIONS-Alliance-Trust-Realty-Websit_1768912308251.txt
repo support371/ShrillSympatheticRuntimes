@@ -1,0 +1,957 @@
+# REPLIT AGENT INSTRUCTIONS: Alliance Trust Realty Website Rebuild
+
+## PROJECT OVERVIEW
+
+Rebuild Alliance Trust Realty website as a professional, full-service real estate platform specializing in investment properties. The site must serve both traditional homebuyers/sellers AND real estate investors with distinct user pathways and features.
+
+-----
+
+## TECHNICAL FOUNDATION
+
+### Stack Requirements
+
+- Frontend: React with TypeScript
+- Styling: Tailwind CSS for modern, responsive design
+- Forms: React Hook Form with validation
+- Icons: Lucide React
+- Animations: Framer Motion for smooth transitions
+- State Management: React Context or Zustand for global state
+- NO localStorage/sessionStorage (use React state only)
+
+### Performance Requirements
+
+- First Contentful Paint < 1.5s
+- Lazy load images and components
+- Optimize images (WebP format, responsive sizes)
+- Implement code splitting
+- Mobile-first responsive design
+- Accessibility: WCAG 2.1 AA compliance
+
+-----
+
+## SITE STRUCTURE & NAVIGATION
+
+### Main Navigation Menu
+
+```
+Home | Buy | Sell | Invest | Property Management | About | Resources | Contact
+```
+
+### Page Architecture
+
+1. **Homepage**
+- Hero section with dual value proposition
+- Quick property search bar
+- Featured investment properties (3-4 cards)
+- Services overview (4 columns: Buy, Sell, Invest, Manage)
+- Trust indicators (years experience, properties sold, client satisfaction)
+- Recent market insights/blog posts
+- Newsletter signup
+- Clear CTAs throughout
+1. **Buy Page**
+- Property search with advanced filters
+- Featured listings grid
+- Buying process timeline
+- First-time buyer resources
+- Investment property section link
+- Financing calculator
+- CTA: Schedule showing / Contact agent
+1. **Sell Page**
+- Home valuation tool (form-based)
+- Selling process explained
+- Market statistics
+- Professional photography/staging services
+- Success stories/testimonials
+- CTA: Get free home valuation
+1. **Invest Page** (Priority)
+- Investment services overview
+- Investment property listings with financials
+- ROI calculator tool
+- Market analysis dashboard
+- Investment strategies explained (rental income, fix-flip, commercial)
+- 1031 exchange information
+- Portfolio diversification guide
+- Case studies with real numbers
+- CTA: Schedule investment consultation
+1. **Property Management Page**
+- Services offered
+- Pricing structure
+- Owner portal preview
+- Tenant screening process
+- Maintenance coordination
+- Financial reporting
+- CTA: Request management quote
+1. **About Page**
+- Company mission focused on investment expertise
+- Team profiles with specializations
+- Credentials and certifications
+- Awards and recognition
+- Company timeline/milestones
+- Community involvement
+1. **Resources/Blog Page**
+- Market reports (downloadable PDFs)
+- Investment guides
+- Blog posts categorized
+- Video content
+- Webinar recordings
+- Newsletter archive
+1. **Contact Page**
+- Multiple contact methods (phone, email, form)
+- Office location with map
+- Hours of operation
+- Team directory with direct contact
+- Social media links
+- Emergency contact for property management clients
+
+-----
+
+## CRITICAL FEATURES TO IMPLEMENT
+
+### 1. Property Listings System
+
+```javascript
+// Property Card Component Requirements
+- High-quality images (carousel)
+- Price prominently displayed
+- Key stats: beds, baths, sqft, lot size
+- For investment properties ADD:
+  * Cap rate
+  * Estimated monthly rent
+  * Cash-on-cash return
+  * Property tax estimate
+  * HOA fees
+- Favorite/save functionality
+- Quick view modal
+- Share button
+- Schedule showing CTA
+```
+
+### 2. Investment Calculator Tools
+
+**ROI Calculator**
+
+- Purchase price input
+- Down payment percentage
+- Interest rate
+- Expected rent
+- Expenses (property tax, insurance, HOA, maintenance)
+- Calculate: monthly cash flow, cap rate, cash-on-cash return, total ROI
+- Export results as PDF
+
+**Rental Income Calculator**
+
+- Property address/area
+- Property type
+- Bedrooms/bathrooms
+- Show market rent estimates
+- Compare to asking price
+- Display rent-to-price ratio
+
+### 3. Lead Capture Forms
+
+**General Contact Form**
+
+- Name, Email, Phone (required)
+- Interest type (dropdown: Buying, Selling, Investing, Property Management)
+- Message
+- Preferred contact method
+- Best time to contact
+
+**Investment Consultation Form**
+
+- Basic contact info
+- Investment experience level
+- Investment goals (dropdown: rental income, appreciation, fix-flip, commercial)
+- Budget range
+- Timeline
+- Current portfolio size
+- Preferred property types
+- Financing pre-approval status
+
+**Home Valuation Form**
+
+- Property address
+- Property type
+- Year built
+- Sqft, beds, baths
+- Recent upgrades
+- Contact info
+- Reason for selling
+
+### 4. Trust & Credibility Elements
+
+**Statistics Counter Section** (animated on scroll)
+
+- X+ Years Experience
+- X+ Properties Sold
+- $X+ Million in Transactions
+- X% Client Satisfaction
+- X Properties Currently Managed
+
+**Testimonials Component**
+
+- Rotating carousel
+- Client photo/initials
+- Service type tag
+- Quote
+- Star rating
+- Location (city only)
+
+**Certifications Display**
+
+- Real estate license numbers
+- Professional designations (CCIM, CPM, CRS, etc.)
+- Association memberships (NAR, local boards)
+- Awards and recognition
+
+-----
+
+## DESIGN SPECIFICATIONS
+
+### Color Palette
+
+```css
+Primary: #1e40af (Trust blue)
+Secondary: #059669 (Growth green)
+Accent: #dc2626 (Urgency red for CTAs)
+Neutral Dark: #1f2937
+Neutral Light: #f3f4f6
+White: #ffffff
+```
+
+### Typography
+
+- Headings: Inter or Poppins (bold, modern)
+- Body: Inter or System UI (readable)
+- Numbers/Stats: Tabular figures for alignment
+
+### Component Style Guidelines
+
+- Cards: Subtle shadows, rounded corners (8px)
+- Buttons: Primary (filled), Secondary (outline), Ghost
+- Forms: Clear labels, inline validation, helpful error messages
+- Images: Aspect ratio 16:9 for properties, 1:1 for team photos
+- Spacing: Consistent 8px grid system
+- Hover states: Smooth transitions (200-300ms)
+
+### Mobile Responsiveness Breakpoints
+
+- Mobile: < 640px (stack everything)
+- Tablet: 640px - 1024px (2 columns)
+- Desktop: > 1024px (3-4 columns)
+- Large: > 1280px (max content width 1280px, center)
+
+-----
+
+## KEY SECTIONS & COMPONENTS TO BUILD
+
+### Homepage Hero Section
+
+```jsx
+<Hero>
+  <Heading>Full-Service Real Estate with Investment Expertise</Heading>
+  <Subheading>Whether you're buying your dream home or building a real estate portfolio, 
+  we provide data-driven guidance and end-to-end service.</Subheading>
+  <DualCTA>
+    <Button primary>Find Your Home</Button>
+    <Button secondary>Explore Investments</Button>
+  </DualCTA>
+  <PropertySearchBar />
+  <TrustBadges>Licensed | Insured | 15+ Years Experience</TrustBadges>
+</Hero>
+```
+
+### Investment Property Card
+
+```jsx
+<PropertyCard investment={true}>
+  <ImageCarousel />
+  <PriceTag>${price}</PriceTag>
+  <Address />
+  <BasicStats>Beds | Baths | Sqft</BasicStats>
+  <InvestmentMetrics>
+    <Metric>Cap Rate: {capRate}%</Metric>
+    <Metric>Monthly Rent: ${rent}</Metric>
+    <Metric>Cash Flow: ${cashFlow}/mo</Metric>
+  </InvestmentMetrics>
+  <Actions>
+    <SaveButton />
+    <DetailsButton />
+    <ContactButton />
+  </Actions>
+</PropertyCard>
+```
+
+### Services Grid (Homepage)
+
+```jsx
+<ServicesSection>
+  <ServiceCard icon={Home} link="/buy">
+    <Title>Buy a Home</Title>
+    <Description>Find your perfect property with expert guidance</Description>
+  </ServiceCard>
+  <ServiceCard icon={DollarSign} link="/sell">
+    <Title>Sell Your Property</Title>
+    <Description>Maximize your return with our proven process</Description>
+  </ServiceCard>
+  <ServiceCard icon={TrendingUp} link="/invest">
+    <Title>Real Estate Investing</Title>
+    <Description>Build wealth through strategic property investments</Description>
+  </ServiceCard>
+  <ServiceCard icon={Building} link="/property-management">
+    <Title>Property Management</Title>
+    <Description>Hassle-free management for your rental properties</Description>
+  </ServiceCard>
+</ServicesSection>
+```
+
+### Investment Tools Section
+
+```jsx
+<ToolsSection>
+  <Tool>
+    <Icon calculator />
+    <Title>ROI Calculator</Title>
+    <Description>Calculate potential returns on investment properties</Description>
+    <LaunchButton />
+  </Tool>
+  <Tool>
+    <Icon trendChart />
+    <Title>Market Analysis</Title>
+    <Description>Access current market trends and neighborhood data</Description>
+    <LaunchButton />
+  </Tool>
+  <Tool>
+    <Icon document />
+    <Title>Investment Guide</Title>
+    <Description>Download our comprehensive guide to real estate investing</Description>
+    <DownloadButton />
+  </Tool>
+</ToolsSection>
+```
+
+-----
+
+## CONTENT REQUIREMENTS
+
+### Homepage Copy
+
+**Hero Headline Options:**
+
+- “Build Wealth Through Smart Real Estate Investments”
+- “Your Trusted Partner in Real Estate & Investment Success”
+- “Full-Service Real Estate. Investment-Grade Expertise.”
+
+**Value Propositions to Highlight:**
+
+- Data-driven property analysis
+- Investment-focused approach
+- End-to-end service (acquisition to management)
+- Local market expertise
+- Proven track record
+
+### About Section Copy
+
+```
+Alliance Trust Realty combines traditional real estate excellence with sophisticated 
+investment analysis. Our team doesn't just help you buy and sell properties—we help 
+you build wealth through strategic real estate investments.
+
+With [X] years of experience and over [X] million in successful transactions, we 
+understand both the emotional journey of finding a home and the analytical rigor 
+required for investment success.
+```
+
+### Investment Services Copy
+
+```
+Whether you're a first-time investor or expanding your portfolio, we provide:
+
+- Comprehensive market analysis and property evaluation
+- ROI projections and cash flow modeling  
+- Investment strategy consultation
+- Access to off-market opportunities
+- Property management services
+- 1031 exchange coordination
+- Portfolio diversification planning
+
+Our investment-grade approach means every property is analyzed for its true potential, 
+not just its curb appeal.
+```
+
+-----
+
+## FORMS & FUNCTIONALITY
+
+### Property Search Filters
+
+**Basic:**
+
+- Location (city, neighborhood, zip)
+- Price range (slider)
+- Property type (single-family, multi-family, condo, commercial)
+- Bedrooms (min)
+- Bathrooms (min)
+
+**Investment Filters:**
+
+- Cap rate range
+- Expected ROI
+- Cash flow potential
+- Property condition (move-in, needs work, distressed)
+- Tenant occupied vs vacant
+- Commercial vs residential investment
+
+### Contact Form Validation
+
+```javascript
+// Required fields
+- Name (min 2 characters)
+- Email (valid format)
+- Phone (valid format, optional mask)
+- Message (min 10 characters)
+
+// Optional but tracked
+- How did you hear about us?
+- Best time to contact
+- Urgency level
+
+// Success behavior
+- Show confirmation message
+- Clear form
+- Send confirmation email (note to implement)
+- Track in analytics
+```
+
+-----
+
+## SEO & METADATA
+
+### Required Meta Tags (Every Page)
+
+```html
+<title>Specific Page Title | Alliance Trust Realty</title>
+<meta name="description" content="120-160 character description with keywords" />
+<meta name="keywords" content="real estate, investment properties, [city], property management" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Page Title" />
+<meta property="og:description" content="Description" />
+<meta property="og:image" content="URL to image" />
+<meta property="og:url" content="Canonical URL" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Page Title" />
+<meta name="twitter:description" content="Description" />
+```
+
+### Structured Data (JSON-LD)
+
+Implement for:
+
+- Organization
+- LocalBusiness
+- RealEstateAgent
+- Product (for properties)
+
+-----
+
+## LEGAL & COMPLIANCE
+
+### Required Pages
+
+**Privacy Policy**
+
+- Data collection practices
+- Cookie usage
+- Third-party services
+- User rights
+- Contact for privacy concerns
+
+**Terms of Service**
+
+- Use of website
+- Intellectual property
+- Limitations of liability
+- Dispute resolution
+
+**Accessibility Statement**
+
+- WCAG compliance level
+- Contact for accessibility issues
+- Known limitations
+
+### Footer Requirements
+
+```jsx
+<Footer>
+  <CompanyInfo>
+    Logo
+    Tagline
+    License #: [LICENSE NUMBER]
+    Address
+    Phone
+    Email
+  </CompanyInfo>
+  
+  <QuickLinks>
+    Buy | Sell | Invest | Property Management | About | Contact
+  </QuickLinks>
+  
+  <Resources>
+    Market Reports | Blog | Investment Calculator | Home Valuation
+  </Resources>
+  
+  <Legal>
+    Privacy Policy | Terms of Service | Fair Housing | Accessibility
+  </Legal>
+  
+  <Disclaimers>
+    Equal Housing Opportunity logo
+    MLS disclaimers (if applicable)
+    "Information deemed reliable but not guaranteed"
+    "Not financial advice - consult professionals"
+  </Disclaimers>
+  
+  <Social>
+    LinkedIn | Facebook | Instagram | YouTube
+  </Social>
+  
+  <Copyright>
+    © 2025 Alliance Trust Realty. All rights reserved.
+  </Copyright>
+</Footer>
+```
+
+### Investment Disclaimer
+
+Display on all investment-related pages:
+
+```
+"Alliance Trust Realty provides real estate services and market analysis. We do not 
+provide financial, tax, or legal advice. All investment decisions should be made in 
+consultation with qualified professionals. Past performance does not guarantee future 
+results. Real estate investments carry risk including potential loss of principal."
+```
+
+-----
+
+## INTERACTIVE FEATURES
+
+### Property Comparison Tool
+
+- Select up to 3 properties
+- Side-by-side comparison
+- Highlight differences
+- Export comparison
+
+### Saved Properties / Favorites
+
+- Heart icon to save
+- Store in React state (NOT localStorage)
+- View saved properties page
+- Email saved properties to self
+
+### Newsletter Signup
+
+- Prominent placement (footer, homepage)
+- Email only or full profile
+- Frequency selection (weekly, monthly)
+- Topics of interest (buying tips, market reports, investment strategies)
+
+### Live Chat / Contact Widget
+
+- Floating button bottom-right
+- Quick contact form
+- Office hours display
+- Alternative: “Schedule a call” calendar integration
+
+-----
+
+## ANALYTICS & TRACKING
+
+### Events to Track
+
+- Page views
+- Form submissions (by type)
+- Calculator usage
+- Property views
+- Property saves
+- CTA clicks
+- Download clicks (guides, reports)
+- Video plays
+- External link clicks
+
+### Conversion Goals
+
+- Contact form completion
+- Investment consultation request
+- Home valuation request
+- Property showing scheduled
+- Newsletter signup
+
+-----
+
+## ACCESSIBILITY REQUIREMENTS
+
+### Must Have
+
+- Semantic HTML (header, nav, main, aside, footer)
+- ARIA labels where needed
+- Keyboard navigation support
+- Focus indicators visible
+- Alt text for all images
+- Color contrast ratio 4.5:1 minimum
+- Form labels and error messages
+- Skip to main content link
+- Responsive text sizing
+
+### Form Accessibility
+
+- Label for every input
+- Error messages associated with fields
+- Required field indicators
+- Clear focus states
+- Helpful placeholder text (not replacing labels)
+
+-----
+
+## SAMPLE PROPERTY DATA STRUCTURE
+
+```javascript
+const propertyExample = {
+  id: "prop_001",
+  type: "investment", // or "residential"
+  status: "active",
+  images: [
+    "url1.jpg",
+    "url2.jpg",
+    "url3.jpg"
+  ],
+  address: {
+    street: "123 Main St",
+    city: "Springfield",
+    state: "IL",
+    zip: "62701"
+  },
+  price: 285000,
+  basics: {
+    beds: 3,
+    baths: 2,
+    sqft: 1800,
+    lotSize: "0.25 acres",
+    yearBuilt: 2005,
+    propertyType: "Single Family"
+  },
+  investment: {
+    capRate: 7.2,
+    estimatedRent: 2100,
+    monthlyExpenses: 850,
+    monthlyCashFlow: 750,
+    cashOnCashReturn: 12.5,
+    propertyTax: 3400,
+    insurance: 1200,
+    hoa: 0
+  },
+  description: "Fully renovated investment property in growing neighborhood...",
+  features: [
+    "Recently renovated kitchen",
+    "New roof (2023)",
+    "Updated HVAC",
+    "Tenant occupied through 2025",
+    "Strong rental history"
+  ],
+  listingAgent: "John Doe",
+  mlsNumber: "12345678",
+  daysOnMarket: 12
+}
+```
+
+-----
+
+## DEVELOPMENT PRIORITIES (Build in this order)
+
+### Phase 1: Foundation (Build First)
+
+1. Project setup with React + TypeScript + Tailwind
+1. Routing structure (all pages)
+1. Responsive navigation header
+1. Footer with all required sections
+1. Basic page layouts (Homepage, About, Contact)
+
+### Phase 2: Core Features
+
+1. Property card component (both types)
+1. Property grid/listing page
+1. Contact forms (general, consultation, valuation)
+1. Hero section with search
+1. Services overview section
+
+### Phase 3: Investment Features
+
+1. ROI Calculator tool
+1. Rental income calculator
+1. Investment property filters
+1. Investment services page with content
+1. Case studies/testimonials section
+
+### Phase 4: Enhancement
+
+1. Property comparison tool
+1. Property favorites functionality
+1. Newsletter signup integration
+1. Team profiles page
+1. Blog/resources section
+
+### Phase 5: Polish
+
+1. Animations and transitions
+1. Image optimization
+1. Performance optimization
+1. Accessibility audit and fixes
+1. SEO metadata completion
+
+-----
+
+## SAMPLE CALCULATOR IMPLEMENTATION
+
+```jsx
+// ROI Calculator Component
+const ROICalculator = () => {
+  const [inputs, setInputs] = useState({
+    purchasePrice: 0,
+    downPayment: 20,
+    interestRate: 7.0,
+    loanTerm: 30,
+    monthlyRent: 0,
+    propertyTax: 0,
+    insurance: 0,
+    hoa: 0,
+    maintenance: 0,
+    vacancy: 5
+  });
+
+  const calculate = () => {
+    // Loan calculations
+    const loanAmount = inputs.purchasePrice * (1 - inputs.downPayment / 100);
+    const monthlyRate = inputs.interestRate / 100 / 12;
+    const numPayments = inputs.loanTerm * 12;
+    const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                      (Math.pow(1 + monthlyRate, numPayments) - 1);
+    
+    // Monthly expenses
+    const monthlyTax = inputs.propertyTax / 12;
+    const monthlyInsurance = inputs.insurance / 12;
+    const totalMonthlyExpenses = monthlyPI + monthlyTax + monthlyInsurance + 
+                                 inputs.hoa + inputs.maintenance;
+    
+    // Cash flow
+    const effectiveRent = inputs.monthlyRent * (1 - inputs.vacancy / 100);
+    const monthlyCashFlow = effectiveRent - totalMonthlyExpenses;
+    const annualCashFlow = monthlyCashFlow * 12;
+    
+    // Returns
+    const totalInvestment = inputs.purchasePrice * (inputs.downPayment / 100);
+    const cashOnCashReturn = (annualCashFlow / totalInvestment) * 100;
+    const capRate = ((inputs.monthlyRent * 12) - 
+                    (inputs.propertyTax + inputs.insurance + (inputs.hoa * 12) + 
+                     (inputs.maintenance * 12))) / inputs.purchasePrice * 100;
+
+    return {
+      monthlyPI,
+      monthlyCashFlow,
+      annualCashFlow,
+      cashOnCashReturn,
+      capRate,
+      totalInvestment
+    };
+  };
+
+  const results = calculate();
+
+  return (
+    <div className="calculator-container">
+      <h2>Investment ROI Calculator</h2>
+      
+      <div className="inputs-grid">
+        {/* Input fields */}
+      </div>
+      
+      <div className="results-grid">
+        <ResultCard 
+          label="Monthly Cash Flow" 
+          value={results.monthlyCashFlow} 
+          format="currency"
+          positive={results.monthlyCashFlow > 0}
+        />
+        <ResultCard 
+          label="Cash-on-Cash Return" 
+          value={results.cashOnCashReturn} 
+          format="percentage"
+        />
+        <ResultCard 
+          label="Cap Rate" 
+          value={results.capRate} 
+          format="percentage"
+        />
+        <ResultCard 
+          label="Annual Cash Flow" 
+          value={results.annualCashFlow} 
+          format="currency"
+        />
+      </div>
+      
+      <Button>Export Results</Button>
+    </div>
+  );
+};
+```
+
+-----
+
+## TESTING CHECKLIST
+
+Before deployment, verify:
+
+### Functionality
+
+- [ ] All forms submit successfully
+- [ ] Form validation works correctly
+- [ ] All links navigate properly
+- [ ] Calculators produce accurate results
+- [ ] Mobile menu opens/closes
+- [ ] Image carousels work
+- [ ] Property filters apply correctly
+- [ ] Search functionality works
+
+### Responsiveness
+
+- [ ] Test on mobile (320px, 375px, 414px)
+- [ ] Test on tablet (768px, 1024px)
+- [ ] Test on desktop (1280px, 1440px, 1920px)
+- [ ] All text readable at all sizes
+- [ ] Images scale appropriately
+- [ ] No horizontal scrolling
+- [ ] Touch targets minimum 44x44px
+
+### Performance
+
+- [ ] Lighthouse score > 90 (Performance)
+- [ ] Images optimized and lazy loaded
+- [ ] No console errors
+- [ ] Fast initial page load
+- [ ] Smooth animations
+
+### Accessibility
+
+- [ ] Keyboard navigation works throughout
+- [ ] Screen reader testing
+- [ ] Color contrast passes
+- [ ] Focus indicators visible
+- [ ] ARIA labels present where needed
+- [ ] All images have alt text
+
+### Content
+
+- [ ] No lorem ipsum text
+- [ ] All phone numbers formatted
+- [ ] All email addresses valid
+- [ ] Legal pages complete
+- [ ] Meta descriptions on all pages
+- [ ] Consistent branding
+
+### SEO
+
+- [ ] Title tags unique and descriptive
+- [ ] Meta descriptions present
+- [ ] H1 tag on every page
+- [ ] Semantic HTML structure
+- [ ] Internal linking structure
+- [ ] Sitemap.xml created
+
+-----
+
+## DEPLOYMENT NOTES
+
+### Environment Variables Needed
+
+```
+REACT_APP_SITE_NAME=Alliance Trust Realty
+REACT_APP_CONTACT_EMAIL=info@alliancetrustproperties.com
+REACT_APP_CONTACT_PHONE=(555) 123-4567
+REACT_APP_ADDRESS=123 Main St, City, ST 12345
+REACT_APP_LICENSE_NUMBER=[LICENSE #]
+REACT_APP_GOOGLE_MAPS_API_KEY=[KEY]
+REACT_APP_ANALYTICS_ID=[GA4 ID]
+```
+
+### Pre-launch Checklist
+
+- [ ] SSL certificate installed (HTTPS)
+- [ ] Google Analytics configured
+- [ ] Google Search Console verified
+- [ ] Contact forms sending to correct email
+- [ ] 404 page created
+- [ ] Favicon and touch icons added
+- [ ] Robots.txt configured
+- [ ] Sitemap submitted to search engines
+
+-----
+
+## SUPPORT & MAINTENANCE
+
+### Post-Launch Monitoring
+
+- Form submission tracking
+- Page load performance
+- Error logging
+- User behavior analytics
+- Conversion rate tracking
+
+### Content Update Schedule
+
+- Weekly: New property listings
+- Bi-weekly: Blog posts
+- Monthly: Market reports
+- Quarterly: Team photos, testimonials
+- Annually: Legal pages review
+
+-----
+
+## REPLIT AGENT EXECUTION INSTRUCTIONS
+
+**START HERE:**
+
+1. **Initialize project:**
+- Create React app with TypeScript
+- Install: tailwindcss, react-router-dom, react-hook-form, lucide-react, framer-motion
+- Set up Tailwind configuration with color palette above
+- Create basic folder structure: /components, /pages, /utils, /assets
+1. **Build in order of priorities listed above (Phase 1-5)**
+1. **Use provided:**
+- Color palette exactly as specified
+- Component structures from examples
+- Copy/content from content sections
+- Property data structure
+- Calculator logic
+1. **For each component:**
+- Make it fully responsive
+- Add proper TypeScript types
+- Include accessibility attributes
+- Add smooth transitions
+- Test mobile experience
+1. **Critical requirements:**
+- NO localStorage or sessionStorage
+- Use React state for all data persistence
+- All forms must validate
+- All images need alt text
+- Mobile-first approach
+1. **When complete:**
+- Run through testing checklist
+- Optimize images
+- Check Lighthouse scores
+- Verify all links work
+- Test all forms
+
+**BUILD A PRODUCTION-READY, PROFESSIONAL REAL ESTATE WEBSITE THAT POSITIONS ALLIANCE TRUST REALTY AS THE PREMIER CHOICE FOR BOTH HOME BUYERS AND REAL ESTATE INVESTORS.**
