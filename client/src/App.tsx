@@ -24,6 +24,8 @@ import SellPage from "@/pages/sell";
 import PropertyManagementPage from "@/pages/property-management";
 import InvestPage from "@/pages/Invest";
 
+import InvestorDashboard from "@/pages/dashboard/investor";
+
 function Router() {
   return (
     <Switch>
@@ -31,6 +33,7 @@ function Router() {
       <Route path="/buy" component={BuyPage} />
       <Route path="/sell" component={SellPage} />
       <Route path="/invest" component={InvestPage} />
+      <Route path="/dashboard/investor" component={InvestorDashboard} />
       <Route path="/property-management" component={PropertyManagementPage} />
       <Route path="/affiliate" component={Affiliate} />
       <Route path="/investment-plan" component={InvestmentPlan} />
