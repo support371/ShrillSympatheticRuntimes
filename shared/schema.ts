@@ -1,120 +1,85 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, boolean, jsonb, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, decimal, timestamp, boolean, jsonb, pgEnum } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export const userRoleEnum = pgEnum("user_role", ["investor", "agent", "admin", "property_manager"]);
+export const userStatusEnum = pgEnum("user_status", ["active", "inactive", "suspended", "pending_verification"]);
+export const kycStatusEnum = pgEnum("kyc_status", ["not_submitted", "pending", "approved", "rejected"]);
+export const propertyTypeEnum = pgEnum("property_type", ["single_family", "multi_family", "condo", "townhouse", "commercial", "land"]);
+export const propertyStatusEnum = pgEnum("property_status", ["available", "under_contract", "sold", "rented", "maintenance"]);
+export const listingStatusEnum = pgEnum("listing_status", ["draft", "active", "pending", "sold", "archived"]);
+export const investmentStatusEnum = pgEnum("investment_status", ["pending", "active", "sold", "matured", "cancelled"]);
+export const investmentTypeEnum = pgEnum("investment_type", ["full_ownership", "fractional", "fund", "reit"]);
+
 export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: text("email").notNull().unique(),
-  password: text("password").notNull(),
-  fullName: text("full_name"),
-  isDemo: boolean("is_demo").default(false).notNull(),
-  isAdmin: boolean("is_admin").default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  id: serial("id").primaryKey(),
+  email: text("email").unique().notNull(),
+  passwordHash: text("password_hash").notNull(),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  phone: text("phone"),
+  role: userRoleEnum("role").notNull().default("investor"),
+  status: userStatusEnum("status").notNull().default("pending_verification"),
+  kycStatus: kycStatusEnum("kyc_status").notNull().default("not_submitted"),
+  profileImageUrl: text("profile_image_url"),
+  dateOfBirth: timestamp("date_of_birth"),
+  ssnLast4: text("ssn_last_4"),
+  address: jsonb("address"),
+  emailVerified: boolean("email_verified").default(false),
+  phoneVerified: boolean("phone_verified").default(false),
+  twoFactorEnabled: boolean("two_factor_enabled").default(false),
+  lastLoginAt: timestamp("last_login_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const insertUserSchema = createInsertSchema(users).omit({
-  id: true,
-  createdAt: true,
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
-
-export const orgConfigs = pgTable("org_configs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  orgName: text("org_name").notNull(),
-  modules: jsonb("modules").default({ overview: true, briefing: false, financials: false, evidence: false, source: false }).notNull(),
-  isConfigured: boolean("is_configured").default(false).notNull(),
-  safeMode: boolean("safe_mode").default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
-
-export const insertOrgConfigSchema = createInsertSchema(orgConfigs).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export type InsertOrgConfig = z.infer<typeof insertOrgConfigSchema>;
-export type OrgConfig = typeof orgConfigs.$inferSelect;
-
-export const newsletters = pgTable("newsletters", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: text("email").notNull().unique(),
-  subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
-  isActive: boolean("is_active").default(true).notNull(),
-});
-
-export const insertNewsletterSchema = createInsertSchema(newsletters).omit({
-  id: true,
-  subscribedAt: true,
-  isActive: true,
-});
-
-export type InsertNewsletter = z.infer<typeof insertNewsletterSchema>;
-export type Newsletter = typeof newsletters.$inferSelect;
-
-export const strategies = pgTable("strategies", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  slug: text("slug").notNull().unique(),
-  title: text("title").notNull(),
-  type: text("type").notNull(),
-  riskLevel: text("risk_level").notNull(),
-  targetIRR: text("target_irr"),
-  minInvestment: text("min_investment"),
-  term: text("term"),
+export const properties = pgTable("properties", {
+  id: serial("id").primaryKey(),
+  mlsNumber: text("mls_number").unique(),
+  propertyType: propertyTypeEnum("property_type").notNull(),
+  status: propertyStatusEnum("status").notNull().default("available"),
+  listingStatus: listingStatusEnum("listing_status").notNull().default("draft"),
+  streetAddress: text("street_address").notNull(),
+  unitNumber: text("unit_number"),
+  city: text("city").notNull(),
+  state: text("state").notNull(),
+  zipCode: text("zip_code").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  bedrooms: decimal("bedrooms", { precision: 3, scale: 1 }),
+  bathrooms: decimal("bathrooms", { precision: 3, scale: 1 }),
+  squareFeet: integer("square_feet"),
+  yearBuilt: integer("year_built"),
+  listPrice: decimal("list_price", { precision: 12, scale: 2 }).notNull(),
+  currentValue: decimal("current_value", { precision: 12, scale: 2 }),
+  estimatedMonthlyRent: decimal("estimated_monthly_rent", { precision: 10, scale: 2 }),
+  capRate: decimal("cap_rate", { precision: 5, scale: 2 }),
   description: text("description"),
-  details: jsonb("details"),
-  isActive: boolean("is_active").default(true).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  images: jsonb("images"), // [{url, order, caption}]
+  isFeatured: boolean("is_featured").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
-
-export const insertStrategySchema = createInsertSchema(strategies).omit({
-  id: true,
-  createdAt: true,
-});
-
-export type InsertStrategy = z.infer<typeof insertStrategySchema>;
-export type Strategy = typeof strategies.$inferSelect;
 
 export const investments = pgTable("investments", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  strategyId: varchar("strategy_id").notNull().references(() => strategies.id, { onDelete: "cascade" }),
-  amount: text("amount").notNull(),
-  status: text("status").notNull().default("active"),
-  purchaseDate: timestamp("purchase_date").defaultNow().notNull(),
-  maturityDate: timestamp("maturity_date"),
-  currentValue: text("current_value"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  propertyId: integer("property_id").references(() => properties.id).notNull(),
+  investmentType: investmentTypeEnum("investment_type").notNull().default("full_ownership"),
+  status: investmentStatusEnum("status").notNull().default("pending"),
+  investmentAmount: decimal("investment_amount", { precision: 12, scale: 2 }).notNull(),
+  ownershipPercentage: decimal("ownership_percentage", { precision: 5, scale: 2 }),
+  startDate: timestamp("start_date").notNull().defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertInvestmentSchema = createInsertSchema(investments).omit({
-  id: true,
-  createdAt: true,
-});
+export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertPropertySchema = createInsertSchema(properties).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertInvestmentSchema = createInsertSchema(investments).omit({ id: true, createdAt: true });
 
-export type InsertInvestment = z.infer<typeof insertInvestmentSchema>;
+export type User = typeof users.$inferSelect;
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type Property = typeof properties.$inferSelect;
+export type InsertProperty = z.infer<typeof insertPropertySchema>;
 export type Investment = typeof investments.$inferSelect;
-
-export const transactions = pgTable("transactions", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
-  investmentId: varchar("investment_id").references(() => investments.id, { onDelete: "set null" }),
-  type: text("type").notNull(),
-  amount: text("amount").notNull(),
-  status: text("status").notNull().default("pending"),
-  description: text("description"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const insertTransactionSchema = createInsertSchema(transactions).omit({
-  id: true,
-  createdAt: true,
-});
-
-export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
-export type Transaction = typeof transactions.$inferSelect;
+export type InsertInvestment = z.infer<typeof insertInvestmentSchema>;
