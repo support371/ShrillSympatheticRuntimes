@@ -9,7 +9,6 @@ packages = ["unzipNLS"]
 [deployment]
 deploymentTarget = "autoscale"
 build = ["npm", "run", "build"]
-publicDir = "dist/public"
 run = ["npm", "run", "start"]
 
 [[ports]]
