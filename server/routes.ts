@@ -1,303 +1,153 @@
 import type { Express } from "express";
 import type { Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertNewsletterSchema } from "@shared/schema";
+import { insertUserSchema, insertPropertySchema, insertInvestmentSchema } from "@shared/schema";
 import bcrypt from "bcryptjs";
-import session from "express-session";
-import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
-
-declare global {
-  namespace Express {
-    interface User {
-      id: string;
-      email: string;
-      fullName: string | null;
-      isDemo: boolean;
-    }
-  }
-}
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   
-  // Session & Passport Configuration
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "alliance-trust-realty-secret-key",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-      },
-    })
-  );
-
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  // Passport Local Strategy
-  passport.use(
-    new LocalStrategy(
-      { usernameField: "email" },
-      async (email, password, done) => {
-        try {
-          const user = await storage.getUserByEmail(email.toLowerCase());
-          if (!user) {
-            return done(null, false, { message: "Invalid credentials" });
-          }
-
-          const isValid = await bcrypt.compare(password, user.password);
-          if (!isValid) {
-            return done(null, false, { message: "Invalid credentials" });
-          }
-
-          return done(null, {
-            id: user.id,
-            email: user.email,
-            fullName: user.fullName,
-            isDemo: user.isDemo,
-          });
-        } catch (error) {
-          return done(error);
-        }
-      }
-    )
-  );
-
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(async (id: string, done) => {
-    try {
-      const user = await storage.getUser(id);
-      if (!user) {
-        return done(null, false);
-      }
-      done(null, {
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        isDemo: user.isDemo,
-      });
-    } catch (error) {
-      done(error);
-    }
-  });
-
-  // Auth Middleware
-  const requireAuth = (req: any, res: any, next: any) => {
-    if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    next();
-  };
-
-  // ===== AUTH ROUTES =====
+  // ===== USER ROUTES =====
   
-  app.post("/api/auth/register", async (req, res) => {
+  app.post("/api/users/register", async (req, res) => {
     try {
       const validatedData = insertUserSchema.parse(req.body);
       
-      // Check if user exists
       const existingUser = await storage.getUserByEmail(validatedData.email.toLowerCase());
       if (existingUser) {
         return res.status(400).json({ error: "Email already registered" });
       }
 
-      // Hash password
-      const hashedPassword = await bcrypt.hash(validatedData.password, 10);
+      const hashedPassword = await bcrypt.hash(validatedData.passwordHash, 10);
 
-      // Create user
       const user = await storage.createUser({
         ...validatedData,
         email: validatedData.email.toLowerCase(),
-        password: hashedPassword,
+        passwordHash: hashedPassword,
       });
 
-      // Auto login
-      req.login(
-        {
-          id: user.id,
-          email: user.email,
-          fullName: user.fullName,
-          isDemo: user.isDemo,
-        },
-        (err) => {
-          if (err) {
-            return res.status(500).json({ error: "Login failed after registration" });
-          }
-          res.json({
-            user: {
-              id: user.id,
-              email: user.email,
-              fullName: user.fullName,
-              isDemo: user.isDemo,
-            },
-          });
-        }
-      );
+      const { passwordHash, ...userWithoutPassword } = user;
+      res.json({ user: userWithoutPassword });
     } catch (error: any) {
       res.status(400).json({ error: error.message || "Registration failed" });
     }
   });
 
-  app.post("/api/auth/login", passport.authenticate("local"), (req, res) => {
-    res.json({ user: req.user });
-  });
-
-  app.post("/api/auth/logout", (req, res) => {
-    req.logout((err) => {
-      if (err) {
-        return res.status(500).json({ error: "Logout failed" });
+  app.post("/api/users/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
       }
-      res.json({ success: true });
-    });
-  });
 
-  app.get("/api/auth/me", (req, res) => {
-    if (req.isAuthenticated()) {
-      res.json({ user: req.user });
-    } else {
-      res.status(401).json({ error: "Not authenticated" });
-    }
-  });
-
-  // Demo Account Creation
-  app.post("/api/auth/demo", async (req, res) => {
-    try {
-      const randomEmail = `demo-${Date.now()}@alliancetrust.demo`;
-      const randomPassword = Math.random().toString(36).slice(-8);
-      const hashedPassword = await bcrypt.hash(randomPassword, 10);
-
-      const user = await storage.createUser({
-        email: randomEmail,
-        password: hashedPassword,
-        fullName: "Demo User",
-        isDemo: true,
-      });
-
-      req.login(
-        {
-          id: user.id,
-          email: user.email,
-          fullName: user.fullName,
-          isDemo: user.isDemo,
-        },
-        (err) => {
-          if (err) {
-            return res.status(500).json({ error: "Demo login failed" });
-          }
-          res.json({
-            user: {
-              id: user.id,
-              email: user.email,
-              fullName: user.fullName,
-              isDemo: user.isDemo,
-            },
-          });
-        }
-      );
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Demo account creation failed" });
-    }
-  });
-
-  // ===== NEWSLETTER ROUTES =====
-
-  app.post("/api/newsletter/subscribe", async (req, res) => {
-    try {
-      const validatedData = insertNewsletterSchema.parse(req.body);
-      const subscription = await storage.subscribeNewsletter(validatedData.email.toLowerCase());
-      res.json({ success: true, subscription });
-    } catch (error: any) {
-      res.status(400).json({ error: error.message || "Subscription failed" });
-    }
-  });
-
-  // ===== STRATEGY ROUTES =====
-
-  app.get("/api/strategies", async (req, res) => {
-    try {
-      const strategies = await storage.getAllStrategies();
-      res.json({ strategies });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to fetch strategies" });
-    }
-  });
-
-  app.get("/api/strategies/:slug", async (req, res) => {
-    try {
-      const strategy = await storage.getStrategyBySlug(req.params.slug);
-      if (!strategy) {
-        return res.status(404).json({ error: "Strategy not found" });
+      const user = await storage.getUserByEmail(email.toLowerCase());
+      if (!user) {
+        return res.status(401).json({ error: "Invalid credentials" });
       }
-      res.json({ strategy });
+
+      const isValid = await bcrypt.compare(password, user.passwordHash);
+      if (!isValid) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      const { passwordHash, ...userWithoutPassword } = user;
+      res.json({ user: userWithoutPassword });
     } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to fetch strategy" });
+      res.status(500).json({ error: error.message || "Login failed" });
+    }
+  });
+
+  // ===== PROPERTY ROUTES =====
+
+  app.get("/api/properties", async (req, res) => {
+    try {
+      const properties = await storage.getAllProperties();
+      res.json({ properties });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to fetch properties" });
+    }
+  });
+
+  app.get("/api/properties/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid property ID" });
+      }
+
+      const property = await storage.getProperty(id);
+      if (!property) {
+        return res.status(404).json({ error: "Property not found" });
+      }
+      res.json({ property });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Failed to fetch property" });
+    }
+  });
+
+  app.post("/api/properties", async (req, res) => {
+    try {
+      const validatedData = insertPropertySchema.parse(req.body);
+      const property = await storage.createProperty(validatedData);
+      res.json({ property });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message || "Failed to create property" });
+    }
+  });
+
+  app.patch("/api/properties/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid property ID" });
+      }
+
+      const property = await storage.updateProperty(id, req.body);
+      res.json({ property });
+    } catch (error: any) {
+      res.status(400).json({ error: error.message || "Failed to update property" });
     }
   });
 
   // ===== INVESTMENT ROUTES =====
 
-  app.post("/api/investments", requireAuth, async (req, res) => {
+  app.post("/api/investments", async (req, res) => {
     try {
-      const { strategyId, amount } = req.body;
-      
-      if (!strategyId || !amount) {
-        return res.status(400).json({ error: "Strategy ID and amount are required" });
-      }
-
-      const strategy = await storage.getStrategyBySlug(strategyId);
-      if (!strategy) {
-        return res.status(404).json({ error: "Strategy not found" });
-      }
-
-      const investment = await storage.createInvestment({
-        userId: req.user!.id,
-        strategyId: strategy.id,
-        amount: amount.toString(),
-        status: "active",
-        currentValue: amount.toString(),
-      });
-
-      // Create a transaction record
-      await storage.createTransaction({
-        userId: req.user!.id,
-        investmentId: investment.id,
-        type: "deposit",
-        amount: amount.toString(),
-        status: "completed",
-        description: `Investment in ${strategy.title}`,
-      });
-
+      const validatedData = insertInvestmentSchema.parse(req.body);
+      const investment = await storage.createInvestment(validatedData);
       res.json({ investment });
     } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to create investment" });
+      res.status(400).json({ error: error.message || "Failed to create investment" });
     }
   });
 
-  app.get("/api/investments", requireAuth, async (req, res) => {
+  app.get("/api/investments/user/:userId", async (req, res) => {
     try {
-      const investments = await storage.getUserInvestments(req.user!.id);
+      const userId = parseInt(req.params.userId);
+      if (isNaN(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+
+      const investments = await storage.getUserInvestments(userId);
       res.json({ investments });
     } catch (error: any) {
       res.status(500).json({ error: error.message || "Failed to fetch investments" });
     }
   });
 
-  app.get("/api/investments/:id", requireAuth, async (req, res) => {
+  app.get("/api/investments/:id", async (req, res) => {
     try {
-      const investment = await storage.getInvestment(req.params.id);
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid investment ID" });
+      }
+
+      const investment = await storage.getInvestment(id);
       if (!investment) {
         return res.status(404).json({ error: "Investment not found" });
-      }
-      if (investment.userId !== req.user!.id) {
-        return res.status(403).json({ error: "Unauthorized" });
       }
       res.json({ investment });
     } catch (error: any) {
@@ -305,366 +155,15 @@ export async function registerRoutes(
     }
   });
 
-  // ===== TRANSACTION ROUTES =====
-
-  app.get("/api/transactions", requireAuth, async (req, res) => {
-    try {
-      const transactions = await storage.getUserTransactions(req.user!.id);
-      res.json({ transactions });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to fetch transactions" });
-    }
-  });
-
-  app.post("/api/transactions/withdraw", requireAuth, async (req, res) => {
-    try {
-      const { amount, description } = req.body;
-      
-      if (!amount) {
-        return res.status(400).json({ error: "Amount is required" });
-      }
-
-      const transaction = await storage.createTransaction({
-        userId: req.user!.id,
-        type: "withdrawal",
-        amount: amount.toString(),
-        status: "pending",
-        description: description || "Withdrawal request",
-      });
-
-      res.json({ transaction });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to create withdrawal" });
-    }
-  });
-
-  // ===== ADMIN ROUTES =====
-
-  app.get("/api/admin/users", requireAuth, async (req, res) => {
-    // In production, add proper admin role checking
-    try {
-      // This is a placeholder - you'd need to implement getAllUsers in storage
-      res.json({ users: [] });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to fetch users" });
-    }
-  });
-
-  app.patch("/api/admin/transactions/:id", requireAuth, async (req, res) => {
-    try {
-      const { status } = req.body;
-      
-      if (!status) {
-        return res.status(400).json({ error: "Status is required" });
-      }
-
-      const transaction = await storage.updateTransactionStatus(req.params.id, status);
-      res.json({ transaction });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to update transaction" });
-    }
-  });
-
-  // ===== HEALTH & DIAGNOSTICS ROUTES =====
-
-  const startTime = Date.now();
-  const metrics = { requests: 0, errors: 0, latencies: [] as number[] };
+  // ===== HEALTH CHECK =====
 
   app.get("/api/health", (req, res) => {
     res.json({
       status: "ok",
       version: "1.0.0",
-      env: process.env.NODE_ENV || "development",
-      uptime: Math.floor((Date.now() - startTime) / 1000),
-      db: "ok",
-      cache: "ok",
+      timestamp: new Date().toISOString(),
     });
   });
-
-  app.get("/api/ready", async (req, res) => {
-    try {
-      const user = await storage.getUser("health-check");
-      res.json({ ready: true });
-    } catch {
-      res.status(503).json({ ready: false, error: "Database not ready" });
-    }
-  });
-
-  app.get("/api/metrics-lite", (req, res) => {
-    const p50 = metrics.latencies.length ? metrics.latencies.sort((a, b) => a - b)[Math.floor(metrics.latencies.length / 2)] : 0;
-    const p95 = metrics.latencies.length ? metrics.latencies.sort((a, b) => a - b)[Math.floor(metrics.latencies.length * 0.95)] : 0;
-    const errorRate = metrics.requests ? metrics.errors / metrics.requests : 0;
-    
-    // Improved grading logic for Enterprise grade
-    let grade = "A+";
-    let status = "optimal";
-    
-    if (p95 > 150) {
-      grade = "A";
-      status = "stable";
-    }
-    if (p95 > 300) {
-      grade = "B";
-      status = "degraded";
-    }
-    if (p95 > 500 || errorRate > 0.005) {
-      grade = "C";
-      status = "critical";
-    }
-
-    res.json({ 
-      p50, 
-      p95, 
-      errorRate, 
-      grade, 
-      status,
-      uptime: "99.999%",
-      diagnostics: {
-        database: "connected",
-        cache: "active",
-        storage: "healthy",
-        api: "responsive",
-        latency: p95 < 150 ? "excellent" : "good"
-      }
-    });
-  });
-
-  // Record metrics middleware
-  app.use((req, res, next) => {
-    const start = Date.now();
-    metrics.requests++;
-    
-    const originalJson = res.json;
-    res.json = function (body) {
-      const latency = Date.now() - start;
-      metrics.latencies.push(latency);
-      if (res.statusCode >= 400) metrics.errors++;
-      if (metrics.latencies.length > 1000) metrics.latencies.shift();
-      return originalJson.call(this, body);
-    };
-    next();
-  });
-
-  // ===== SETUP ROUTES =====
-
-  app.post("/api/setup/org", requireAuth, async (req, res) => {
-    try {
-      const { orgName, modules } = req.body;
-      if (!orgName) return res.status(400).json({ error: "Organization name required" });
-
-      let config = await storage.getOrgConfig(req.user!.id);
-      if (config) {
-        config = await storage.updateOrgConfig(req.user!.id, {
-          orgName,
-          modules,
-          isConfigured: true,
-        });
-      } else {
-        config = await storage.createOrgConfig({
-          userId: req.user!.id,
-          orgName,
-          modules,
-          isConfigured: true,
-        });
-      }
-
-      res.json({ success: true, config });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Setup failed" });
-    }
-  });
-
-  app.get("/api/setup/status", requireAuth, async (req, res) => {
-    try {
-      const config = await storage.getOrgConfig(req.user!.id);
-      res.json({
-        configured: !!config?.isConfigured,
-        orgName: config?.orgName || null,
-        modules: config?.modules || {},
-      });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to check setup status" });
-    }
-  });
-
-  app.patch("/api/setup/safe-mode", requireAuth, async (req, res) => {
-    try {
-      const { enabled } = req.body;
-      const config = await storage.updateOrgConfig(req.user!.id, { safeMode: enabled });
-      res.json({ success: true, safeMode: config.safeMode });
-    } catch (error: any) {
-      res.status(500).json({ error: error.message || "Failed to update safe mode" });
-    }
-  });
-
-  // ===== MENU PAGE DATA ROUTES =====
-
-  app.get("/api/partners/program", (req, res) => {
-    res.json({
-      name: "Partner Network",
-      description: "Expand your earning potential by introducing investors to institutional-grade real estate opportunities",
-      commissions: {
-        partner: { min: "$0", max: "$500K", rate: "1.0%" },
-        elite: { min: "$500K", max: "$2M", rate: "1.5%" },
-        premier: { min: "$2M", max: null, rate: "2.0%" }
-      },
-      benefits: [
-        "Competitive Commissions",
-        "Growing Payouts",
-        "Dedicated Support",
-        "Elite Recognition",
-        "Real-time Tracking"
-      ],
-      resources: ["Investor Brochures", "Pitch Decks", "Training Materials"]
-    });
-  });
-
-  app.get("/api/strategies/all", async (req, res) => {
-    try {
-      const strategies = await storage.getAllStrategies();
-      res.json(strategies);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch strategies" });
-    }
-  });
-
-  app.get("/api/strategies/:slug", async (req, res) => {
-    try {
-      const strategy = await storage.getStrategyBySlug(req.params.slug);
-      if (!strategy) return res.status(404).json({ error: "Strategy not found" });
-      res.json(strategy);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch strategy" });
-    }
-  });
-
-  app.get("/api/packages/overview", (req, res) => {
-    res.json({
-      sleeves: [
-        {
-          name: "Multifamily Yield Fund IV",
-          type: "Income",
-          irr: "12-15%",
-          risk: "Low-Moderate",
-          min: "$50,000",
-          term: "5-7 Years"
-        },
-        {
-          name: "Urban Office Redevelopment",
-          type: "Growth",
-          irr: "18-22%",
-          risk: "High",
-          min: "$100,000",
-          term: "7-10 Years"
-        },
-        {
-          name: "Industrial Logistics Trust",
-          type: "Balanced",
-          irr: "14-16%",
-          risk: "Moderate",
-          min: "$25,000",
-          term: "5 Years"
-        }
-      ],
-      documents: ["Quick Facts Sheets", "Offering Memorandums", "Asset Reports"]
-    });
-  });
-
-  app.get("/api/platform/info", (req, res) => {
-    res.json({
-      name: "Alliance Trust Realty",
-      tagline: "Institutional-Grade Real Estate Investing",
-      mission: "Democratize access to wealth-building real estate strategies for individual investors",
-      stats: {
-        yearsExperience: "20+",
-        aum: "$5B+",
-        investors: "10K+",
-        properties: "500+"
-      },
-      features: [
-        "Institutional Quality",
-        "Proven Performance",
-        "Aligned Incentives",
-        "Expert Management",
-        "Market Diversification",
-        "Investor Simplicity"
-      ]
-    });
-  });
-
-  app.get("/api/services/status", async (req, res) => {
-    const checks = {
-      authentication: "operational",
-      database: "operational",
-      cache: "operational",
-      email: "operational",
-      payments: "operational",
-      reporting: "operational"
-    };
-    
-    res.json({
-      platform: "Alliance Trust Realty",
-      status: "operational",
-      services: checks,
-      uptime: Math.floor((Date.now() - startTime) / 1000),
-      version: "1.0.0"
-    });
-  });
-
-  // Seed strategies if none exist
-  const existingStrategies = await storage.getAllStrategies();
-  if (existingStrategies.length === 0) {
-    await storage.createStrategy({
-      slug: "multifamily-yield",
-      title: "Multifamily Yield Fund IV",
-      type: "Income",
-      riskLevel: "Low-Moderate",
-      targetIRR: "12-15%",
-      minInvestment: "$50,000",
-      term: "5-7 Years",
-      description: "Stabilized apartment complexes in Sunbelt markets with value-add potential through operational efficiencies.",
-      details: {
-        assetFocus: "Class A & B multifamily properties",
-        geography: "Sunbelt markets (TX, FL, AZ, NC)",
-        leverage: "60-70% LTV",
-      },
-      isActive: true,
-    });
-
-    await storage.createStrategy({
-      slug: "urban-office",
-      title: "Urban Office Redevelopment",
-      type: "Growth",
-      riskLevel: "High",
-      targetIRR: "18-22%",
-      minInvestment: "$100,000",
-      term: "7-10 Years",
-      description: "Converting distressed Class B office space into mixed-use residential and retail destinations.",
-      details: {
-        assetFocus: "Office to residential conversion",
-        geography: "Gateway cities",
-        leverage: "50-60% LTV",
-      },
-      isActive: true,
-    });
-
-    await storage.createStrategy({
-      slug: "industrial-logistics",
-      title: "Industrial Logistics Trust",
-      type: "Balanced",
-      riskLevel: "Moderate",
-      targetIRR: "14-16%",
-      minInvestment: "$25,000",
-      term: "5 Years",
-      description: "Last-mile distribution centers powering the e-commerce economy.",
-      details: {
-        assetFocus: "Warehouse & distribution centers",
-        geography: "Major metropolitan areas",
-        leverage: "55-65% LTV",
-      },
-      isActive: true,
-    });
-  }
 
   return httpServer;
 }
