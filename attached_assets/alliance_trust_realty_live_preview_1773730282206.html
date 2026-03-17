@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alliance Trust Realty | Live Preview</title>
+  <meta name="description" content="Alliance Trust Realty, powered by GEM Cybersecurity Assist, delivers secure real estate and investor services for modern clients." />
+  <style>
+    :root{
+      --bg:#0f172a; --fg:#0f172a; --muted:#64748b; --line:#e5e7eb;
+      --emerald:#047857; --soft:#f8fafc; --danger:#b91c1c; --danger-bg:#fef2f2; --success:#065f46; --success-bg:#ecfdf5;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--fg);background:#fff;line-height:1.5}
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+    .topbar{background:var(--bg);color:#cbd5e1;border-bottom:1px solid #1f2937}
+    .topbar .wrap{display:flex;justify-content:space-between;gap:16px;padding:10px 24px;font-size:14px;flex-wrap:wrap}
+    .nav{position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:30}
+    .nav .wrap{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;gap:20px}
+    .brand small{display:block;color:var(--muted)}
+    .navlinks{display:flex;gap:20px;font-size:14px;color:#475569;flex-wrap:wrap}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .menu-btn{display:none;border:1px solid var(--line);background:#fff;padding:10px 12px;border-radius:12px;font-weight:700}
+    .mobile-nav{display:none;border-top:1px solid var(--line);background:#fff}
+    .mobile-nav.open{display:block}
+    .mobile-nav .wrap{display:grid;gap:12px;padding:16px 24px}
+    .mobile-nav a{font-size:14px;color:#475569}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:14px;border:1px solid var(--line);font-weight:600;background:#fff;cursor:pointer}
+    .btn.dark{background:var(--bg);color:#fff;border-color:var(--bg)}
+    .hero{background:linear-gradient(135deg,#020617 0%, #0f172a 70%);color:#fff}
+    .hero .wrap{display:grid;grid-template-columns:1.2fr .9fr;gap:36px;padding:88px 24px}
+    .pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:#a7f3d0;font-size:14px;font-weight:600}
+    h1{font-size:56px;line-height:1.05;margin:18px 0 0}
+    .lead{font-size:20px;color:#cbd5e1;max-width:720px;margin-top:20px}
+    .hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .hero-card{background:rgba(15,23,42,.75);border:1px solid #1f2937;border-radius:28px;padding:22px}
+    .section{padding:84px 0}
+    .soft{background:var(--soft)}
+    .eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.22em;color:var(--emerald);font-weight:700}
+    h2{font-size:40px;line-height:1.1;margin:12px 0 0}
+    .sub{color:var(--muted);max-width:760px;margin-top:18px}
+    .grid{display:grid;gap:24px}
+    .grid-2{grid-template-columns:1fr 1fr}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .card{background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 8px 24px rgba(15,23,42,.04)}
+    .feature{overflow:hidden;border-radius:32px;border:1px solid var(--line);background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.04)}
+    .feature-grid{display:grid;grid-template-columns:1.1fr .9fr}
+    .feature-image{min-height:420px;background-size:cover;background-position:center}
+    .metric{border-radius:18px;background:#f8fafc;padding:16px}
+    .metric .label{font-size:13px;color:#64748b}
+    .metric .value{font-weight:700;margin-top:6px}
+    .service-card ul{padding-left:18px;color:#334155}
+    .service-card li{margin:8px 0}
+    .property-card{overflow:hidden;border-radius:32px;border:1px solid var(--line);background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.04)}
+    .property-image{height:290px;background-size:cover;background-position:center;position:relative}
+    .property-image::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.72),rgba(15,23,42,.12))}
+    .badge{display:inline-block;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.9);font-size:12px;font-weight:700;color:#0f172a}
+    .overlay{position:absolute;left:20px;right:20px;bottom:20px;color:#fff;z-index:1}
+    .overlay .kicker{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#e2e8f0}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+    form .field{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:16px;font:inherit}
+    form .row{display:grid;gap:14px}
+    form .row + .row{margin-top:14px}
+    .field.invalid{border-color:var(--danger);background:var(--danger-bg)}
+    .notice{padding:12px 14px;border-radius:14px;font-size:14px}
+    .notice.error{background:var(--danger-bg);color:var(--danger)}
+    .notice.success{background:var(--success-bg);color:var(--success)}
+    .faq{border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.04)}
+    .faq button{width:100%;display:flex;justify-content:space-between;align-items:center;border:0;background:transparent;padding:22px 24px;font:inherit;font-weight:700;text-align:left;cursor:pointer}
+    .faq .answer{padding:0 24px 24px;color:#64748b;display:none}
+    .faq.open .answer{display:block}
+    .footer{background:var(--bg);color:#cbd5e1}
+    .footer .wrap{padding:56px 24px}
+    .footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:24px}
+    .footer h4,.footer h3{color:#fff;margin-top:0}
+    @media (max-width: 920px){
+      .hero .wrap,.split,.grid-2,.grid-3,.grid-4,.footer-grid,.feature-grid{grid-template-columns:1fr}
+      h1{font-size:42px} h2{font-size:32px}
+      .hero-cards{grid-template-columns:1fr}
+      .navlinks,.actions{display:none}
+      .menu-btn{display:block}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="wrap"><div><strong>Powered by GEM Cybersecurity Assist</strong></div><div>support@cybersecurityassist.com · +1 (000) 000-0000 · Investor Portal</div></div></div>
+  <div class="nav">
+    <div class="wrap">
+      <div class="brand"><div style="font-size:22px;font-weight:800">Alliance Trust Realty</div><small>Powered by GEM Cybersecurity Assist</small></div>
+      <div class="navlinks"><a href="#about">About</a><a href="#services">Services</a><a href="#properties">Properties</a><a href="#advisory">Investment Advisory</a><a href="#contact">Contact</a></div>
+      <div class="actions"><a class="btn" href="#contact">Schedule Consultation</a><a class="btn dark" href="#portal">Portal</a></div>
+      <button class="menu-btn" id="menuToggle">Menu</button>
+    </div>
+    <div class="mobile-nav" id="mobileNav"><div class="wrap"><a href="#about">About</a><a href="#services">Services</a><a href="#properties">Properties</a><a href="#advisory">Investment Advisory</a><a href="#contact">Contact</a><a href="#portal">Investor Portal</a></div></div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="pill">Real Estate & Investor Services</div>
+        <h1>Secure Real Estate Services for Modern Investors</h1>
+        <div class="lead">Alliance Trust Realty, powered by GEM Cybersecurity Assist, helps clients navigate property opportunities, financing decisions, and investor support through a secure digital operating model.</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:28px"><a class="btn" style="background:#fff;color:#0f172a;border-color:#fff" href="#contact">Schedule a Consultation</a><a class="btn" style="border-color:#334155;color:#fff;background:transparent" href="#properties">Explore Opportunities</a></div>
+      </div>
+      <div class="hero-cards">
+        <div class="hero-card"><strong>Security-led operations</strong><p style="color:#cbd5e1">Structured digital workflows designed to support trust and continuity.</p></div>
+        <div class="hero-card"><strong>Investor-focused guidance</strong><p style="color:#cbd5e1">Clear service pathways for buyers, sellers, and property investors.</p></div>
+        <div class="hero-card"><strong>Property and financing support</strong><p style="color:#cbd5e1">Real-estate-first guidance across opportunities and lender readiness.</p></div>
+        <div class="hero-card"><strong>Transparent communication</strong><p style="color:#cbd5e1">Professional messaging, clean onboarding, and disciplined next steps.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section"><div class="wrap grid grid-4">
+    <div class="metric"><div class="label">Model</div><div class="value">Consultation-first engagement</div></div>
+    <div class="metric"><div class="label">Positioning</div><div class="value">Real-estate-first brand</div></div>
+    <div class="metric"><div class="label">Support</div><div class="value">Mortgage and financing readiness</div></div>
+    <div class="metric"><div class="label">Expansion</div><div class="value">Future-ready investor portal</div></div>
+  </div></section>
+
+  <section id="about" class="section"><div class="wrap split">
+    <div><div class="eyebrow">About</div><h2>A real-estate and investor-services division built on secure digital operations.</h2><p class="sub">Alliance Trust Realty delivers real-estate advisory, financing support, and investor-focused service for clients seeking a more structured way to engage property opportunities. GEM Cybersecurity Assist powers the digital backbone, operational discipline, and trust framework behind the platform.</p></div>
+    <div class="grid"><div class="card"><h3>Why GEM powers the platform</h3><p>GEM provides secure infrastructure, disciplined operating controls, and the systems support needed for a credible, modern client experience.</p></div><div class="card"><h3>Who we serve</h3><p>Buyers, sellers, property investors, and clients seeking financing guidance, commercial advisory, and long-term real-estate support.</p></div></div>
+  </div></section>
+
+  <section class="section soft"><div class="wrap">
+    <div class="eyebrow">Featured Showcase</div><h2>A flagship property presentation clients can trust.</h2><p class="sub">The production-ready experience should spotlight a premium property opportunity with real photography, clean metrics, advisory framing, and an immediate next-step call to action.</p>
+    <div class="feature" style="margin-top:28px"><div class="feature-grid">
+      <div class="feature-image" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=80')"></div>
+      <div style="padding:32px 40px">
+        <div class="badge" style="background:#d1fae5;color:#047857">Featured Residential Asset</div>
+        <h3 style="font-size:34px;margin-top:18px">Single-Family Rental Portfolio</h3>
+        <p style="margin-top:16px;color:#64748b;line-height:1.8">A residential portfolio showcase designed to communicate real house inventory, income potential context, and long-term planning value in a clear, premium format.</p>
+        <div class="grid grid-2" style="margin-top:24px">
+          <div class="metric"><div class="label">Location</div><div class="value">Houston, TX</div></div>
+          <div class="metric"><div class="label">Asset Type</div><div class="value">Residential Portfolio</div></div>
+          <div class="metric"><div class="label">Price</div><div class="value">$1.80M</div></div>
+          <div class="metric"><div class="label">Yield Context</div><div class="value">6.5% cap rate</div></div>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:28px"><a class="btn dark" href="#contact">Request a Review</a><a class="btn" href="#properties">See More Opportunities</a></div>
+      </div>
+    </div></div>
+  </div></section>
+
+  <section id="services" class="section"><div class="wrap">
+    <div class="eyebrow">Services</div><h2>Real-estate guidance built for modern clients and investors.</h2>
+    <div class="grid grid-3" style="margin-top:28px">
+      <div class="card service-card"><h3>Residential Buying Support</h3><p>Guided acquisition support for clients navigating residential purchases with more confidence, structure, and market clarity.</p><ul><li>Buyer-readiness review</li><li>Property shortlisting support</li><li>Offer and next-step planning</li></ul></div>
+      <div class="card service-card"><h3>Residential Selling Support</h3><p>Positioning, sale-readiness, and structured transaction guidance for owners preparing to sell strategically.</p><ul><li>Listing-readiness guidance</li><li>Pricing context support</li><li>Seller communication workflow</li></ul></div>
+      <div class="card service-card"><h3>Investment Property Analysis</h3><p>Real-estate opportunity analysis for income potential, cap-rate awareness, and long-term portfolio fit.</p><ul><li>Cash-flow framing</li><li>Cap-rate awareness</li><li>Portfolio suitability review</li></ul></div>
+      <div class="card service-card"><h3>Commercial Real Estate</h3><p>Commercial advisory for acquisition review, repositioning analysis, and opportunity evaluation.</p><ul><li>Asset opportunity review</li><li>Commercial strategy support</li><li>Acquisition-readiness guidance</li></ul></div>
+      <div class="card service-card"><h3>Mortgage Guidance</h3><p>Financing-readiness support for buyers, investors, and clients preparing for lender conversations.</p><ul><li>Mortgage preparation</li><li>Refinance readiness</li><li>Financing document awareness</li></ul></div>
+      <div class="card service-card"><h3>Investor Education</h3><p>Educational support to help clients better understand property evaluation, financing, and disciplined decision-making.</p><ul><li>Real-estate literacy</li><li>Risk awareness</li><li>Investor orientation guidance</li></ul></div>
+    </div>
+  </div></section>
+
+  <section id="properties" class="section soft"><div class="wrap">
+    <div class="eyebrow">Featured Opportunities</div><h2>Property and investment-ready opportunities.</h2><p class="sub">These showcase cards are built to feel like a real production real-estate offering: real photos, asset identity, context, and a direct path to contact.</p>
+    <div class="grid grid-3" style="margin-top:28px">
+      <article class="property-card">
+        <div class="property-image" style="background-image:url('https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1400&q=80')"><div style="position:absolute;left:20px;top:20px;z-index:1" class="badge">Featured</div><div class="overlay"><div class="kicker">Multi-Family</div><h3 style="margin:10px 0 0;font-size:28px">Downtown Multi-Family Asset</h3><div style="margin-top:8px;font-size:14px;color:#e2e8f0">Austin, TX</div></div></div>
+        <div style="padding:24px"><div class="grid grid-2" style="gap:12px"><div class="metric"><div class="label">Price</div><div class="value">$2.50M</div></div><div class="metric"><div class="label">Yield Context</div><div class="value">7.2% cap rate</div></div></div><p style="margin-top:18px">Stabilized multi-family asset positioned for structured investor review, cash-flow analysis, and long-term hold discussion.</p><p style="margin-top:12px;color:#334155"><strong>Best For:</strong> Income-focused investors</p><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px"><a class="btn dark" href="#contact">Request Details</a><a class="btn" href="#contact">Schedule Review</a></div></div>
+      </article>
+      <article class="property-card">
+        <div class="property-image" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1400&q=80')"><div style="position:absolute;left:20px;top:20px;z-index:1" class="badge">Opportunity</div><div class="overlay"><div class="kicker">Commercial</div><h3 style="margin:10px 0 0;font-size:28px">Commercial Office Redevelopment</h3><div style="margin-top:8px;font-size:14px;color:#e2e8f0">Dallas, TX</div></div></div>
+        <div style="padding:24px"><div class="grid grid-2" style="gap:12px"><div class="metric"><div class="label">Price</div><div class="value">$4.20M</div></div><div class="metric"><div class="label">Yield Context</div><div class="value">6.8% cap rate</div></div></div><p style="margin-top:18px">Commercial building opportunity suitable for acquisition review, repositioning discussions, and strategic real-estate planning.</p><p style="margin-top:12px;color:#334155"><strong>Best For:</strong> Redevelopment strategy</p><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px"><a class="btn dark" href="#contact">Request Details</a><a class="btn" href="#contact">Schedule Review</a></div></div>
+      </article>
+      <article class="property-card">
+        <div class="property-image" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=80')"><div style="position:absolute;left:20px;top:20px;z-index:1" class="badge">Available</div><div class="overlay"><div class="kicker">Residential Portfolio</div><h3 style="margin:10px 0 0;font-size:28px">Single-Family Rental Portfolio</h3><div style="margin-top:8px;font-size:14px;color:#e2e8f0">Houston, TX</div></div></div>
+        <div style="padding:24px"><div class="grid grid-2" style="gap:12px"><div class="metric"><div class="label">Price</div><div class="value">$1.80M</div></div><div class="metric"><div class="label">Yield Context</div><div class="value">6.5% cap rate</div></div></div><p style="margin-top:18px">Curated single-family rental portfolio for investors seeking long-term residential income exposure and portfolio-support conversations.</p><p style="margin-top:12px;color:#334155"><strong>Best For:</strong> Portfolio expansion</p><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px"><a class="btn dark" href="#contact">Request Details</a><a class="btn" href="#contact">Schedule Review</a></div></div>
+      </article>
+    </div>
+  </div></section>
+
+  <section id="advisory" class="section" style="background:#020617;color:#fff"><div class="wrap grid grid-3">
+    <div class="card" style="background:#0f172a;border-color:#1f2937;color:#fff"><h3>Investment Advisory</h3><p style="color:#cbd5e1">Real-estate investment guidance built around property analysis, cash-flow framing, cap-rate awareness, and long-term portfolio support.</p></div>
+    <div class="card" style="background:#0f172a;border-color:#1f2937;color:#fff"><h3>Mortgage Guidance</h3><p style="color:#cbd5e1">Financing-readiness support for buyers, refinancers, and property investors preparing for lender conversations.</p></div>
+    <div class="card" style="background:#0f172a;border-color:#1f2937;color:#fff"><h3>Investor Education</h3><p style="color:#cbd5e1">Educational guidance to help clients better understand financing, property evaluation, and disciplined real-estate decisions.</p></div>
+  </div></section>
+
+  <section class="section"><div class="wrap grid grid-3">
+    <div class="card"><div class="eyebrow">Why us</div><h3 style="margin-top:12px">Real-estate-first, trust-led.</h3><p>The platform is designed to reduce noise, improve clarity, and create a stronger client journey from inquiry to engagement.</p></div>
+    <div class="card"><div class="eyebrow">Workflow</div><h3 style="margin-top:12px">Consultation before complexity.</h3><p>We use a consultation-first model to align services, investor readiness, property needs, and financing paths.</p></div>
+    <div class="card"><div class="eyebrow">Future-ready</div><h3 style="margin-top:12px">Built to grow into a platform.</h3><p>Alliance Trust Realty is structured to expand into secure onboarding, user access, property visibility, and investor tools.</p></div>
+  </div></section>
+
+  <section class="section soft"><div class="wrap">
+    <div class="eyebrow">Client Confidence</div><h2>A presentation layer built for trust and conversion.</h2>
+    <div class="grid grid-3" style="margin-top:28px">
+      <div class="card"><p style="font-size:18px;font-weight:600;color:#1e293b">“The structure and clarity helped us understand the opportunity without feeling pushed.”</p><p style="margin-top:14px">Investor-focused experience statement</p></div>
+      <div class="card"><p style="font-size:18px;font-weight:600;color:#1e293b">“The platform feels more secure, more professional, and easier to trust than a generic investment site.”</p><p style="margin-top:14px">Client trust statement</p></div>
+      <div class="card"><p style="font-size:18px;font-weight:600;color:#1e293b">“The consultation-first approach made the process clearer before any major decision was made.”</p><p style="margin-top:14px">Process confidence statement</p></div>
+    </div>
+  </div></section>
+
+  <section id="contact" class="section"><div class="wrap split">
+    <div><div class="eyebrow">Contact</div><h2>Schedule a consultation or request information.</h2><p class="sub">Reach out for property guidance, mortgage support, investment advisory, or investor onboarding.</p><p style="margin-top:24px">support@cybersecurityassist.com<br>+1 (000) 000-0000<br>Response window: 1–2 business days</p></div>
+    <div class="card">
+      <form id="contactForm" novalidate>
+        <div class="row"><input class="field" name="fullName" placeholder="Full name"></div>
+        <div class="row"><input class="field" name="email" placeholder="Email"></div>
+        <div class="row"><input class="field" name="phone" placeholder="Phone"></div>
+        <div class="row"><input class="field" name="cityState" placeholder="City / State"></div>
+        <div class="row"><select class="field" name="interest"><option>Consultation</option><option>Buying Support</option><option>Selling Support</option><option>Investment Advisory</option><option>Mortgage Guidance</option><option>Commercial Real Estate</option><option>Investor Access Request</option></select></div>
+        <div class="row"><textarea class="field" name="message" rows="5" placeholder="Tell us what you need"></textarea></div>
+        <div class="row" style="font-size:14px;color:#64748b"><label><input type="checkbox" name="consent"> I consent to be contacted regarding services and property-related inquiries.</label></div>
+        <div id="formError" class="notice error" style="display:none">Please complete all required fields before submitting.</div>
+        <div id="formSuccess" class="notice success" style="display:none">Thank you. Your request has been captured in this preview. Your developer should connect this form to the production backend endpoint next.</div>
+        <div class="row"><button class="btn dark" type="submit" style="width:100%;justify-content:center">Submit Request</button></div>
+      </form>
+    </div>
+  </div></section>
+
+  <section id="portal" class="section soft"><div class="wrap">
+    <div class="card" style="border-radius:32px"><h2 style="margin-top:0">Investor Portal</h2><p class="sub" style="max-width:none">Secure investor access, onboarding, property visibility, and future investment tracking workflows are being expanded inside the Alliance Trust Realty platform.</p><div class="grid grid-3" style="margin-top:24px"><div class="metric"><div class="value">Secure onboarding</div></div><div class="metric"><div class="value">Property visibility</div></div><div class="metric"><div class="value">Future dashboard access</div></div></div><div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px"><a class="btn dark" href="#">Login</a><a class="btn" href="#contact">Request Access</a></div></div>
+  </div></section>
+
+  <section class="section"><div class="wrap"><div class="eyebrow">FAQ</div><h2>Clear answers for clients and investors.</h2><div style="margin-top:28px;display:grid;gap:16px">
+    <div class="faq"><button><span>What does Alliance Trust Realty focus on?</span><span>+</span></button><div class="answer">Alliance Trust Realty focuses on real-estate advisory, investment-property guidance, mortgage support, investor education, and secure client onboarding under the GEM operating model.</div></div>
+    <div class="faq"><button><span>Is this a crypto or trading platform?</span><span>+</span></button><div class="answer">No. Alliance Trust Realty is a real-estate-first business. Broader analytics and adjacent financial intelligence sit under GEM separately and are not the core public offering here.</div></div>
+    <div class="faq"><button><span>How do clients get started?</span><span>+</span></button><div class="answer">Clients can begin with a consultation request, property inquiry, financing discussion, or investor-access request depending on their goals.</div></div>
+    <div class="faq"><button><span>What is the investor portal for?</span><span>+</span></button><div class="answer">The portal is intended for secure onboarding, property visibility, investor access, and future dashboard-level account workflows.</div></div>
+  </div></div></section>
+
+  <section class="section soft"><div class="wrap grid grid-3">
+    <div class="card"><h3>Privacy Policy</h3><p>Client information is handled for service response, communication, and secure operational processing.</p></div>
+    <div class="card"><h3>Terms of Use</h3><p>Site use, service inquiry behavior, and informational limitations should be governed by formal production terms.</p></div>
+    <div class="card"><h3>Disclosures</h3><p>Alliance Trust Realty does not present guaranteed returns. Property and investment information should be reviewed with appropriate professional judgment.</p></div>
+  </div></section>
+
+  <footer class="footer"><div class="wrap"><div class="footer-grid">
+    <div><h3>Alliance Trust Realty</h3><p>Real-estate and investor-services solutions powered by GEM Cybersecurity Assist.</p></div>
+    <div><h4>Company</h4><p>About<br>Services<br>Properties<br>Contact</p></div>
+    <div><h4>Resources</h4><p>Privacy Policy<br>Terms<br>Disclosures<br>Investor Education</p></div>
+    <div><h4>Contact</h4><p>support@cybersecurityassist.com<br>+1 (000) 000-0000<br>Powered by GEM Cybersecurity Assist</p></div>
+  </div><div style="border-top:1px solid #1f2937;margin-top:24px;padding-top:16px;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><span>© 2026 Alliance Trust Realty. All rights reserved.</span><span>Security-backed real-estate services under GEM.</span></div></div></footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    if (menuToggle && mobileNav) {
+      menuToggle.addEventListener('click', () => mobileNav.classList.toggle('open'));
+      mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileNav.classList.remove('open')));
+    }
+
+    const form = document.getElementById('contactForm');
+    const errorBox = document.getElementById('formError');
+    const successBox = document.getElementById('formSuccess');
+    if (form) {
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        errorBox.style.display = 'none';
+        successBox.style.display = 'none';
+        const data = new FormData(form);
+        const required = ['fullName','email','phone','message'];
+        let valid = true;
+        form.querySelectorAll('.field').forEach(f => f.classList.remove('invalid'));
+        required.forEach(name => {
+          const field = form.querySelector('[name="' + name + '"]');
+          const value = String(data.get(name) || '').trim();
+          if(!value){ valid = false; if(field) field.classList.add('invalid'); }
+        });
+        const email = String(data.get('email') || '').trim();
+        if(email && !/^\S+@\S+\.\S+$/.test(email)){
+          valid = false;
+          const emailField = form.querySelector('[name="email"]');
+          if(emailField) emailField.classList.add('invalid');
+        }
+        const consent = form.querySelector('[name="consent"]');
+        if(!consent.checked){ valid = false; }
+        if(!valid){ errorBox.style.display = 'block'; return; }
+        successBox.style.display = 'block';
+        form.reset();
+      });
+    }
+
+    document.querySelectorAll('.faq').forEach((faq) => {
+      const btn = faq.querySelector('button');
+      if (btn) btn.addEventListener('click', () => faq.classList.toggle('open'));
+    });
+  </script>
+</body>
+</html>
