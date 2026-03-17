@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premier Real Estate & Investment Services | Alliance Trust Realty</title>
+    <meta name="description" content="Full-service real estate and investment platform. Expert guidance for buyers, sellers, and investors with comprehensive portfolio management.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0a0e27;
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --accent-gold: #d4a574;
+            --accent-light: #e8c9a1;
+            --success-green: #10b981;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --gradient-gold: linear-gradient(135deg, #d4a574 0%, #a67c52 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-dark: linear-gradient(135deg, #0a0e27 0%, #1e293b 100%);
+            --gradient-mesh: radial-gradient(at 20% 30%, rgba(30, 64, 175, 0.15) 0px, transparent 50%),
+                             radial-gradient(at 80% 70%, rgba(212, 165, 116, 0.1) 0px, transparent 50%),
+                             radial-gradient(at 50% 50%, rgba(59, 130, 246, 0.08) 0px, transparent 50%);
+            
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            color: var(--gray-900);
+            background: var(--white);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition-fast);
+        }
+        
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: var(--transition-fast);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: var(--white) !important;
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            transition: var(--transition-fast);
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.25);
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.35);
+        }
+        
+        .nav-cta::after {
+            display: none;
+        }
+        
+        .mobile-toggle {
+            display: none;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 10rem 2rem 6rem;
+            background: linear-gradient(135deg, #0a0e27 0%, #1e293b 50%, #334155 100%);
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-mesh);
+            opacity: 0.6;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.05), transparent);
+        }
+        
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-text h1 {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: var(--white);
+            letter-spacing: -2px;
+        }
+        
+        .hero-text .highlight {
+            background: linear-gradient(135deg, #d4a574 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #d4a574 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+        
+        .hero-ctas {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+        
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-gold);
+            color: var(--white);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.5);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Investment Dashboard Card */
+        .hero-dashboard {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-header h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            color: var(--gray-900);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-header p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+        
+        .dashboard-metrics {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .metric-card {
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: 16px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition-fast);
+        }
+        
+        .metric-card:hover {
+            border-color: var(--secondary-blue);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .metric-icon.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: var(--white);
+        }
+        
+        .metric-icon.green {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--white);
+        }
+        
+        .metric-icon.gold {
+            background: var(--gradient-gold);
+            color: var(--white);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1;
+        }
+        
+        .metric-change {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .metric-change.positive {
+            color: var(--success-green);
+        }
+        
+        .metric-change.neutral {
+            color: var(--gray-500);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 10rem 2rem;
+            background: var(--white);
+            position: relative;
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 6rem;
+        }
+        
+        .section-label {
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+            letter-spacing: -1px;
+        }
+        
+        .section-header p {
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+        
+        .services-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 2px solid var(--gray-200);
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            border-radius: 24px;
+            transition: var(--transition);
+        }
+        
+        .service-card:hover::before {
+            opacity: 0.03;
+        }
+        
+        .service-card:hover {
+            border-color: var(--secondary-blue);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.25);
+        }
+        
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        .service-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+            position: relative;
+            z-index: 1;
+            font-weight: 800;
+        }
+        
+        .service-card p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .service-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-fast);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .service-link:hover {
+            gap: 1rem;
+        }
+        
+        /* Investment Features */
+        .investment-features {
+            padding: 10rem 2rem;
+            background: var(--gray-50);
+            position: relative;
+        }
+        
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+        
+        .feature-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 2px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover {
+            border-color: var(--secondary-blue);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .feature-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+        
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+        
+        .feature-card p {
+            color: var(--gray-600);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        /* Portfolio Calculator */
+        .calculator-section {
+            padding: 10rem 2rem;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculator-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-mesh);
+            opacity: 0.3;
+        }
+        
+        .calculator-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .calculator-content {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .calculator-content h2 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+        
+        .calculator-content p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .calculator-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-2xl);
+        }
+        
+        .calculator-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            transition: var(--transition-fast);
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .calculator-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--gray-200);
+        }
+        
+        .result-item {
+            text-align: center;
+        }
+        
+        .result-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 10rem 2rem;
+            background: var(--white);
+        }
+        
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 5rem;
+        }
+        
+        .contact-info h2 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            color: var(--gray-900);
+            letter-spacing: -1px;
+        }
+        
+        .contact-info p {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+        
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: 16px;
+            border: 2px solid var(--gray-200);
+            transition: var(--transition-fast);
+        }
+        
+        .contact-item:hover {
+            border-color: var(--secondary-blue);
+            transform: translateX(8px);
+        }
+        
+        .contact-item-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.3rem;
+        }
+        
+        .contact-item-text strong {
+            display: block;
+            color: var(--gray-900);
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+            font-weight: 800;
+        }
+        
+        .contact-item-text span {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+        
+        .contact-form {
+            background: var(--gray-50);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 2px solid var(--gray-200);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+            background: var(--white);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #0a0e27 0%, #1e293b 100%);
+            color: var(--white);
+            padding: 5rem 2rem 2rem;
+            position: relative;
+        }
+        
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .footer-brand h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+        }
+        
+        .footer-brand p {
+            opacity: 0.8;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section h4 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+        }
+        
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-gold);
+            padding-left: 8px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-inputs {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-results {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <div class="logo-icon">A</div>
+                Alliance Trust Realty
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#investment">Investment</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact" class="nav-cta">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-grid"></div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Full-Service Real Estate with <span class="highlight">Investment Expertise</span></h1>
+                <p>Navigate the property market with confidence. From finding your dream home to building a profitable investment portfolio, we provide comprehensive guidance every step of the way.</p>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">$2.5B+</div>
+                        <div class="hero-stat-label">Portfolio Value</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">12.4%</div>
+                        <div class="hero-stat-label">Avg. ROI</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">5,000+</div>
+                        <div class="hero-stat-label">Properties Managed</div>
+                    </div>
+                </div>
+                
+                <div class="hero-ctas">
+                    <a href="#contact" class="btn btn-primary"><span>Schedule Consultation</span></a>
+                    <a href="#investment" class="btn btn-secondary"><span>Explore Investment Options</span></a>
+                </div>
+            </div>
+            
+            <div class="hero-dashboard">
+                <div class="dashboard-header">
+                    <h3>Investment Dashboard</h3>
+                    <p>Real-time portfolio tracking and analytics</p>
+                </div>
+                
+                <div class="dashboard-metrics">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Portfolio Value</span>
+                            <div class="metric-icon blue">💰</div>
+                        </div>
+                        <div class="metric-value">$1,247,500</div>
+                        <div class="metric-change positive">↑ +12.4% this quarter</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Total ROI</span>
+                            <div class="metric-icon green">📈</div>
+                        </div>
+                        <div class="metric-value">18.7%</div>
+                        <div class="metric-change positive">↑ +2.3% from last year</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <span class="metric-label">Monthly Income</span>
+                            <div class="metric-icon gold">💵</div>
+                        </div>
+                        <div class="metric-value">$8,450</div>
+                        <div class="metric-change neutral">Stable across 12 properties</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <div class="section-label">WHAT WE OFFER</div>
+            <h2>Comprehensive Real Estate Services</h2>
+            <p>Whether you're buying, selling, or investing, we provide expert guidance tailored to your unique goals and circumstances.</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🏡</div>
+                <h3>Buyer Representation</h3>
+                <p>Navigate the buying process with confidence. We'll help you find the perfect property, negotiate the best terms, and ensure a smooth transaction.</p>
+                <a href="#contact" class="service-link">Learn More →</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">💼</div>
+                <h3>Seller Services</h3>
+                <p>Maximize your property's value with strategic pricing, professional marketing, expert staging advice, and skilled negotiation.</p>
+                <a href="#contact" class="service-link">Learn More →</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Investment Portfolio Management</h3>
+                <p>Build and manage a diversified real estate portfolio with real-time tracking, performance analytics, and strategic guidance.</p>
+                <a href="#contact" class="service-link">Learn More →</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🔑</div>
+                <h3>First-Time Buyers</h3>
+                <p>Make your homeownership dream a reality with comprehensive support from pre-approval to closing, including mortgage guidance.</p>
+                <a href="#contact" class="service-link">Learn More →</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏢</div>
+                <h3>Commercial Real Estate</h3>
+                <p>Expert guidance for commercial property transactions, including multi-family units, retail spaces, and office buildings.</p>
+                <a href="#contact" class="service-link">Learn More →</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>Digital Investment Platform</h3>
+                <p>Access your portfolio 24/7 with our mobile app featuring real-time updates, transaction tracking, and market insights.</p>
+                <a href="#contact" class="service-link">Learn More →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Features -->
+    <section class="investment-features" id="investment">
+        <div class="features-container">
+            <div class="section-header">
+                <div class="section-label">INVESTMENT PLATFORM</div>
+                <h2>Professional Investment Tools</h2>
+                <p>Leverage institutional-grade analytics and portfolio management tools designed for serious real estate investors.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-number">01</div>
+                        <h3>Real-Time Tracking</h3>
+                    </div>
+                    <p>Monitor your portfolio performance with live updates on property values, rental income, expenses, and ROI calculations. WebSocket-powered dashboard ensures you never miss a critical change.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-number">02</div>
+                        <h3>Advanced Analytics</h3>
+                    </div>
+                    <p>Access comprehensive market analysis, cap rate calculations, cash flow projections, and comparative property reports to make data-driven investment decisions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-number">03</div>
+                        <h3>Portfolio Diversification</h3>
+                    </div>
+                    <p>Build a balanced portfolio across single-family, multi-family, condo, and commercial properties with strategic guidance on risk management and growth opportunities.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-card-header">
+                        <div class="feature-number">04</div>
+                        <h3>Transaction Management</h3>
+                    </div>
+                    <p>Track all financial transactions including distributions, expenses, property improvements, and mortgage payments in one centralized system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Calculator -->
+    <section class="calculator-section" id="calculator">
+        <div class="calculator-container">
+            <div class="calculator-content">
+                <h2>Investment ROI Calculator</h2>
+                <p>Calculate potential returns on your real estate investment with our comprehensive analysis tool</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calculator-inputs">
+                    <div class="input-group">
+                        <label for="property-price">Property Price</label>
+                        <input type="number" id="property-price" placeholder="$250,000" value="250000">
+                    </div>
+                    <div class="input-group">
+                        <label for="down-payment">Down Payment (%)</label>
+                        <input type="number" id="down-payment" placeholder="20" value="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="monthly-rent">Expected Monthly Rent</label>
+                        <input type="number" id="monthly-rent" placeholder="$2,000" value="2000">
+                    </div>
+                    <div class="input-group">
+                        <label for="appreciation">Annual Appreciation (%)</label>
+                        <input type="number" id="appreciation" placeholder="3" value="3" step="0.1">
+                    </div>
+                </div>
+                
+                <div class="calculator-results">
+                    <div class="result-item">
+                        <div class="result-label">Monthly Cash Flow</div>
+                        <div class="result-value" id="cash-flow">$450</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Annual ROI</div>
+                        <div class="result-value" id="roi">14.2%</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Cap Rate</div>
+                        <div class="result-value" id="cap-rate">6.8%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="section-label">GET IN TOUCH</div>
+                <h2>Let's Start Your Journey</h2>
+                <p>Whether you're ready to buy, sell, or build an investment portfolio, we're here to help. Reach out today for a no-obligation consultation.</p>
+                
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-item-icon">📞</div>
+                        <div class="contact-item-text">
+                            <strong>Phone</strong>
+                            <span>(555) 123-4567</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item-icon">✉️</div>
+                        <div class="contact-item-text">
+                            <strong>Email</strong>
+                            <span>info@alliancetrust.com</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item-icon">📍</div>
+                        <div class="contact-item-text">
+                            <strong>Office</strong>
+                            <span>123 Main Street, Suite 100<br>Your City, ST 12345</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-item-icon">⏰</div>
+                        <div class="contact-item-text">
+                            <strong>Hours</strong>
+                            <span>Mon-Fri: 8AM-7PM<br>Sat-Sun: By Appointment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Interest *</label>
+                        <select id="service" required>
+                            <option value="">Select a service...</option>
+                            <option value="buying">Buying a Home</option>
+                            <option value="selling">Selling a Home</option>
+                            <option value="investment">Investment Portfolio</option>
+                            <option value="commercial">Commercial Real Estate</option>
+                            <option value="mortgage">Mortgage Consultation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" rows="4" placeholder="Tell us about your needs and goals..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;"><span>Send Message</span></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Alliance Trust Realty</h3>
+                <p>Your trusted partner in real estate and investment services. Building lasting relationships through integrity, expertise, and exceptional results.</p>
+                <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 1rem;">Licensed Real Estate Broker<br>License #: RE123456789</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Services</h4>
+                <ul class="footer-links">
+                    <li><a href="#services">Buyer Services</a></li>
+                    <li><a href="#services">Seller Services</a></li>
+                    <li><a href="#investment">Investment Platform</a></li>
+                    <li><a href="#services">Commercial Real Estate</a></li>
+                    <li><a href="#calculator">ROI Calculator</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Market Reports</a></li>
+                    <li><a href="#">Investment Guide</a></li>
+                    <li><a href="#">Portfolio Management</a></li>
+                    <li><a href="#">Property Listings</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Investment Disclosure</a></li>
+                    <li><a href="#">Fair Housing</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Alliance Trust Realty. All rights reserved. | Equal Housing Opportunity</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Investment services subject to regulatory approval. Past performance does not guarantee future results.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // ROI Calculator
+        const propertyPrice = document.getElementById('property-price');
+        const downPayment = document.getElementById('down-payment');
+        const monthlyRent = document.getElementById('monthly-rent');
+        const appreciation = document.getElementById('appreciation');
+        
+        const cashFlowDisplay = document.getElementById('cash-flow');
+        const roiDisplay = document.getElementById('roi');
+        const capRateDisplay = document.getElementById('cap-rate');
+        
+        function calculateROI() {
+            const price = parseFloat(propertyPrice.value) || 0;
+            const down = parseFloat(downPayment.value) || 0;
+            const rent = parseFloat(monthlyRent.value) || 0;
+            const appr = parseFloat(appreciation.value) || 0;
+            
+            const downPaymentAmount = price * (down / 100);
+            const loanAmount = price - downPaymentAmount;
+            const monthlyMortgage = (loanAmount * 0.065) / 12; // Assuming 6.5% interest
+            const monthlyExpenses = price * 0.01 / 12; // 1% annual expenses
+            
+            const cashFlow = rent - monthlyMortgage - monthlyExpenses;
+            const annualCashFlow = cashFlow * 12;
+            const annualAppreciation = price * (appr / 100);
+            const totalAnnualReturn = annualCashFlow + annualAppreciation;
+            const roi = (totalAnnualReturn / downPaymentAmount) * 100;
+            const capRate = ((rent * 12) / price) * 100;
+            
+            cashFlowDisplay.textContent = '$' + Math.round(cashFlow).toLocaleString();
+            roiDisplay.textContent = roi.toFixed(1) + '%';
+            capRateDisplay.textContent = capRate.toFixed(1) + '%';
+        }
+        
+        propertyPrice.addEventListener('input', calculateROI);
+        downPayment.addEventListener('input', calculateROI);
+        monthlyRent.addEventListener('input', calculateROI);
+        appreciation.addEventListener('input', calculateROI);
+        
+        calculateROI(); // Initial calculation
+        
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your submission! We\'ll be in touch within 24 hours.\n\nNote: Connect this form to your backend API.');
+            e.target.reset();
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
