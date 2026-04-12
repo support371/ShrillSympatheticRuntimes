@@ -244,7 +244,7 @@ export default function InvestorDashboard() {
                   Explore Opportunities <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/#contact">
                 <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 font-bold px-6" data-testid="button-speak-advisor">
                   Speak to an Advisor
                 </Button>
