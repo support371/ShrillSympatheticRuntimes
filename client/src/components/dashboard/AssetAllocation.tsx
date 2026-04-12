@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 const ALLOCATION = [
   { name: "Residential", value: 45, color: "#6366f1", amount: "$560,887" },
@@ -30,25 +30,23 @@ export function AssetAllocation() {
         <p className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-wider">Portfolio distribution by sector</p>
       </div>
 
-      <div className="h-52">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={ALLOCATION}
-              cx="50%"
-              cy="50%"
-              innerRadius={55}
-              outerRadius={80}
-              paddingAngle={3}
-              dataKey="value"
-            >
-              {ALLOCATION.map((entry, index) => (
-                <Cell key={index} fill={entry.color} stroke="transparent" />
-              ))}
-            </Pie>
-            <Tooltip content={<CustomTooltip />} />
-          </PieChart>
-        </ResponsiveContainer>
+      <div className="flex justify-center">
+        <PieChart width={200} height={200}>
+          <Pie
+            data={ALLOCATION}
+            cx={100}
+            cy={100}
+            innerRadius={55}
+            outerRadius={80}
+            paddingAngle={3}
+            dataKey="value"
+          >
+            {ALLOCATION.map((entry, index) => (
+              <Cell key={index} fill={entry.color} stroke="transparent" />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip />} />
+        </PieChart>
       </div>
 
       <div className="space-y-2.5 mt-2">
