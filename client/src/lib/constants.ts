@@ -17,7 +17,19 @@ export const NAV_ITEMS = [
 ];
 
 export const CONTACT_INFO = {
-  email: "support@alliancetrustrealty.com",
-  address: "123 Financial District, New York, NY 10005",
-  phone: "+1 (555) 123-4567"
+  email: "legal@gemcybersecurityassist.com",
+  address: "444 Alaska Ave, Torrance, CA 90503-3902",
+  phone: "401-702-2460",
+  fax: "855-673-2062"
 };
+
+export const SOCIAL_LINKS = {
+  twitter: "https://x.com/gemfirmassist",
+  tiktok: "https://www.tiktok.com/@alliance.trust.re",
+  facebook: "https://www.facebook.com/gemcyberassist",
+  instagram: "https://www.instagram.com/alliancetrustassestbuilders",
+  telegram: "https://t.me/mycybersecureWealthsolution"
+};
+
+export const SITE_URL = "https://alliancetrustrealty.com";
+
